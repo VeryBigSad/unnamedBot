@@ -107,6 +107,23 @@ exports.bindLumber = function (bot) {
 						// bot.pathfinder.setGoal(new GoalNear(grass.position.x + 1, grass.position.y, grass.position.z + 1, 2.5));
 
 						// TODO: make this a propper block placing mechanism, and not luck-based like it is rn
+						blockToPlaceOn = bot.blockAt(bot.position.x + 1, bot.position.y, bot.position.z);
+						if (!(blockToPlaceOn.type == 0 || blockToPlaceOn.type == 8 || blockToPlaceOn.type == 9)) {
+							// place on the block near us
+							newBlockToPlaceOn = bot.blockAt(blockToPlaceOn.position.plus(Vec3(0, 1, 0)))
+							if (!(newblockToPlaceOn.type == 0 || newblockToPlaceOn.type == 8 || newblockToPlaceOn.type == 9)) {
+								// not able to place there since not transparent
+								bot.bre
+							} else {
+								// able to place since is transparent
+								// staying like that...
+								blockToPlaceOn = newblockToPlaceOn
+							}
+							bot.blockAt()
+						} else {
+							// place on our block, vector to the blockToPlaceOn
+						}
+
 						bot.equip(bot.inventory.findInventoryItem(58), 'hand', ()=>{
 							bot.placeBlock(grass, Vec3(0, 1, 0), function(err) {
 								console.log('placed bench down');
