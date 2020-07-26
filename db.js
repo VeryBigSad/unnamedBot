@@ -1,6 +1,10 @@
 const mgclient = require("mongodb");
  
+<<<<<<< HEAD
 // creating mongoclient object
+=======
+// создаем объект MongoClient и передаем ему строку подключения
+>>>>>>> refs/remotes/origin/master
 const mongoClient = new mgclient.MongoClient("mongodb://localhost:27017/", { useNewUrlParser: true });
 
 db_insert_one = function (dbname, collectionname, data) {
