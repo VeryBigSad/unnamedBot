@@ -123,9 +123,10 @@ function bindEvents(bot) {
 	                    '[Bot] Have troubles with progression on the server? Buy shulkers with THE cheapest prices from THE best group! https://discord.gg/ZXvVQtg',
 	                    '[Bot] Have troubles with progression on the server? Buy shulkers with THE cheapest prices from THE best group! https://discord.gg/ZXvVQtg',
 	                    '[Bot] Have troubles with progression on the server? Buy shulkers with THE cheapest prices from THE best group! https://discord.gg/ZXvVQtg',
-	                    '[Bot] Have troubles with progression on the server? Buy shulkers with THE cheapest prices from THE best group! https://discord.gg/ZXvVQtg',
-	                    '[Bot] Have troubles with progression on the server? Buy shulkers with THE cheapest prices from THE best group! https://discord.gg/ZXvVQtg',
-	                    '[Bot] Have troubles with progression on the server? Buy shulkers with THE cheapest prices from THE best group! https://discord.gg/ZXvVQtg',
+	                    '[Bot] Buy kits from Unnamed group and your dick will grow 3 inches (We have prove and reviews!)',
+	                    '[Bot] Buy kits from Unnamed group and your dick will grow 3 inches (We have prove and reviews!)',
+	                    '[Bot] Buy kits from Unnamed group and your dick will grow 3 inches (We have prove and reviews!)',
+	                    '[Bot] Buy kits from Unnamed group and your dick will grow 3 inches (We have prove and reviews!)',
 	                    '[Bot] Have troubles with progression on the server? Buy shulkers with THE cheapest prices from THE best group! https://discord.gg/ZXvVQtg'];
 
 
