@@ -54,7 +54,8 @@ exports.bindLumber = function (bot) {
 			// 	console.log('PICKAXE AQUIRED!')
 
 			// 	// now mining stone...
-
+		}
+	}
 	bot.on('playerCollect', playerWoodPickCollectEvent)
 
 
@@ -82,10 +83,9 @@ exports.bindLumber = function (bot) {
 
 	function makeCraftTable() {
 		return new Promise((resolve)=>{
-			sleep(1000);
 			result = null;
-			recipe = bot.recipesFor(5);
 			console.log('getting recipe for planks');
+			recipe = bot.recipesFor(5);
 			bot.gameplay.stopAll();
 			console.log('waiting 1 second to stop strategies');
 			setTimeout(()=>{
@@ -100,40 +100,49 @@ exports.bindLumber = function (bot) {
 						console.log('crafted bench')
 						done = false;
 
-						grass = bot.findBlock({ point: bot.entity.position, matching: 2 });
-						// bot.pathfinder.setGoal(new GoalNear(grass.position.x + 1, grass.position.y, grass.position.z + 1, 2.5));
-
-						// TODO: make this a propper block placing mechanism, and not luck-based like it is rn
-						blockToPlaceOn = bot.blockAt(bot.position.x + 1, bot.position.y, bot.position.z);
+						blockToPlaceOn = bot.blockAt(Vec3(bot.entity.position.x + 1, bot.entity.position.y, bot.entity.position.z));
 						if (!(blockToPlaceOn.type == 0 || blockToPlaceOn.type == 8 || blockToPlaceOn.type == 9)) {
-							// place on the block near us
-							newBlockToPlaceOn = bot.blockAt(blockToPlaceOn.position.plus(Vec3(0, 1, 0)))
-							if (!(newblockToPlaceOn.type == 0 || newblockToPlaceOn.type == 8 || newblockToPlaceOn.type == 9)) {
-								// not able to place there since not transparent
-								bot.bre
-							} else {
+							// place on the block near us (x+1)
+							newblockToPlaceOn = bot.blockAt(blockToPlaceOn.position.plus(Vec3(0, 1, 0)))
+							if (newblockToPlaceOn.type == 0 || newblockToPlaceOn.type == 8 || newblockToPlaceOn.type == 9) {
 								// able to place since is transparent
-								// staying like that...
-								blockToPlaceOn = newblockToPlaceOn
+								placeBench(blockToPlaceOn, Vec3(0, 1, 0)).then((table)=>resolve(table));
+								console.log('placing on top of the block near')
+							} else {
+								// not able to place there since not transparent
+								// digging it out
+								bot.dig(newblockToPlaceOn, ()=>{
+									placeBench(blockToPlaceOn, Vec3(0, 1, 0)).then((table)=>resolve(table));
+								})
 							}
-							bot.blockAt()
 						} else {
+							placeBench(blockToPlaceOn, Vec3(1, 0, 0)).then((table)=>resolve(table));
+							console.log('placing on the side of our block')
 							// place on our block, vector to the blockToPlaceOn
 						}
 
-						bot.equip(bot.inventory.findInventoryItem(58), 'hand', ()=>{
-							bot.placeBlock(blockToPlaceOn, Vec3(0, 1, 0), function(err3) {
-								if (err3) console.log(err3)
-								console.log('placed bench down');
-								resolve(bot.blockAt(grass.position.plus(Vec3(0, 1, 0))))
-							});
-						});
+
 					})
 				});
 			}, 1000)
 		})
 
 	}
+
+	placeBench = function(block, vec) {
+		return new Promise((resolve)=>{
+			bot.equip(bot.inventory.findInventoryItem(58), 'hand', ()=>{
+				bot.placeBlock(bot.blockAt(bot.blockAt(Vec3(856, 78, 2553)).position.plus(Vec3(0, 1, 0))), function(err3) {
+					if (err3) console.log(err3)
+					console.log('placed bench down at ');
+					console.log(bot.blockAt(block.position.plus(vec)))
+					console.log('relation: ')
+					console.log(block)
+					resolve(bot.blockAt(block.position.plus(vec)))
+				});
+			});
+		})
+	} 
 
 	bot.once('spawn', () => {
 	  mineflayerViewer(bot, { port: 3000 }) // Start the viewing server on port 3000
@@ -148,7 +157,6 @@ exports.bindLumber = function (bot) {
 	  })
 	})
 	mineTrees = (()=>{
-			console.log(bot.gameplay.activeStrategy)
 			console.log('collecting wood for resources')
 			bot.gameplay.collectBlock(
 				{

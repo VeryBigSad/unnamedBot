@@ -29,10 +29,10 @@ function relog(log=true) {
 	    console.log("Attempting to reconnect...");		
 	}
     bot = mineflayer.createBot(options);
-    // bindEvents(bot);
+    bindEvents(bot);
     bindLogging(bot);
-    bindGameplay(bot);
-    lumber.bindLumber(bot);
+    // bindGameplay(bot);
+    // lumber.bindLumber(bot);
 }
 
 lastTimeUsed = 0;
@@ -62,7 +62,7 @@ function bindLogging(bot) {
 	    	Discord.sendMessage('> someone tried tagging someone but me (the bot) fucked him <');
 	    } else {
 	    	message = message.replace(new RegExp('discord.gg/'.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&'), 'gi'), '(discord link)');
-	    	Discord.sendMessage(message);    	
+	    	Discord.sendMessage(message);
 	    }
 	    console.log('[' + time.getHours() + ':' + time.getMinutes() + ':' + time.getSeconds() + '] ' + jsonMsg)
 	})
@@ -94,7 +94,7 @@ function bindEvents(bot) {
 		  	}
 
 	    } else {
-	  	    cmdhandler.handleMessage(username, message);
+	  	    cmdhandler.messageHandler(username, message);
 	  	}
 	});
 
@@ -120,21 +120,27 @@ function bindEvents(bot) {
 
 	var spamMessages = ['[Bot] Did you know you could do ?fact for a random fact? It\'s epic, I know. Do ?help for more!',
 	                    '[Bot] Join Unnamed group\'s discord server to participate in upcoming giveaways (3 winners & 3 kits!) https://discord.gg/ZXvVQtg', 
-	                    '[Bot] Did you know that if you join Unnamed\'s discord server, you can send messages like this using just discord? https://discord.gg/ZXvVQtg'];
+	                    '[Bot] Have troubles with progression on the server? Buy shulkers with THE cheapest prices from THE best group! https://discord.gg/ZXvVQtg',
+	                    '[Bot] Have troubles with progression on the server? Buy shulkers with THE cheapest prices from THE best group! https://discord.gg/ZXvVQtg',
+	                    '[Bot] Have troubles with progression on the server? Buy shulkers with THE cheapest prices from THE best group! https://discord.gg/ZXvVQtg',
+	                    '[Bot] Have troubles with progression on the server? Buy shulkers with THE cheapest prices from THE best group! https://discord.gg/ZXvVQtg',
+	                    '[Bot] Have troubles with progression on the server? Buy shulkers with THE cheapest prices from THE best group! https://discord.gg/ZXvVQtg',
+	                    '[Bot] Have troubles with progression on the server? Buy shulkers with THE cheapest prices from THE best group! https://discord.gg/ZXvVQtg',
+	                    '[Bot] Have troubles with progression on the server? Buy shulkers with THE cheapest prices from THE best group! https://discord.gg/ZXvVQtg'];
 
 
 	executeAsync(async function() {
 		while (true) {
-			await sleep((Math.random() * 300000) + 50000).then(async function	() {
+			await sleep((Math.random() * 100000) + 30000).then(async function() {
 				randomIndex = Math.floor(Math.random() * spamMessages.length);
 				bot.chat(spamMessages[randomIndex]);
 
 				// checking last time message was sent
 				await sleep(15000).then(()=>{
-				if (Date.now() - lastTimeMessage > 30000) {
-					Discord.sendMessage('\`\`\`timed out\`\`\`')
-					relog();
-				}
+					if (Date.now() - lastTimeMessage > 30000) {
+						Discord.sendMessage('\`\`\`timed out\`\`\`')
+						relog();
+					}
 				});
 				
 			});
@@ -146,6 +152,7 @@ function bindEvents(bot) {
 async function executeAsync(func) {
     setTimeout(func, 0);
 }
+
 // sleep time expects milliseconds
 function sleep (time) {
     return new Promise((resolve) => setTimeout(resolve, time));

@@ -54,7 +54,7 @@ exports.commandHandler = function(username, message) {
 };
 
 
-exports.handleMessage = function(username, message) {
+exports.messageHandler = function(username, message) {
 	if (nwordcounter[username] == null) {
 		nwordcounter[username] = 0;
 	}
