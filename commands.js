@@ -38,15 +38,6 @@ exports.nwordCommand = function(username, args) {
 }; 	
 var tmp;
 
-// requestFact = function() {
-// 	axios.get('http://uselessfacts.jsph.pl/random.json?language=en').then(response => {
-//       if (response.data.text) {
-//       	tmp = response.data.text;
-//         console.log(response.data.text);
-//       }
-//     })
-// 	// return await axios.get('http://uselessfacts.jsph.pl/random.json?language=en').data['text'];
-// }
 
 exports.randomFact = function() {
 	resp = sync('GET', 'https://uselessfacts.jsph.pl/random.json?language=en');

@@ -1,6 +1,8 @@
-var commands = require('./commands.js');
-var fs = require('fs');
-
+const commands = require('./commands.js');
+const fs = require('fs');
+const textlog = require('./playtime/textlog.js');
+const bot = require('./bot.js');
+const dbCommands = require('./playtime/index.js')
 
 nwordcounter = {};
 whispers = {};
@@ -47,6 +49,18 @@ exports.commandHandler = function(username, message) {
 		return commands.randomFact();
 	} else if (command == 'crash') {
 		throw Exception;
+	} else if (command == 'pt' || command == 'playtime') {
+		dbCommands.playtime((msg)=>{bot.sendMessage(msg)})
+		return null;
+	} else if (command == 'qt' || command == 'quote') {
+		dbCommands.quote((msg)=>{bot.sendMessage(msg)})
+		return null;
+	} else if (command == 'seen') {
+		dbCommands.lastSeen((msg)=>{bot.sendMessage(msg)})
+		return null;
+	} else if (command == 'fm' || command == 'firstmessage') {
+		dbCommands.firstmessage((msg)=>{bot.sendMessage(msg)})
+		return null;
 	} else {
 		return 'there are no such command'
 	}
@@ -58,6 +72,12 @@ exports.messageHandler = function(username, message) {
 	if (nwordcounter[username] == null) {
 		nwordcounter[username] = 0;
 	}
+
+	if ((!message.startsWith('!') || !message.startsWith('?') && message.length > 3)) {
+		textlog.addtextmessage(username, message)
+	}
+
+	// todo: database
 	nwordcounter[username] += (message.match(/nigg/gi) || []).length;
 	keys = Object.keys(nwordcounter);
 	nwordcounterString = '';

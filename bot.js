@@ -1,17 +1,3 @@
-if(process.argv.length < 3 || process.argv.length > 6) {
-    console.log("Usage: node bot.js <host> <port> [<name>] [<password>]");
-    process.exit(1);
-}
-options = {
-        username: process.argv[4] ? process.argv[4] : "treeFucker",
-        verbose: true,
-        port: parseInt(process.argv[3]),
-        host: process.argv[2],
-        password: process.argv[5],
-        version: "1.12.2",
-    	checkTimeoutInterval: 99999
-}
-
 const cmdhandler = require('./commandhandler.js');
 const commands = require('./commands.js');
 const lumber = require('./lumber.js');
@@ -23,16 +9,32 @@ const pathfinder = require('mineflayer-pathfinder').pathfinder
 const gameplay = require('./prismarine-gameplay').gameplay
 const mineflayerViewer = require('prismarine-viewer').mineflayer
 
+if (process.argv.length < 3 || process.argv.length > 6) {
+    console.log("Usage: node bot.js <host> <port> [<name>] [<password>]");
+    process.exit(1);
+}
+options = {
+		username: process.argv[4] ? process.argv[4] : "treeFucker",
+		verbose: true,
+		port: parseInt(process.argv[3]),
+		host: process.argv[2],
+		password: process.argv[5],
+		version: "1.12.2",
+		checkTimeoutInterval: 99999
+}
+
+
 function relog(log=true) {
 	if (log) {
 		Discord.sendMessage('> Timing out (30 seconds), trying to reconnect...');
-	    console.log("Attempting to reconnect...");		
+		console.log("Attempting to reconnect...");		
 	}
-    bot = mineflayer.createBot(options);
-    bindEvents(bot);
-    bindLogging(bot);
-    // bindGameplay(bot);
-    // lumber.bindLumber(bot);
+	bot = mineflayer.createBot(options);
+	bindEvents(bot);
+	bindLogging(bot);
+	bindDatabaseShit(bot);
+	// bindGameplay(bot);
+	// lumber.bindLumber(bot);
 }
 
 lastTimeUsed = 0;
@@ -43,6 +45,10 @@ process.on('uncaughtException', function(err) {
 	Discord.sendMessage(`<@!437208440578768908> wake up bot has crashed for some reason`);
 });
 
+
+function bindDatabaseShit(bot) {
+
+}
 
 function bindGameplay(bot) {
 	bot.loadPlugin(pathfinder);
@@ -57,14 +63,14 @@ function bindLogging(bot) {
 		text = message.slice(message.indexOf(':') + 2);
 
 
-	    time = new Date();
-	    if (message.includes('@')) {
-	    	Discord.sendMessage('> someone tried tagging someone but me (the bot) fucked him <');
-	    } else {
-	    	message = message.replace(new RegExp('discord.gg/'.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&'), 'gi'), '(discord link)');
-	    	Discord.sendMessage(message);
-	    }
-	    console.log('[' + time.getHours() + ':' + time.getMinutes() + ':' + time.getSeconds() + '] ' + jsonMsg)
+		time = new Date();
+		if (message.includes('@')) {
+			Discord.sendMessage('> someone tried tagging someone but me (the bot) fucked him <');
+		} else {
+			message = message.replace(new RegExp('discord.gg/'.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&'), 'gi'), '(discord link)');
+			Discord.sendMessage(message);
+		}
+		console.log('[' + time.getHours() + ':' + time.getMinutes() + ':' + time.getSeconds() + '] ' + jsonMsg)
 	})
 
 	exports.sendMessage = function(text) {
@@ -96,16 +102,6 @@ function bindEvents(bot) {
 	    } else {
 	  	    cmdhandler.messageHandler(username, message);
 	  	}
-	});
-
-
-	bot.on('whisper', function(username, message) {
-		if (message[0] == '?') {
-	  		toSend = cmdhandler.commandHandler(username, message);
-	  		if (toSend != null && toSend != '') {
-	  			bot.chat('/msg ' + username + ' ' + toSend);
-	  		}
-		}
 	});
 
 	bot.on('kicked', function(reason) {
