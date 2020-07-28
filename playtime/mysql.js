@@ -17,10 +17,6 @@ async function init(){
   con.connect(function(err) {
     if (err) throw err;
   });
- //   con.query('CREATE DATABASE minedata')
-    // con.commit()
-
-    // process.exit(1);
     con.query('CREATE TABLE IF NOT EXISTS userdata(user varchar(255), playtime integer, lastlogin bigint, totallogins integer, kills integer, deaths integer, firstmessage varchar(255), PRIMARY KEY (user))')
   }
 

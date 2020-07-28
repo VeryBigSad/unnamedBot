@@ -9,10 +9,6 @@ var con = mysql.createConnection({
   database: "textlog",
   insecureAuth: true
 });
-//con.query('CREATE DATABASE textlog')
-// con.commit()
-//console.log('yay')
-// process.exit(1)
 
 async function createuser(user){
 	con.query(`CREATE TABLE IF NOT EXISTS _` + user + `(text longtext, time bigint)`)

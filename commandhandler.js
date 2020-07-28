@@ -49,7 +49,7 @@ exports.commandHandler = function(username, message) {
 		return commands.randomFact();
 	} else if (command == 'crash') {
 		throw Exception;
-  	} else if (command == 'pt' || command == 'playtime') {
+	} else if (command == 'pt' || command == 'playtime') {
 		dbCommands.playtime(username, args).then((msg)=>{bot.sendMessage(msg)})
 		return null;
 	} else if (command == 'qt' || command == 'quote') {
@@ -74,7 +74,7 @@ exports.messageHandler = function(username, message) {
 	}
 
 	if ((!message.startsWith('!') || !message.startsWith('?') && message.length > 3)) {
-		textlog.addtextmessage(username, message.toAnsi())
+		textlog.addtextmessage(username, message.replace(/[^\x00-\x7F]/g, ""))
 	}
 
 	// todo: database
