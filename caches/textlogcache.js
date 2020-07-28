@@ -14,7 +14,7 @@ exports.removeFromCache = async(cacheobject) => {
 
 exports.updateCache = async(cachekey, value) => {
     if(this.cachemap.get(cachekey) == undefined){
-        this.addToCache(cachekey, [value])
+        this.addToCache(cachekey, value)
     } else {
 	thing = this.cachemap.get(cachekey)
 	thing.push(value)
