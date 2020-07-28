@@ -49,17 +49,17 @@ exports.commandHandler = function(username, message) {
 		return commands.randomFact();
 	} else if (command == 'crash') {
 		throw Exception;
-	} else if (command == 'pt' || command == 'playtime') {
-		dbCommands.playtime((msg)=>{bot.sendMessage(msg)})
+  	} else if (command == 'pt' || command == 'playtime') {
+		dbCommands.playtime(username, args).then((msg)=>{bot.sendMessage(msg)})
 		return null;
 	} else if (command == 'qt' || command == 'quote') {
-		dbCommands.quote((msg)=>{bot.sendMessage(msg)})
+		dbCommands.quote(username, args).then((msg)=>{bot.sendMessage(msg)})
 		return null;
 	} else if (command == 'seen') {
-		dbCommands.lastSeen((msg)=>{bot.sendMessage(msg)})
+		dbCommands.lastSeen(username, args).then((msg)=>{bot.sendMessage(msg)})
 		return null;
 	} else if (command == 'fm' || command == 'firstmessage') {
-		dbCommands.firstmessage((msg)=>{bot.sendMessage(msg)})
+		dbCommands.firstmessage(username, args).then((msg)=>{bot.sendMessage(msg)})
 		return null;
 	} else {
 		return 'there are no such command'
@@ -74,7 +74,7 @@ exports.messageHandler = function(username, message) {
 	}
 
 	if ((!message.startsWith('!') || !message.startsWith('?') && message.length > 3)) {
-		textlog.addtextmessage(username, message)
+		textlog.addtextmessage(username, message.toAnsi())
 	}
 
 	// todo: database

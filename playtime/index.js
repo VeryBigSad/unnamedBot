@@ -71,7 +71,8 @@ exports.playtime = function(username, args) {
 		data.connection.query('SELECT playtime FROM userdata WHERE user = ?', username, (err, result) => {
 			if (err) throw err
 			if (!result[0]) {
-				return "Cannot find " + username + " in the database."
+				later("Cannot find " + username + " in the database.")
+				return
 			}
 			let time = result[0].playtime
 			text += username + "'s playtime is "
@@ -100,7 +101,7 @@ exports.playtime = function(username, args) {
 }
 
 exports.firstmessage = function(username, args) {
-	return new Promse((later)=>{
+	return new Promise((later)=>{
 		if (args.length >= 1) username = args[0];
 
 		data.connection.query('SELECT firstmessage FROM userdata WHERE user = ?', username, (err, result) => {
@@ -119,7 +120,7 @@ exports.firstmessage = function(username, args) {
 }
 
 exports.lastSeen = function(username, args) {
-	return new Proimise((later)=>{
+	return new Promise((later)=>{
 		if (args.length >= 1) username = args[0];
 		
 		data.connection.query('SELECT lastlogin FROM userdata WHERE user = ?', username, (err, result) => {
@@ -143,7 +144,7 @@ exports.lastSeen = function(username, args) {
 }
 
 exports.quote = function(username, args) {
-	return new Proimise((later)=>{
+	return new Promise((later)=>{
 		if (args.length >= 1) username = args[0];
 		textlog.connection.query('SELECT * FROM _' + username, (err, result) => {
 			if (err) throw err

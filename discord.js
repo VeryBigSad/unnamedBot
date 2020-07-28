@@ -7,7 +7,7 @@ exports.sendMessage = function(text) {
 	if (!text.match(/UnnamedGroup:\ \[[a-zA-Z0-9]{3,40}\]\ {0,}/g)) {
 
 	}
-	// ingamechat.send(String(text));
+	ingamechat.send(String(text));
 }
 
 var lastMessage = ''

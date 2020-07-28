@@ -5,12 +5,13 @@ var currentbool;
 var con = mysql.createConnection({
   host: "localhost",
   user: "root",
-  password: "test",
-  database: "textlog"
+  password: "79397939",
+  database: "textlog",
+  insecureAuth: true
 });
-con.query('CREATE DATABASE textlog')
+//con.query('CREATE DATABASE textlog')
 // con.commit()
-console.log('yay')
+//console.log('yay')
 // process.exit(1)
 
 async function createuser(user){

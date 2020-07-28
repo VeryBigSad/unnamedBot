@@ -90,14 +90,14 @@ function bindEvents(bot) {
 		  	if (Date.now() - lastTimeUsed <= 500) return;
 		  	lastTimeUsed = Date.now();
 
-		  	try {
+		  	//try {
 		  		toSend = cmdhandler.commandHandler(username, message);
 		  		if (toSend !== null) {
 		  			bot.chat(toSend);  		  			
 		  		}
-		  	} catch(Exception) {
-		  		console.log('bruh I almost crashed');
-		  	}
+		  	//} catch(Exception) {
+		  	//	console.log('bruh I almost crashed');
+		  	//}
 
 	    } else {
 	  	    cmdhandler.messageHandler(username, message);

@@ -5,8 +5,9 @@ var currentbool;
 var con = mysql.createConnection({
   host: "localhost",
   user: "root",
-  password: "test",
-  database: "minedata"
+  password: "79397939",
+  database: "minedata",
+  insecureAuth: true
 });
 
 init()
@@ -16,7 +17,7 @@ async function init(){
   con.connect(function(err) {
     if (err) throw err;
   });
-    con.query('CREATE DATABASE minedata')
+ //   con.query('CREATE DATABASE minedata')
     // con.commit()
 
     // process.exit(1);
