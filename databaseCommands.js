@@ -2,6 +2,8 @@ const mineflayer = require('mineflayer');
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const database = require('./database.js');
+const textlogcache = require('./caches/textlogcache')
+const playtimecache = require('./caches/playtimecache')
 
 cachedPlayers = []
 
@@ -89,6 +91,7 @@ exports.playtime = function(username, args) {
 			}
 			later(text)
 		})
+		playtimecache.writeCacheofSpecificUser(username)
 	})
 
 }
@@ -130,6 +133,7 @@ exports.quote = function(username, args) {
 			}
 			later('"' + message + '" -' + username)
 		})
+		textlogcache.writeCacheofSpecificUser(username)
 	})
 }
 
@@ -143,7 +147,7 @@ exports.bindDatabaseShit = function(bot) {
 		console.log(`Logged in as ${client.user.tag}!`);
 		setInterval(async function() {
 			for(player in bot.players) { 
-				database.addPlayertime(player, 60)
+				playtimecache.updateCache(player, 60)
 			}
 		}, 60000);
 	});
@@ -158,6 +162,15 @@ exports.bindDatabaseShit = function(bot) {
 			database.addTotalLogins(player.username, 1)
 		});
 		database.setLastlogin(player.username, date)
+	})
+
+	bot.on('chat', async(username, message) => {
+		textlogcache.updateCache(username, message)
+	})
+
+	bot.on('playerLeft', async(player) => {
+		playtimecache.writeCacheofSpecificUser(player)
+		textlogcache.writeCacheofSpecificUser(player)
 	})
 }
 
