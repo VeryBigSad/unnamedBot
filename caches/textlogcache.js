@@ -33,6 +33,3 @@ exports.writeCacheofSpecificUser = async(user) => {
 }
 }
 
-
-this.updateCache("Nowilltolife", "i am cool")
-this.writeCacheToDatabase()
