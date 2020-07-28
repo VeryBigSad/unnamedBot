@@ -1,38 +1,34 @@
-const database = require('../database');
-
 exports.init = function() {
 	exports.cachemap = new Map();
 }
 
-exports.addToCache = async(cachekey, cachevalue) => {
-    this.cachemap.set(cachekey, [cachevalue])
+exports.setCacheValue = (user, value, time) => {
+    this.cachemap.set(user, new Duo(value, time))
 }
 
-exports.removeFromCache = async(cacheobject) => {
-    this.cachemap.delete(cacheobject)
+exports.getCacheValue = (user) => {
+    return this.cachemap.get(user)
 }
 
-exports.updateCache = async(cachekey, value) => {
-    if(this.cachemap.get(cachekey) == undefined){
-        this.addToCache(cachekey, value)
-    } else {
-	thing = this.cachemap.get(cachekey)
-	thing.push(value)
-
-        this.cachemap.set(cachekey, thing)
+exports.addToCacheValue = (user, value, time)  => {
+    if(this.cachemap.has(user)){
+    thing = this.cachemap.get(user)
+    var duo = new Duo(value, time)
+    thing.push(duo)
+    this.cachemap.set(user, thing)
+    }else {
+        this.cachemap.set(user, [new Duo(value, time)])
     }
 }
 
-exports.writeCacheToDatabase = async() => {
-    this.cachemap.forEach((value, user)=>{
-        value.forEach((message)=>{database.addTextmessage(user, message)})
-    })
-}
-
-exports.writeCacheofSpecificUser = async(user) => {
-    if(this.cachemap.get(user) != undefined) {
-    	this.cachemap.get(user).forEach((message)=>{database.addTextmessage(user, message)})
-    	this.cachemap.set(user, [])
+class Duo {
+    constructor(key, value){
+        this.key = key
+        this.value = value
     }
 }
 
+this.init()
+this.addToCacheValue("Nowilltolife", "text")
+this.addToCacheValue("Nowilltolife", "text")
+console.log(this.cachemap)
