@@ -63,7 +63,7 @@ exports.addPlayertime = async(user, value) => {
     this.checkuser(user)
     con.query('SELECT playtime FROM userdata WHERE user = ?', user, (err, result) => {
       if(err) throw err
-      setPlaytime(user, result[0].playtime + value)
+      this.setPlaytime(user, result[0].playtime + value)
     })
   }
   
@@ -71,7 +71,7 @@ exports.addPlayertime = async(user, value) => {
     this.checkuser(user)
     con.query('SELECT totallogins FROM userdata WHERE user = ?', user, (err, result) => {
       if(err) throw err
-      setPlaytime(user, result[0].totalloogins + value)
+      this.setTotallogins(user, result[0].totalloogins + value)
     })
   }
   
@@ -125,4 +125,5 @@ exports.addPlayertime = async(user, value) => {
         if(err) throw err
         callback(result[0].firstmessage)
       })
+      
  }
