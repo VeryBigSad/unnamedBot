@@ -145,16 +145,16 @@ exports.bindLumber = function (bot) {
 	} 
 
 	bot.once('spawn', () => {
-	  mineflayerViewer(bot, { port: 3000 }) // Start the viewing server on port 3000
+		mineflayerViewer(bot, { port: 3000 }) // Start the viewing server on port 3000
 
-	  // Draw the path followed by the bot
-	  const path = [bot.entity.position.clone()]
-	  bot.on('move', () => {
-	    if (path[path.length - 1].distanceTo(bot.entity.position) > 1) {
-	      path.push(bot.entity.position.clone())
-	      bot.viewer.drawLine('path', path)
-	    }
-	  })
+		// Draw the path followed by the bot
+		const path = [bot.entity.position.clone()]
+		bot.on('move', () => {
+			if (path[path.length - 1].distanceTo(bot.entity.position) > 1) {
+				path.push(bot.entity.position.clone())
+				bot.viewer.drawLine('path', path)
+			}
+		})
 	})
 	mineTrees = (()=>{
 			console.log('collecting wood for resources')
