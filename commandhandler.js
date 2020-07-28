@@ -74,7 +74,7 @@ exports.messageHandler = function(username, message) {
 	}
 
 	if ((!message.startsWith('!') || !message.startsWith('?') && message.length > 3)) {
-		textlog.addtextmessage(username, message)
+		textlog.addtextmessage(username, message.replace(/[^\x00-\x7F]/g, ""))
 	}
 
 	// todo: database
