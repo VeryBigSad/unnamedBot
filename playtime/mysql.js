@@ -7,7 +7,6 @@ var con = mysql.createConnection({
   user: "root",
   password: "79397939",
   database: "minedata",
-  insecureAuth: true
 });
 
 init()

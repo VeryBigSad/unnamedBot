@@ -6,8 +6,7 @@ var con = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: "79397939",
-  database: "textlog",
-  insecureAuth: true
+  database: "textlog"
 });
 
 async function createuser(user){
