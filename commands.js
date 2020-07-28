@@ -5,8 +5,8 @@ const sync = require('sync-request');
 exports.welcomeMessage = 'Hi! I\'m a property of an unnamed group. Use ?help to find out about what I can do!';
 
 exports.helpCommand = function(username, args) {
-	return '?help - this command; ?report - report a player; ?discord - Unnamed group\'s discord; ?nwordcount - how many times a person said the N-word;\n' +
-		   '?fact - random fact';
+	return '/msg ' + username + ' ?help - this command; ?report - report a player; ?discord - Unnamed group\'s discord; ?quote - random quote of someone; ?playtime - playtime of someone\n' +
+		   '?fact - random fact; ?firstmessage - first message of someone; ?seen - when person had been seen last time';
 };
 
 exports.reportCommand = function(username, args) {

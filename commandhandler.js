@@ -1,8 +1,8 @@
 const commands = require('./commands.js');
 const fs = require('fs');
-const textlog = require('./playtime/textlog.js');
+const database = require('./database.js');
 const bot = require('./bot.js');
-const dbCommands = require('./playtime/index.js')
+const dbCommands = require('./databaseCommands.js')
 
 nwordcounter = {};
 whispers = {};
@@ -74,7 +74,7 @@ exports.messageHandler = function(username, message) {
 	}
 
 	if ((!message.startsWith('!') || !message.startsWith('?') && message.length > 3)) {
-		textlog.addtextmessage(username, message.replace(/[^\x00-\x7F]/g, ""))
+		database.addTextmessage(username, message.replace(/[^\x00-\x7F]/g, ""))
 	}
 
 	// todo: database

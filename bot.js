@@ -1,6 +1,8 @@
 const cmdhandler = require('./commandhandler.js');
 const commands = require('./commands.js');
 const lumber = require('./lumber.js');
+const dbCommands = require('./databaseCommands.js');
+const database = require('./database.js')
 
 const Discord = require('./discord.js');
 
@@ -29,10 +31,11 @@ function relog(log=true) {
 		Discord.sendMessage('> Timing out (30 seconds), trying to reconnect...');
 		console.log("Attempting to reconnect...");		
 	}
+	database.init('localhost', 'root', '79397939', 'textlog', 'minedata')
 	bot = mineflayer.createBot(options);
 	bindEvents(bot);
 	bindLogging(bot);
-	bindDatabaseShit(bot);
+	dbCommands.bindDatabaseShit(bot);
 	// bindGameplay(bot);
 	// lumber.bindLumber(bot);
 }
@@ -44,11 +47,6 @@ process.on('uncaughtException', function(err) {
 	console.log(err);
 	Discord.sendMessage(`<@!437208440578768908> wake up bot has crashed for some reason`);
 });
-
-
-function bindDatabaseShit(bot) {
-
-}
 
 function bindGameplay(bot) {
 	bot.loadPlugin(pathfinder);
@@ -64,12 +62,6 @@ function bindLogging(bot) {
 
 
 		time = new Date();
-		if (message.includes('@')) {
-			Discord.sendMessage('> someone tried tagging someone but me (the bot) fucked him <');
-		} else {
-			message = message.replace(new RegExp('discord.gg/'.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&'), 'gi'), '(discord link)');
-			Discord.sendMessage(message);
-		}
 		console.log('[' + time.getHours() + ':' + time.getMinutes() + ':' + time.getSeconds() + '] ' + jsonMsg)
 	})
 
@@ -105,8 +97,7 @@ function bindEvents(bot) {
 	});
 
 	bot.on('kicked', function(reason) {
-		Discord.sendMessage(`BOT HAD BEEN KICKED FOR ` + reason.text + ' :crab:');
-		console.log('kicked for ' + reason);
+		Discord.sendMessage(`BOT HAD BEEN KICKED FOR ` + reason + ' :crab:');
 		relog();
 	});
 
@@ -118,12 +109,8 @@ function bindEvents(bot) {
 	                    '[Bot] Join Unnamed group\'s discord server to participate in upcoming giveaways (3 winners & 3 kits!) https://discord.gg/ZXvVQtg', 
 	                    '[Bot] Have troubles with progression on the server? Buy shulkers with THE cheapest prices from THE best group! https://discord.gg/ZXvVQtg',
 	                    '[Bot] Have troubles with progression on the server? Buy shulkers with THE cheapest prices from THE best group! https://discord.gg/ZXvVQtg',
-	                    '[Bot] Have troubles with progression on the server? Buy shulkers with THE cheapest prices from THE best group! https://discord.gg/ZXvVQtg',
-	                    '[Bot] Buy kits from Unnamed group and your dick will grow 3 inches (We have prove and reviews!)',
-	                    '[Bot] Buy kits from Unnamed group and your dick will grow 3 inches (We have prove and reviews!)',
-	                    '[Bot] Buy kits from Unnamed group and your dick will grow 3 inches (We have prove and reviews!)',
-	                    '[Bot] Buy kits from Unnamed group and your dick will grow 3 inches (We have prove and reviews!)',
-	                    '[Bot] Have troubles with progression on the server? Buy shulkers with THE cheapest prices from THE best group! https://discord.gg/ZXvVQtg'];
+	                    '[Bot] Buy kits from Unnamed group and your dick will grow 3 inches (We have proof and reviews!) https://discord.gg/ZXvVQtg',
+	                    '[Bot] Buy kits from Unnamed group and your dick will grow 3 inches (We have proof and reviews!) https://discord.gg/ZXvVQtg'];
 
 
 	executeAsync(async function() {
@@ -135,7 +122,7 @@ function bindEvents(bot) {
 				// checking last time message was sent
 				await sleep(15000).then(()=>{
 					if (Date.now() - lastTimeMessage > 30000) {
-						Discord.sendMessage('\`\`\`timed out\`\`\`')
+						Discord.sendMessage('\`timed out\`')
 						relog();
 					}
 				});
@@ -155,8 +142,7 @@ function sleep (time) {
     return new Promise((resolve) => setTimeout(resolve, time));
 }
 
-exports.sleep = sleep;
+
+
 
 relog(false);
-
-

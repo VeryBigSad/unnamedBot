@@ -63,7 +63,7 @@ exports.addPlayertime = async(user, value) => {
     this.checkuser(user)
     con.query('SELECT playtime FROM userdata WHERE user = ?', user, (err, result) => {
       if(err) throw err
-      setPlaytime(user, result[0].playtime + value)
+      exports.setPlaytime(user, result[0].playtime + value)
     })
   }
   
@@ -71,7 +71,7 @@ exports.addPlayertime = async(user, value) => {
     this.checkuser(user)
     con.query('SELECT totallogins FROM userdata WHERE user = ?', user, (err, result) => {
       if(err) throw err
-      setPlaytime(user, result[0].totalloogins + value)
+      exports.setTotallogins(user, result[0].totallogins + value)
     })
   }
   
@@ -96,6 +96,7 @@ exports.addPlayertime = async(user, value) => {
   }
 
   exports.getPlaytime = async(user="", callback) => {
+    this.checkuser(user)
     con.query('SELECT playtime FROM userdata WHERE user = ?', user, (err, result) => {
         if(err) throw err
         callback(result[0].playtime)
@@ -103,6 +104,7 @@ exports.addPlayertime = async(user, value) => {
  }
 
  exports.getLastlogin = async(user="", callback) => {
+    this.checkuser(user)
     con.query('SELECT lastlogin FROM userdata WHERE user = ?', user, (err, result) => {
         if(err) throw err
         callback(result[0].lastlogin)
@@ -110,6 +112,7 @@ exports.addPlayertime = async(user, value) => {
  }
 
  exports.getTotalLogins = async(user="", callback) => {
+    this.checkuser(user)
     con.query('SELECT totallogins FROM userdata WHERE user = ?', user, (err, result) => {
         if(err) throw err
         callback(result[0].totallogins)
@@ -117,6 +120,7 @@ exports.addPlayertime = async(user, value) => {
  }
 
  exports.getFirstmessage = async(user="", callback) => {
+    this.checkuser(user)
     con.query('SELECT firstmessage FROM userdata WHERE user = ?', user, (err, result) => {
         if(err) throw err
         callback(result[0].firstmessage)
