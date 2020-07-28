@@ -29,16 +29,18 @@ exports.init = async(host="localhost", user="root", password="", textlog="textlo
     ptcache.constructor()
     textcache.init()
     con.query('CREATE TABLE IF NOT EXISTS userdata(user varchar(255), playtime integer, lastlogin bigint, totallogins integer, kills integer, deaths integer, firstmessage varchar(255), PRIMARY KEY (user))')
-  return
+    exports.userdata = con
+    exports.textlog = chatlog
+    return
 }
 
 exports.checkusertextlog = async(user) => {
   chatlog.query(`CREATE TABLE IF NOT EXISTS _`+user+`(text longtext, time bigint)`)
 }
 
-exports.addTextmessage = async(user, text) => {
+exports.addTextmessage = async(user, text, time) => {
     this.checkusertextlog(user)
-    chatlog.query('INSERT INTO _'+user+'(text, time) VALUES(?, ?)', [text, Date.now()])
+    chatlog.query('INSERT INTO _'+user+'(text, time) VALUES(?, ?)', [text, time])
 }
 
 exports.getRandomTextmessage = (user="", callback) => {

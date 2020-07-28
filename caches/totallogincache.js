@@ -19,7 +19,3 @@ exports.addToCacheValue = (user, value)  => {
     }
 }
 
-this.init()
-this.addToCacheValue("Nowilltolife", 1)
-this.addToCacheValue("Nowilltolife", 1)
-console.log(this.cachemap)
