@@ -13,10 +13,10 @@ exports.removeFromCache = async(cacheobject) => {
 }
 
 exports.updateCache = async(cachekey, value) => {
-    if(this.cachemap.get(cachekey) === undefined){
+    if (this.cachemap.get(cachekey) === undefined) {
         this.addToCache(cachekey, value)
-    }else {
-        this.cachemap.set(cachekey, this.cachemap.get(cachekey)+value)
+    } else {
+        this.cachemap.set(cachekey, this.cachemap.get(cachekey) + value)
     }
 }
 
@@ -28,7 +28,7 @@ exports.writeCacheToDatabase = async() => {
 
 exports.writeCacheofSpecificUser = async(user) => {
     if(this.cachemap.get(user) != undefined) {
-    database.addPlayertime(user, this.cachemap.get(user))
-    this.cachemap.set(user, 0)
+        database.addPlayertime(user, this.cachemap.get(user))
+        this.cachemap.set(user, 0)
     }
 }
