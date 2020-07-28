@@ -11,7 +11,24 @@ exports.sendMessage = function(text) {
 }
 
 var lastMessage = ''
+exports.bindDiscord = function(bot) {
+		bot.on('message', function(jsonMsg) {
+		message = String(jsonMsg);
+		lastTimeMessage = Date.now();
+		username = message.slice(0, message.indexOf(':'));
+		text = message.slice(message.indexOf(':') + 2);
 
+
+		time = new Date();
+		if (message.includes('@')) {
+			Discord.sendMessage('> someone tried tagging someone but me (the bot) fucked him <');
+		} else {
+			message = message.replace(new RegExp('discord.gg/'.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&'), 'gi'), '(discord link)');
+			Discord.sendMessage(message);
+		}
+		// console.log('[' + time.getHours() + ':' + time.getMinutes() + ':' + time.getSeconds() + '] ' + jsonMsg)
+	})
+}
 client.on('message', msg => {
 	if (msg.author.bot || msg.channel.name != 'ingame-chat') {
 		// if sent by bot

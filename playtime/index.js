@@ -1,7 +1,6 @@
 const mineflayer = require('mineflayer');
 const Discord = require('discord.js');
 const client = new Discord.Client();
-// const request = require('request')
 const data = require('./mysql.js');
 const textlog = require('./textlog.js')
 
@@ -125,7 +124,7 @@ exports.lastSeen = function(username, args) {
 		data.connection.query('SELECT lastlogin FROM userdata WHERE user = ?', username, (err, result) => {
 			if (err) throw err
 			if (!result[0]) {
-				later("Cannot find " + args[1] + " in the database.")
+				later("Cannot find " + username + " in the database.")
 				return
 			}
 
@@ -146,8 +145,7 @@ exports.quote = function(username, args) {
 	return new Proimise((later)=>{
 		if (args.length >= 1) username = args[0];
 		textlog.connection.query('SELECT * FROM _' + username, (err, result) => {
-			if (err) throw err
-			if (!result) {
+			if (err || !result) {
 				later('Cannot find ' + username + ' in the database.')
 				return
 			}
@@ -156,15 +154,15 @@ exports.quote = function(username, args) {
 				count++;
 			}
 
-			rand = Math.floor((Math.random() * count) + 1);
-			if (!result[rand]) {
+			rand = Math.floor(Math.random() * count);
+			quote = result[rand]
+			if (!quote) {
 				later('That player hasn\'t said anything yet!')
 				return;
 			}
 			later('"' + result[rand].text + '" -' + username)
 		});
-		
-	})
+	}
 }
 
 exports.bindDatabaseShit = function(bot) {
@@ -177,16 +175,23 @@ exports.bindDatabaseShit = function(bot) {
 		}, 1000);
 	});
 
+	bot.on('chat', (username)=>{
+		data.createuser(player.username)
+	})
+
 	bot.on('playerJoined', async(player) => {
 		data.createuser(player.username)
 		var date = Date.now()
 		data.setLastlogin(player.username, date)
 		data.connection.query('SELECT totallogins FROM userdata WHERE user = ?', player.username, (err, result) => {
 			if (err) throw err
-			if (!result[0]) setTotalLogins(player.username, 1)
+			if (!result[0]) {
+				setTotalLogins(player.username, 1)
+				bot.sendMessage(player.username + ' is new! Welcome to poggop.org!')
+			}
 			data.setTotalLogins(player.username, result[0].totallogins + 1)
 		});
-		data.connection.query('SELECT playtime FROM userdata WHERE user = ?', player.username, (err, result) => {if (err) throw err; if (!result[0]) bot.chat(player.username + " is a new player")})
+		data.connection.query('SELECT playtime FROM userdata WHERE user = ?', player.username, (err, result) => {if (err) throw err; if (!result[0]) bot.chat(player.username + " is a new player!")})
 	})
 }
 
