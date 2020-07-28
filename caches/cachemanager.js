@@ -3,7 +3,7 @@ const totallogins = require('./totallogincache')
 const textlog = require('./textlogcache')
 const database = require('../database')
 
-exports.dumpCache = async() => {
+exports.dumpCache = () => {
     playtime.cachemap.forEach(async(value, user)=>{
         database.setPlaytime(user, value)
     })
@@ -15,7 +15,7 @@ exports.dumpCache = async() => {
     })
 }
 
-exports.dumpDB = async() => {
+exports.dumpDB = () => {
     textlog.init()
     playtime.init()
     totallogins.init()
