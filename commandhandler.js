@@ -2,7 +2,7 @@ const commands = require('./commands.js');
 const fs = require('fs');
 const textlog = require('./playtime/textlog.js');
 const bot = require('./bot.js');
-const dbCommands = require('./playtime/index.js')
+const dbCommands = require('./databaseCommands.js')
 
 nwordcounter = {};
 whispers = {};

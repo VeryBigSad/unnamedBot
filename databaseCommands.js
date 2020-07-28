@@ -1,8 +1,7 @@
 const mineflayer = require('mineflayer');
 const Discord = require('discord.js');
 const client = new Discord.Client();
-const data = require('./mysql.js');
-const textlog = require('./textlog.js')
+const database = require('./database.js');
 
 cachedPlayers = []
 
@@ -62,38 +61,34 @@ function timeToTextAgo(time) {
 
 exports.playtime = function(username, args) {
 	return new Promise((later)=>{
-		text = ''
-		if (args.length >= 1) {
-			username = args[0];
-		}
+		if (args.length >= 1) username = args[0];
+		database.getPlaytime(username, (time)=>{
+			text = ''
 
-		data.connection.query('SELECT playtime FROM userdata WHERE user = ?', username, (err, result) => {
-			if (err) throw err
-			if (!result[0]) {
-				return "Cannot find " + username + " in the database."
-			}
-			let time = result[0].playtime
 			text += username + "'s playtime is "
 			days = Math.floor(time / 86400)
 			time %= 86400;
 			hours = Math.floor(time / 3600);
 			time %= 3600;
 			minutes = Math.floor(time / 60);
-			if(days > 0){ 
+			if(days > 0) {
 				text += days + ' day'
 				days > 1 ? text+='s ':text+=' '
 			}
-			if(hours > 0){ 
+			if(hours > 0) {
 				text += hours + ' hour'
 				hours > 1 ? text+='s ':text+=' '
 			}
-			if(minutes > 0){ 
+			if(minutes > 0) {
 				text += minutes + ' minute'
 				minutes > 1 ? text+='s':text+=''
 			}
-
-			later(username + "'s playtime is " + text)
-		});
+			if (time == 0) {
+				later('I have never seen ' + username + ' before!')
+				return
+			}
+			later(text)
+		})
 	})
 
 }
@@ -101,67 +96,40 @@ exports.playtime = function(username, args) {
 exports.firstmessage = function(username, args) {
 	return new Promse((later)=>{
 		if (args.length >= 1) username = args[0];
-
-		data.connection.query('SELECT firstmessage FROM userdata WHERE user = ?', username, (err, result) => {
-			if (err) throw err
-			if (!result[0]) {
-				later("Cannot find " + username + " in the database.")
+		database.getFirstMessage(username, (message)=>{
+			if (message == '') {
+				later(username + ' haven\'t said anything yet!')
 				return
 			}
-			if (result[0].firstmessage == '' || result[0].firstmessage == 0) {
-				later(username + " hasn't said anything yet" )
-				return
-			} 
-			later(username + "'s first message was: '" + result[0].firstmessage + "'")
-		});
+			later('"' + message + '" -' + username)
+		})	
+
 	})
 }
 
 exports.lastSeen = function(username, args) {
 	return new Proimise((later)=>{
-		if (args.length >= 1) username = args[0];
-		
-		data.connection.query('SELECT lastlogin FROM userdata WHERE user = ?', username, (err, result) => {
-			if (err) throw err
-			if (!result[0]) {
-				later("Cannot find " + username + " in the database.")
+	if (args.length >= 1) username = args[0];
+		database.getLastlogin(username, (time)=>{
+			if (time == 0) {
+				later('I have never seen ' + username + '!')
 				return
 			}
-
-			if (result[0].lastlogin < 10) {
-				var date = Date.now()
-				data.setLastlogin(username, date)
-			}
-
-			var date = new Date(result[0].lastlogin);
-			var utc = new Date(Date.UTC(new Date(result[0].lastlogin).utc))
-			later(username + " was last seen " + timeToTextAgo(Date.now() - result[0].lastlogin) + " ago.")
-		 
-		 });
+			later(username + ' was last online ' + timeToTextAgo(time) + ' ago.')
+		})
 	})
 }
 
 exports.quote = function(username, args) {
 	return new Proimise((later)=>{
 		if (args.length >= 1) username = args[0];
-		textlog.connection.query('SELECT * FROM _' + username, (err, result) => {
-			if (err || !result) {
-				later('Cannot find ' + username + ' in the database.')
+		database.getRandomTextmessage(username, (message)=>{
+			if (message === null) {
+				later(username + ' haven\'t said anything yet!')
 				return
 			}
-			count = 0
-			for(row in result) {
-				count++;
-			}
-
-			rand = Math.floor(Math.random() * count);
-			quote = result[rand]
-			if (!quote) {
-				later('That player hasn\'t said anything yet!')
-				return;
-			}
-			later('"' + result[rand].text + '" -' + username)
-		});
+			later('"' + message + '" -' + username)
+		})
 	}
 }
 
@@ -170,28 +138,21 @@ exports.bindDatabaseShit = function(bot) {
 		console.log(`Logged in as ${client.user.tag}!`);
 		setInterval(async function() {
 			for(player in bot.players) { 
-				data.incplayertime(player, 1)
+				database.addPlayertime(player, 60)
 			}
-		}, 1000);
+		}, 60000);
 	});
 
-	bot.on('chat', (username)=>{
-		data.createuser(player.username)
-	})
-
 	bot.on('playerJoined', async(player) => {
-		data.createuser(player.username)
 		var date = Date.now()
-		data.setLastlogin(player.username, date)
-		data.connection.query('SELECT totallogins FROM userdata WHERE user = ?', player.username, (err, result) => {
+		database.getTotalLogins(player.username, (logins) => {
 			if (err) throw err
-			if (!result[0]) {
-				setTotalLogins(player.username, 1)
+			if (logins == 0) {
 				bot.sendMessage(player.username + ' is new! Welcome to poggop.org!')
 			}
-			data.setTotalLogins(player.username, result[0].totallogins + 1)
+			addTotalLogins(player.username, 1)
 		});
-		data.connection.query('SELECT playtime FROM userdata WHERE user = ?', player.username, (err, result) => {if (err) throw err; if (!result[0]) bot.chat(player.username + " is a new player!")})
+		database.setLastlogin(player.username, date)
 	})
 }
 

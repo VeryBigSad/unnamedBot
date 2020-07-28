@@ -26,7 +26,6 @@ exports.bindDiscord = function(bot) {
 			message = message.replace(new RegExp('discord.gg/'.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&'), 'gi'), '(discord link)');
 			Discord.sendMessage(message);
 		}
-		// console.log('[' + time.getHours() + ':' + time.getMinutes() + ':' + time.getSeconds() + '] ' + jsonMsg)
 	})
 }
 client.on('message', msg => {
@@ -59,9 +58,6 @@ client.on('message', msg => {
 			for (i = 0; i < keys.length; i++) {
 				size += 1;
 				playersStr += players[keys[i]].username + ', ';
-				// console.log(p);
-				// console.log(p.username);
-				// console.log(p.ping);
 			}
 			msg = 'There are ' + size + ' players online, list of them: ' + playersStr;
 			ingamechat.send(msg.slice(0, msg.length - 3));
