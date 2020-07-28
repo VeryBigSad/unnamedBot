@@ -36,6 +36,7 @@ function relog(log=true) {
 	bindEvents(bot);
 	bindLogging(bot);
 	dbCommands.bindDatabaseShit(bot);
+	Discord.bindDiscord(bot)
 	// bindGameplay(bot);
 	// lumber.bindLumber(bot);
 }

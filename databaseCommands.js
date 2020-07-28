@@ -99,7 +99,7 @@ exports.playtime = function(username, args) {
 exports.firstmessage = function(username, args) {
 	return new Promise((later)=>{
 		if (args.length >= 1) username = args[0];
-		database.getFirstMessage(username, (message)=>{
+		database.getFirstmessage(username, (message)=>{
 			if (message == '') {
 				later(username + ' haven\'t said anything yet!')
 				return
@@ -131,6 +131,7 @@ exports.quote = function(username, args) {
 				later(username + ' haven\'t said anything yet!')
 				return
 			}
+			console.log(message)
 			later('"' + message + '" -' + username)
 		})
 		textlogcache.writeCacheofSpecificUser(username)

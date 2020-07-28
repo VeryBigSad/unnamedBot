@@ -1,6 +1,6 @@
 const database = require('../database');
 
-exports.constructor(); {
+exports.constructor = function() {
     exports.cachemap = new Map();
 }
 
@@ -27,7 +27,7 @@ exports.writeCacheToDatabase = async() => {
 }
 
 exports.writeCacheofSpecificUser = async(user) => {
-    if(this.cachemap.get(cachekey) != undefined) {
+    if(this.cachemap.get(user) != undefined) {
     database.addPlayertime(user, this.cachemap.get(user))
     this.cachemap.set(user, 0)
     }

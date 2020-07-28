@@ -1,7 +1,7 @@
 const database = require('../database');
 
-exports.constructor(); {
-    exports.cachemap = new Map();
+exports.init = function() {
+	exports.cachemap = new Map();
 }
 
 exports.addToCache = async(cachekey, cachevalue) => {
@@ -13,10 +13,13 @@ exports.removeFromCache = async(cacheobject) => {
 }
 
 exports.updateCache = async(cachekey, value) => {
-    if(this.cachemap.get(cachekey) === undefined){
+    if(this.cachemap.get(cachekey) == undefined){
         this.addToCache(cachekey, [value])
-    }else {
-        this.cachemap.set(cachekey, this.cachemap.get(cachekey).push(value))
+    } else {
+	thing = this.cachemap.get(cachekey)
+	thing.push(value)
+
+        this.cachemap.set(cachekey, thing)
     }
 }
 
@@ -27,9 +30,9 @@ exports.writeCacheToDatabase = async() => {
 }
 
 exports.writeCacheofSpecificUser = async(user) => {
-    if(this.cachemap.get(cachekey) != undefined){
-    this.cachemap.get(user).forEach((message)=>{database.addTextmessage(user, message)})
-    this.cachemap.set(user, [])
-}
+    if(this.cachemap.get(user) != undefined) {
+    	this.cachemap.get(user).forEach((message)=>{database.addTextmessage(user, message)})
+    	this.cachemap.set(user, [])
+    }
 }
 

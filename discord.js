@@ -12,7 +12,7 @@ exports.sendMessage = function(text) {
 
 var lastMessage = ''
 exports.bindDiscord = function(bot) {
-		bot.on('message', function(jsonMsg) {
+	bot.on('message', function(jsonMsg) {
 		message = String(jsonMsg);
 		lastTimeMessage = Date.now();
 		username = message.slice(0, message.indexOf(':'));
@@ -21,10 +21,10 @@ exports.bindDiscord = function(bot) {
 
 		time = new Date();
 		if (message.includes('@')) {
-			Discord.sendMessage('> someone tried tagging someone but me (the bot) fucked him <');
+			exports.sendMessage('> someone tried tagging someone but me (the bot) fucked him <');
 		} else {
 			message = message.replace(new RegExp('discord.gg/'.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&'), 'gi'), '(discord link)');
-			Discord.sendMessage(message);
+			exports.sendMessage(message);
 		}
 	})
 }
