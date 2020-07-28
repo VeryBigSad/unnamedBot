@@ -5,13 +5,9 @@ var currentbool;
 var con = mysql.createConnection({
   host: "localhost",
   user: "root",
-  password: "test",
+  password: "79397939",
   database: "textlog"
 });
-con.query('CREATE DATABASE textlog')
-// con.commit()
-console.log('yay')
-// process.exit(1)
 
 async function createuser(user){
 	con.query(`CREATE TABLE IF NOT EXISTS _` + user + `(text longtext, time bigint)`)
