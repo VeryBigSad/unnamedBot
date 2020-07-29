@@ -34,10 +34,6 @@ function timeToTextAgo(time) {
 	  text += minutes + ' minute'
 	  minutes > 1 ? text+='s ':text+=' '
 	}
-	if(seconds > 0){ 
-		text += seconds + ' second'
-	  seconds > 1 ? text+='s ':text+=' '
-	}
 	return text
 }
 
@@ -69,10 +65,6 @@ exports.playtime = function(username, args) {
 		if(minutes > 0){ 
 		  text += minutes + ' minute'
 		  minutes > 1 ? text+='s ':text+=' '
-		}
-		if(seconds > 0){ 
-			text += seconds + ' second'
-		  seconds > 1 ? text+='s ':text+=' '
 		}
 		later(text)
 
