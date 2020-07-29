@@ -24,12 +24,12 @@ exports.discordCommand = function(username, args) {
 exports.pingCommand = function(username, args) {
 	if (args.length >= 1) username = args[0];
 	var players =  bot.getPlayers()
-	var player = players.find(username)
-	if(player === undefined){
-		return 'Can\'t find ' + username + ' on the server'
-	}else {
-		return 'Ping of ' + username + ' is ' + player.ping
+	for(player in players){
+	if(player === username) {
+		return 'Ping of ' + username + ' is ' + players[player].ping
+	} 
 	}
+	return "Cant't find user on the server"
 }
 
 
