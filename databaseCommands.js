@@ -158,7 +158,7 @@ exports.bindDatabaseShit = function(bot) {
 
 			setInterval(async function() {
 				cacheManager.dumpCache()
-			}, 3600000); // once an hour
+			}, 600000); // once an hour
 		}, 25000)
 
  	});
