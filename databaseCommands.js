@@ -110,6 +110,25 @@ exports.lastSeen = function(username, args) {
 	})
 }
 
+exports.firstlogin = function(username, args) {
+	return new Promise((later)=>{
+		if (args.length >= 1) {
+			username = args[0]
+		} else {
+			later('Please, do ?firstlogin <username>.')
+			return;
+		}
+
+		database.getFirstlogin(username, (time)=>{
+			if (time == 0) {
+				later('I have never seen ' + username + '!')
+				return
+			}
+			later(username + ' joined the server first ' + timeToTextAgo(Math.floor((Date.now() - time)/1000)) + ' ago.')
+		})
+	})
+}
+
 exports.quote = function(username, args) {
 	return new Promise((later)=>{
 		if (args.length >= 1) username = args[0];

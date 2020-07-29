@@ -64,6 +64,9 @@ exports.commandHandler = function(username, message) {
 	} else if (command == 'fm' || command == 'firstmessage') {
 		dbCommands.firstmessage(username, args).then((msg)=>{bot.sendMessage(msg)})
 		return null;
+	}else if(command == 'fl' ||command == 'firstlogin') {
+		dbCommands.firstlogin(username, args).then((msg)=>{bot.sendMessage(msg)})
+		return null;
 	} else {
 		return 'there are no such command'
 	}
