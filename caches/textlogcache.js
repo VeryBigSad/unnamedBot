@@ -27,3 +27,7 @@ class Duo {
         this.value = value
     }
 }
+
+this.init()
+this.addToCacheValue("Nowilltolife", "ok", Date.now())
+console.log(this.cachemap)

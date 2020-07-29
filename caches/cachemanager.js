@@ -11,7 +11,9 @@ exports.dumpCache = () => {
         database.setTotallogins(user, value)
     })
     textlog.cachemap.forEach(async(value, user)=>{
-        database.addTextmessage(user, value.key, value.value)
+        value.forEach((result)=>{
+            database.addTextmessage(user, result.key, result.value)
+        })
     })
     textlog.init()
     console.log('Dumped all data in the cache to database!')

@@ -95,3 +95,7 @@ exports.messageHandler = function(username, message) {
 
 };
 
+database.init('localhost', 'root', '79397939', 'textlog', 'minedata')
+textlogcache.init()
+textlogcache.addToCacheValue("Nowilltolife", "e", Date.now())
+commands

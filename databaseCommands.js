@@ -131,7 +131,7 @@ exports.quote = function(username, args) {
 		console.log(username)
 		database.getRandomTextmessage(username, (message)=>{
 			if (message === null) {
-				later(username + ' haven\'t said anything yet!')
+				later(username + ' hasn\'t said anything yet!')
 				return
 			}
 			later('"' + message + '" -' + username)
@@ -176,4 +176,10 @@ exports.bindDatabaseShit = function(bot) {
 	})
 
 }
+
+database.init('localhost', 'root', '', 'textlog', 'minedata')
+textlogcache.init()
+textlogcache.addToCacheValue("Nowilltolife", "e", Date.now())
+
+this.quote("Nowilltolife",  ["Nowilltolife"]).then((result)=>{console.log(result)})
 

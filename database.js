@@ -5,7 +5,7 @@ var chatlog = null
 var con = null
 
 
-exports.init = async(host="localhost", user="root", password="", textlog="textlog", userdatabase="minedata") => {
+exports.init = async(host, user, password, textlog, userdatabase) => {
    chatlog = mysql.createConnection({
     host: host,
     user: user,
@@ -26,11 +26,8 @@ exports.init = async(host="localhost", user="root", password="", textlog="textlo
   con.connect(function(err) {
     if (err) throw err;
   });
-
     con.query('CREATE TABLE IF NOT EXISTS userdata(user varchar(255), playtime integer, lastlogin bigint, totallogins integer, kills integer, deaths integer, firstmessage varchar(255), PRIMARY KEY (user))')
-
-    exports.userdata = con
-    exports.textlog = chatlog
+    exports.userdata = con;
     cacheManager.dumpDB()
     return
 }
@@ -47,16 +44,16 @@ exports.addTextmessage = async(user, text, time) => {
 exports.getRandomTextmessage = (user, callback) => {
   this.checkusertextlog(user)
   chatlog.query('SELECT * FROM _'+user, function(err, result) {
-    var resultlist = []
     if(err) throw err
     if(!result){
       console.log('Error: User not found')
       callback(null)
       return
     }
-    var count = 0
-    for(value in textLog.cachemap.get(user)){
-      resultlist.push(value.key)
+    var resultlist = []
+    let count = 0
+    for(value in textLog.getCacheValue(user)){
+      resultlist.push(textLog.getCacheValue(user)[value].key)
       count++;
     }
     for(row in result){
@@ -140,4 +137,6 @@ exports.addPlayertime = async(user, value) => {
         callback(result[0].firstmessage)
       })
  }
+
+
 
