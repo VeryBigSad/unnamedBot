@@ -26,7 +26,7 @@ exports.init = async(host, user, password, textlog, userdatabase) => {
   con.connect(function(err) {
     if (err) throw err;
   });
-    con.query('CREATE TABLE IF NOT EXISTS userdata(user varchar(255), playtime integer, lastlogin bigint, totallogins integer, kills integer, deaths integer, firstmessage varchar(255), firstlogin integer, PRIMARY KEY (user))')
+    con.query('CREATE TABLE IF NOT EXISTS userdata(user varchar(255), playtime integer, lastlogin bigint, totallogins integer, kills integer, deaths integer, firstmessage varchar(255), firstlogin bigint, PRIMARY KEY (user))')
     exports.userdata = con;
     cacheManager.dumpDB()
     return

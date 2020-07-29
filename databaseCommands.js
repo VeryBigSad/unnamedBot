@@ -173,6 +173,7 @@ exports.bindDatabaseShit = function(bot) {
 		if (logins == 0) {
 			bot.chat(player.username + ' is new! Welcome to poggop.org!')
 			playtimecache.setCacheValue(player.username, 60)
+			database.setFirstlogin(Date.now())
 			// setting 1 minute of playtime when someone joins because 
 			// minumum displayable playtime is 1 minute
 		}
