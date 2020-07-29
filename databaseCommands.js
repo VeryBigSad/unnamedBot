@@ -100,9 +100,10 @@ exports.lastSeen = function(username, args) {
 				later('I have never seen ' + username + '!')
 				return
 			}
-			if (bot.bot.players.has(username)) {
+			//console.log)
+			if (Object.keys(bot.bot.players).includes(username)) {
 				later(username + ' is online right now!')
-			return;
+				return;	
 			}
 			later(username + ' was last online ' + timeToTextAgo(Math.floor((Date.now() - time)/1000)) + ' ago.')
 		})
@@ -163,9 +164,9 @@ exports.bindDatabaseShit = function(bot) {
 
 }
 
-database.init('localhost', 'root', '', 'textlog', 'minedata')
-textlogcache.init()
-textlogcache.addToCacheValue("Nowilltolife", "e", Date.now())
+//database.init('localhost', 'root', '79397939', 'textlog', 'minedata')
+//textlogcache.init()
+//textlogcache.addToCacheValue("Nowilltolife", "e", Date.now())
 
-this.quote("Nowilltolife",  ["Nowilltolife"]).then((result)=>{console.log(result)})
+//this.quote("Nowilltolife",  ["Nowilltolife"]).then((result)=>{console.log(result)})
 

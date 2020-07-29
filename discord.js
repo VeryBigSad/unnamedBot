@@ -61,10 +61,12 @@ client.on('message', msg => {
 			msg = 'There are ' + size + ' players online, list of them: ' + playersStr;
 			ingamechat.send(msg.slice(0, msg.length - 3));
 		}else if(msg.content.startsWith('!save')) {
-			if(msg.member.roles.cache.some(r => r.name = 'bot developer')){
+			if(msg.member.roles.cache.some(r => r.name === 'bot developer')){
 				msg.channel.send('Attempted manual save')
 				cache.dumpCache()
 				msg.channel.send('Send save request this takes around 10 seconds to save')
+			}else {
+				msg.channel.send('You don\'t have enough perms to do that!');
 			}
 		} else {
 			bot.sendMessage('[' + (msg.member.roles.cache.has('731327156453507074') ? 'MEMBER' : (msg.member.roles.cache.has('732573982909530113') ? 'COOL' : 'NON')) + '] ' + ' [' + msg.author.username + '] ' + msg.content);		
