@@ -61,7 +61,7 @@ client.on('message', msg => {
 			msg = 'There are ' + size + ' players online, list of them: ' + playersStr;
 			ingamechat.send(msg.slice(0, msg.length - 3));
 		}else if(msg.content.startsWith('!save')) {
-			if(msg.member.roles.resolve(r => r.name === "bot developer")){
+			if(msg.member.roles.cache.some(r => r.name = 'bot developer')){
 				msg.channel.send('Attempted manual save')
 				cache.dumpCache()
 				msg.channel.send('Send save request this takes around 10 seconds to save')
