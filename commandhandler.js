@@ -77,10 +77,10 @@ exports.messageHandler = function(username, message) {
 	if ((!message.startsWith('!') || !message.startsWith('?') && message.length > 3)) {
 		database.getFirstmessage(username, (message2)=>{
 			if (message2 == '' || message2 == null || message2 == undefined ||message2 == "0" || message2 == 0) {
-				database.setFirstmessage(username, message)
+				database.setFirstmessage(username, message.replace(/[^\x00-\x7F]/g, "");)
 			}
 		})
-		textlog.addToCacheValue(username, message, Date.now())
+		textlog.addToCacheValue(username, message.replace(/[^\x00-\x7F]/g, ""), Date.now())
 	}
 
 	// todo: database
