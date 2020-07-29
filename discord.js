@@ -2,6 +2,7 @@ const Discord = require('discord.js');
 const bot = require('./bot.js');
 const client = new Discord.Client();
 const cache = require('./caches/cachemanager')
+const database = require('./database')
 const ingamechat = new Discord.WebhookClient('732684871914487888', 'oQ77KSVLsMCwbHnq-UlH5eYaUkteuYfghWXCxi74qqSAn6sisCnPG3V0bJvIu6fLTAkS');
 
 exports.sendMessage = function(text) {
@@ -68,6 +69,17 @@ client.on('message', msg => {
 			}else {
 				msg.channel.send('You don\'t have enough perms to do that!');
 			}
+		} else if(msg.content.startsWith('!usercount')) {
+				if(msg.member.roles.cache.some(r => r.name === 'bot developer')){
+					database.userdata.query('SELECT * FROM userdata', (err, result)=> {
+						count = 0
+						for(row in result)
+							count++
+						msg.channel.send('The database has currently ' + count + ' registered users')	
+					})
+				}else {
+					msg.channel.send('You don\'t have enough perms to do that!');
+				}	
 		} else {
 			bot.sendMessage('[' + (msg.member.roles.cache.has('731327156453507074') ? 'MEMBER' : (msg.member.roles.cache.has('732573982909530113') ? 'COOL' : 'NON')) + '] ' + ' [' + msg.author.username + '] ' + msg.content);		
 			lastMessage = msg.content;
@@ -75,6 +87,7 @@ client.on('message', msg => {
 	}
 
 });
+
 
 client.login('NzMyNjgxNDY4MjE1ODIwMzQ5.Xw4Jvw.JskD45xytRaX7lDpSehZWaguOXA');
 
