@@ -1,6 +1,7 @@
 const commands = require('./commands.js');
 const fs = require('fs');
 const database = require('./database.js');
+const textlog = require('./caches/textlogcache.js')
 const bot = require('./bot.js');
 const dbCommands = require('./databaseCommands.js')
 
@@ -74,7 +75,14 @@ exports.messageHandler = function(username, message) {
 	}
 
 	if ((!message.startsWith('!') || !message.startsWith('?') && message.length > 3)) {
-		database.addTextmessage(username, message.replace(/[^\x00-\x7F]/g, ""))
+		if (textlog.cachemap.size == 0) {
+			database.getFirstmessage(username, (message2)=>{
+				if (message2 == '' || message2 == null || message2 == undefined) {
+					database.setFirstmessage(username, message)
+				}
+			})
+		}
+		textlog.addToCacheValue(username, message, Date.now())
 	}
 
 	// todo: database

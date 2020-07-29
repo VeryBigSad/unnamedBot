@@ -13,18 +13,20 @@ exports.dumpCache = () => {
     textlog.cachemap.forEach(async(value, user)=>{
         database.addTextmessage(user, value.key, value.value)
     })
+    console.log('Dumped all data in the cache to database!')
 }
 
 exports.dumpDB = () => {
     textlog.init()
     playtime.init()
     totallogins.init()
-    database.userdata.query('SELECT user,playtime FROM userdata', (err, result) => {
+
+    database.userdata.query('SELECT user,playtime,totallogins FROM userdata', (err, result) => {
         if(err) throw err
-       result.forEach((value)=>{playtime.setCacheValue(value.user, value.playtime)})
+        result.forEach((value)=>{
+            playtime.setCacheValue(value.user, value.playtime)
+            totallogins.setCacheValue(value.user, value.totallogins)
+        })
     })
-    database.userdata.query('SELECT user,totallogins FROM userdata', (err, result) => {
-        if(err) throw err
-        result.forEach((value)=>{totallogins.setCacheValue(value.user, value.totallogins)})
-     })
+    console.log('Dumped all data in the database to cache!')
 }

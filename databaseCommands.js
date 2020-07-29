@@ -1,9 +1,10 @@
 const mineflayer = require('mineflayer');
 const Discord = require('discord.js');
-const client = new Discord.Client();
 const database = require('./database.js');
-const textlogcache = require('./caches/textlogcache')
-const playtimecache = require('./caches/playtimecache')
+const textlogcache = require('./caches/textlogcache.js')
+const playtimecache = require('./caches/playtimecache.js')
+const cacheManager = require('./caches/cachemanager.js')
+const totallogincache = require('./caches/totallogincache.js')
 
 cachedPlayers = []
 
@@ -12,8 +13,6 @@ String.prototype.replaceAll = function(str1, str2, ignore) {
 }
 
 
-
-client.login('NzMwNDI2OTAyNTU2NDQyNzE0.XwXVGw.PYkexY5vzojr-gpdO96eo0PX-Jw');
 
 function timeToTextAgo(time) {
 	months = Math.floor(time / 2592000)
@@ -62,36 +61,37 @@ function timeToTextAgo(time) {
 }
 
 exports.playtime = function(username, args) {
-	return new Promise((later)=>{
+	return new Promise((later) => {
 		if (args.length >= 1) username = args[0];
-		database.getPlaytime(username, (time)=>{
-			text = ''
 
-			text += username + "'s playtime is "
-			days = Math.floor(time / 86400)
-			time %= 86400;
-			hours = Math.floor(time / 3600);
-			time %= 3600;
-			minutes = Math.floor(time / 60);
-			if(days > 0) {
-				text += days + ' day'
-				days > 1 ? text+='s ':text+=' '
-			}
-			if(hours > 0) {
-				text += hours + ' hour'
-				hours > 1 ? text+='s ':text+=' '
-			}
-			if(minutes > 0) {
-				text += minutes + ' minute'
-				minutes > 1 ? text+='s':text+=''
-			}
-			if (time == 0) {
-				later('I have never seen ' + username + ' before!')
-				return
-			}
-			later(text)
-		})
-		playtimecache.writeCacheofSpecificUser(username)
+		time = playtimecache.getCacheValue(username)
+		if (time == 0) {
+			later('I have never seen ' + username + ' before!')
+			return
+		}
+		text = ''
+
+		text += username + "'s playtime is " + time + ' seconds. stfu im tired'
+		days = Math.floor(time / 86400)
+		time %= 86400;
+		hours = Math.floor(time / 3600);
+		time %= 3600;
+		minutes = Math.floor(time / 60);
+		if(days > 0) {
+			text += days + ' day'
+			days > 1 ? text+='s ':text+=' '
+		}
+		if(hours > 0) {
+			text += hours + ' hour'
+			hours > 1 ? text+='s ':text+=' '
+		}
+		if(minutes > 0) {
+			text += minutes + ' minute'
+			minutes > 1 ? text+='s':text+=''
+		}
+
+		later(text)
+
 	})
 
 }
@@ -104,21 +104,20 @@ exports.firstmessage = function(username, args) {
 				later(username + ' haven\'t said anything yet!')
 				return
 			}
-			later('"' + message + '" -' + username)
-		})	
-
+			later('"' + message + '" -' + username)				
+		})
 	})
 }
 
 exports.lastSeen = function(username, args) {
-	return new Proimise((later)=>{
+	return new Promise((later)=>{
 	if (args.length >= 1) username = args[0];
 		database.getLastlogin(username, (time)=>{
 			if (time == 0) {
 				later('I have never seen ' + username + '!')
 				return
 			}
-			later(username + ' was last online ' + timeToTextAgo(time) + ' ago.')
+			later(username + ' was last online ' + timeToTextAgo(Date.now() - time) + ' ago.')
 		})
 	})
 }
@@ -126,52 +125,54 @@ exports.lastSeen = function(username, args) {
 exports.quote = function(username, args) {
 	return new Promise((later)=>{
 		if (args.length >= 1) username = args[0];
+
 		database.getRandomTextmessage(username, (message)=>{
 			if (message === null) {
 				later(username + ' haven\'t said anything yet!')
 				return
 			}
-			console.log(message)
 			later('"' + message + '" -' + username)
 		})
-		textlogcache.writeCacheofSpecificUser(username)
+
 	})
 }
 
 exports.bindDatabaseShit = function(bot) {
-	bot.on('login', ()=>{
-		for(player in bot.players) {
-			database.checkuser(player.username)
-		}
-	})
 	bot.on('login', async() => {
-		console.log(`Logged in as ${client.user.tag}!`);
+
+		// since im not sure if all players and functions do check user, make sure
+		// that everyone is checked
+
+		console.log(bot.players.entries())
 		setInterval(async function() {
-			for(player in bot.players) { 
-				playtimecache.updateCache(player, 60)
+			for(player in bot.players){ 
+				data.incplayertime(player, 1)
 			}
-		}, 60000);
-	});
+		}, 1000);
+
+		setTimeout(()=>{
+			// not sure if it will load everything in the cache the moment it will get loaded, so 
+			// to not rewrite whole db with semi loaded cache add 25 second delay
+
+			setInterval(async function() {
+				cacheManager.dumpCache()
+			}, 3600000); // once an hour
+		}, 25000)
+
+ 	});
 
 	bot.on('playerJoined', async(player) => {
 		database.checkuser(player.username);
-		var date = Date.now()
-		database.getTotalLogins(player.username, (logins) => {
-			if (logins == 0) {
-				bot.chat(player.username + ' is new! Welcome to poggop.org!')
-			}
-			database.addTotalLogins(player.username, 1)
-		});
-		database.setLastlogin(player.username, date)
+		logins = totallogincache.getCacheValue(player.username)
+		console.log(totallogincache.cachemap)
+		if (logins == 0) {
+			bot.chat(player.username + ' is new! Welcome to poggop.org!')
+			playtimecache.setCacheValue(player.username, 1)
+		}
+		totallogincache.addToCacheValue(player.username, 1)
+		database.setLastlogin(player.username, Date.now())
+	
 	})
 
-	bot.on('chat', async(username, message) => {
-		textlogcache.updateCache(username, message)
-	})
-
-	bot.on('playerLeft', async(player) => {
-		playtimecache.writeCacheofSpecificUser(player)
-		textlogcache.writeCacheofSpecificUser(player)
-	})
 }
 

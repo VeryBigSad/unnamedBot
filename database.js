@@ -1,6 +1,8 @@
 const mysql = require('mysql');
-const textcache = require('./caches/textlogcache.js')
 const ptcache = require('./caches/playtimecache.js')
+const textcache = require('./caches/textlogcache.js')
+const logincache = require('./caches/totallogincache.js')
+const cacheManager = require('./caches/cachemanager.js')
 var chatlog = null
 var con = null
 
@@ -26,11 +28,15 @@ exports.init = async(host="localhost", user="root", password="", textlog="textlo
   con.connect(function(err) {
     if (err) throw err;
   });
+
+    con.query('CREATE TABLE IF NOT EXISTS userdata(user varchar(255), playtime integer, lastlogin bigint, totallogins integer, kills integer, deaths integer, firstmessage varchar(255), PRIMARY KEY (user))')
     ptcache.constructor()
     textcache.init()
-    con.query('CREATE TABLE IF NOT EXISTS userdata(user varchar(255), playtime integer, lastlogin bigint, totallogins integer, kills integer, deaths integer, firstmessage varchar(255), PRIMARY KEY (user))')
+    logincache.init()
+
     exports.userdata = con
     exports.textlog = chatlog
+    cacheManager.dumpDB()
     return
 }
 

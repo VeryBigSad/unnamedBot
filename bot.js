@@ -3,6 +3,7 @@ const commands = require('./commands.js');
 const lumber = require('./lumber.js');
 const dbCommands = require('./databaseCommands.js');
 const database = require('./database.js')
+const cacheManager = require('./caches/cachemanager.js')
 
 const Discord = require('./discord.js');
 
@@ -31,7 +32,6 @@ function relog(log=true) {
 		Discord.sendMessage('> Timing out (30 seconds), trying to reconnect...');
 		console.log("Attempting to reconnect...");		
 	}
-	database.init('localhost', 'root', '79397939', 'textlog', 'minedata')
 	bot = mineflayer.createBot(options);
 	bindEvents(bot);
 	bindLogging(bot);
@@ -46,8 +46,20 @@ lastTimeMessage = 0;
 
 process.on('uncaughtException', function(err) {
 	console.log(err);
-	Discord.sendMessage(`<@!437208440578768908> wake up bot has crashed for some reason`);
+	Discord.sendMessage(`Bot has encountered some error!`);
 });
+
+process.on('exit', function(code) {
+	cacheManager.dumpCache();
+	console.log(code);
+	Discord.sendMessage(`<@!437208440578768908> Bot is actually down now`);
+});
+
+process.on('SIGINT', function(code) {
+	cacheManager.dumpCache();
+	Discord.sendMessage(`Exiting because Sanyss from undertale said so`);
+	process.exit(1)
+})
 
 function bindGameplay(bot) {
 	bot.loadPlugin(pathfinder);
@@ -104,6 +116,7 @@ function bindEvents(bot) {
 
 	bot.on('login', function() {
 		bot.chat(commands.welcomeMessage);
+		bot.chat('Hello, Alyxix!')
 	});
 
 	var spamMessages = ['[Bot] Did you know you could do ?fact for a random fact? It\'s epic, I know. Do ?help for more!',
@@ -146,4 +159,5 @@ function sleep (time) {
 
 
 
+database.init('localhost', 'root', '79397939', 'textlog', 'minedata')
 relog(false);

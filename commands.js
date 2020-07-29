@@ -6,7 +6,7 @@ exports.welcomeMessage = 'Hi! I\'m a property of an unnamed group. Use ?help to 
 
 exports.helpCommand = function(username, args) {
 	return '/msg ' + username + ' ?help - this command; ?report - report a player; ?discord - Unnamed group\'s discord; ?quote - random quote of someone; ?playtime - playtime of someone\n' +
-		   '?fact - random fact; ?firstmessage - first message of someone; ?seen - when person had been seen last time';
+		   '/msg ' + username + ' ?fact - random fact; ?firstmessage - first message of someone; ?seen - when person had been seen last time';
 };
 
 exports.reportCommand = function(username, args) {
