@@ -1,5 +1,6 @@
 const cmdhandler = require('./commandhandler.js');
 const sync = require('sync-request');
+const bot = require('./bot')
 
 
 exports.welcomeMessage = 'Hi! I\'m a property of an unnamed group. Use ?help to find out about what I can do!';
@@ -19,6 +20,17 @@ exports.reportCommand = function(username, args) {
 exports.discordCommand = function(username, args) {
 	return 'Join official discord of unnamed group! https://discord.gg/ZXvVQtg'
 }; 	
+
+exports.pingCommand = function(username, args) {
+	if (args.length >= 1) username = args[0];
+	var players =  bot.getPlayers()
+	var player = players.find(username)
+	if(player === undefined){
+		return 'Can\'t find ' + username + ' on the server'
+	}else {
+		return 'Ping of ' + username + ' is ' + player.ping
+	}
+}
 
 
 exports.nwordCommand = function(username, args) {

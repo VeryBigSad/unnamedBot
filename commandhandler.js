@@ -42,6 +42,8 @@ exports.commandHandler = function(username, message) {
 		return commands.helpCommand(username, args);
 	} else if (command == 'report' || command == 'wdr' || command == 'chatreport') {
 		return commands.reportCommand(username, args);
+	}else if(command == 'ping'){
+		return commands.pingCommand(username, args)	
 	} else if (command == 'discord' || command == 'd') {
 		return commands.discordCommand(username, args);
 	} else if (command == 'nwordcount') {
