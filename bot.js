@@ -32,13 +32,13 @@ function relog(log=true) {
 		Discord.sendMessage('> Timing out (30 seconds), trying to reconnect...');
 		console.log("Attempting to reconnect...");		
 	}
-	bot = mineflayer.createBot(options);
-	bindEvents(bot);
-	bindLogging(bot);
-	dbCommands.bindDatabaseShit(bot);
-	Discord.bindDiscord(bot)
-	// bindGameplay(bot);
-	// lumber.bindLumber(bot);
+	exports.bot = mineflayer.createBot(options);
+	bindEvents(this.bot);
+	bindLogging(this.bot);
+	dbCommands.bindDatabaseShit(this.bot);
+	Discord.bindDiscord(this.bot)
+	// bindGameplay(this.bot);
+	// lumber.bindLumber(this.bot);
 }
 
 lastTimeUsed = 0;

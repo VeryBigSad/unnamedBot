@@ -1,5 +1,6 @@
 const mineflayer = require('mineflayer');
 const Discord = require('discord.js');
+const bot = require('./bot.js');
 const database = require('./database.js');
 const textlogcache = require('./caches/textlogcache.js')
 const playtimecache = require('./caches/playtimecache.js')
@@ -87,11 +88,21 @@ exports.firstmessage = function(username, args) {
 
 exports.lastSeen = function(username, args) {
 	return new Promise((later)=>{
-	if (args.length >= 1) username = args[0];
+		if (args.length >= 1) {
+			username = args[0]
+		} else {
+			later('Please, do ?seen <username>.')
+			return;
+		}
+
 		database.getLastlogin(username, (time)=>{
 			if (time == 0) {
 				later('I have never seen ' + username + '!')
 				return
+			}
+			if (bot.bot.players.has(username)) {
+				later(username + ' is online right now!')
+			return;
 			}
 			later(username + ' was last online ' + timeToTextAgo(Math.floor((Date.now() - time)/1000)) + ' ago.')
 		})
@@ -141,7 +152,9 @@ exports.bindDatabaseShit = function(bot) {
 		logins = totallogincache.getCacheValue(player)
 		if (logins == 0) {
 			bot.chat(player.username + ' is new! Welcome to poggop.org!')
-			playtimecache.setCacheValue(player.username, 1)
+			playtimecache.setCacheValue(player.username, 60)
+			// setting 1 minute of playtime when someone joins because 
+			// minumum displayable playtime is 1 minute
 		}
 		totallogincache.addToCacheValue(player.username, 1)
 		database.setLastlogin(player.username, Date.now())
