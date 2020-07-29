@@ -76,7 +76,7 @@ exports.messageHandler = function(username, message) {
 
 	if ((!message.startsWith('!') || !message.startsWith('?') && message.length > 3)) {
 		database.getFirstmessage(username, (message2)=>{
-			if (message2 == '' || message2 == null || message2 == undefined) {
+			if (message2 == '' || message2 == null || message2 == undefined ||message2 == "0" || message2 == 0) {
 				database.setFirstmessage(username, message)
 			}
 		})
