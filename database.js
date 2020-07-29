@@ -26,7 +26,7 @@ exports.init = async(host, user, password, textlog, userdatabase) => {
   con.connect(function(err) {
     if (err) throw err;
   });
-    con.query('CREATE TABLE IF NOT EXISTS userdata(user varchar(255), playtime integer, lastlogin bigint, totallogins integer, kills integer, deaths integer, firstmessage varchar(255), PRIMARY KEY (user))')
+    con.query('CREATE TABLE IF NOT EXISTS userdata(user varchar(255), playtime integer, lastlogin bigint, totallogins integer, kills integer, deaths integer, firstmessage varchar(255), firstlogin integer, PRIMARY KEY (user))')
     exports.userdata = con;
     cacheManager.dumpDB()
     return
@@ -87,7 +87,7 @@ exports.addPlayertime = async(user, value) => {
   }
   
   exports.checkuser = async(user="") => {
-    con.query(`INSERT IGNORE INTO userdata(user, playtime, lastlogin, totallogins, kills, deaths, firstmessage) Values(?, ?, ?, ?, ?, ?, ?)`, [user, 0, 0, 0, 0, 0, ''])
+    con.query(`INSERT IGNORE INTO userdata(user, playtime, lastlogin, totallogins, kills, deaths, firstmessage, fristlogin) Values(?, ?, ?, ?, ?, ?, ?, ?)`, [user, 0, 0, 0, 0, 0, '', 0])
   }
   
   exports.setPlaytime = async(user="", value=1) => {
@@ -104,6 +104,10 @@ exports.addPlayertime = async(user, value) => {
   
   exports.setFirstmessage = async(user="", value="") => {
     con.query('UPDATE userdata SET firstmessage = ? WHERE user LIKE ?', [value, user])
+  }
+
+  exports.setFirstlogin = async(user="", value="") => {
+    con.query('UPDATE userdata SET firstlogin = ? WHERE user LIKE ?', [value, user])
   }
 
   exports.getPlaytime = async(user="", callback) => {
@@ -137,6 +141,14 @@ exports.addPlayertime = async(user, value) => {
         callback(result[0].firstmessage)
       })
  }
+
+ exports.getFirstlogin = async(user="", callback) => {
+  this.checkuser(user)
+  con.query('SELECT firstlogin FROM userdata WHERE user = ?', user, (err, result) => {
+      if(err) throw err
+      callback(result[0].firstlogin)
+    })
+}
 
 
 
