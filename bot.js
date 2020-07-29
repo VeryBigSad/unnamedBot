@@ -158,7 +158,5 @@ function sleep (time) {
 }
 
 
-
-
 database.init('localhost', 'root', '79397939', 'textlog', 'minedata')
 relog(false);

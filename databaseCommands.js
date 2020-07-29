@@ -175,5 +175,9 @@ exports.bindDatabaseShit = function(bot) {
 	
 	})
 
+	bot.chat('chat', async(username, message)=> {
+		textlogcache.addToCacheValue(username, message, Date.now())
+	})
+
 }
 
