@@ -31,13 +31,12 @@ exports.bindDiscord = function(bot) {
 }
 client.on('message', msg => {
 	if (msg.author.bot || msg.channel.name != 'ingame-chat') {
-		// if sent by bot
+		if(msg.channel.name == 'bot-commands') {
+			//msg.channel.send('Started manual save')
+			//cache.dumpCache()
+			//msg.channel.send('Done! (sort of, cause async exists)')
+		}
 		return;
-	}
-	if(msg.channel.name == 'bot-commands') {
-		msg.channel.send('Started manual save')
-		cache.dumpCache()
-		msg.channel.send('Done! (sort of cause async exists)')
 	}
 
 	if (msg.content.includes('§')) {
