@@ -15,6 +15,7 @@ String.prototype.replaceAll = function(str1, str2, ignore) {
 
 
 function timeToTextAgo(time) {
+	text = ""
 	days = Math.floor(time / 86400)
 	time %= 86400;
 	hours = Math.floor(time / 3600);
@@ -37,6 +38,7 @@ function timeToTextAgo(time) {
 		text += seconds + ' second'
 	  seconds > 1 ? text+='s ':text+=' '
 	}
+	return text
 }
 
 exports.playtime = function(username, args) {
