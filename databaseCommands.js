@@ -15,49 +15,28 @@ String.prototype.replaceAll = function(str1, str2, ignore) {
 
 
 function timeToTextAgo(time) {
-	months = Math.floor(time / 2592000)
-	time %= 2592000;
 	days = Math.floor(time / 86400)
 	time %= 86400;
 	hours = Math.floor(time / 3600);
 	time %= 3600;
 	minutes = Math.floor(time / 60);
-	if (days > 0) {
-		text += days + ' day'
-		days > 1 ? text+='s ':text+=' '
+	seconds = time % 60;
+	if(days > 0){ 
+	  text += days + ' day'
+	  days > 1 ? text+='s ':text+=' '
+	  }
+	if(hours > 0){ 
+	text += hours + ' hour'
+	hours > 1 ? text+='s ':text+=' '
 	}
-	if (hours > 0) { 
-		text += hours + ' hour'
-		hours > 1 ? text+='s ':text+=' '
+	if(minutes > 0){ 
+	  text += minutes + ' minute'
+	  minutes > 1 ? text+='s ':text+=' '
 	}
-	if (minutes > 0) { 
-		text += minutes + ' minute'
-		minutes > 1 ? text+='s ':text+=' '
+	if(seconds > 0){ 
+		text += seconds + ' second'
+	  seconds > 1 ? text+='s ':text+=' '
 	}
-	if (months >= 1) {
-		if (months > 1) {
-			return months + " month"
-		}
-		return months + " months"
-	}
-	if (days >= 1) {
-		if (days > 1) {
-			return days + " day"
-		}
-		return days + " days"
-	}
-	msg = ''
-	if (hours == 1) {
-		msg += '1 hour'
-	} else if (hours > 1) {
-		msg += hours + ' hours'
-	}
-	if (minutes == 1) {
-		msg += hours >= 1 ? '1 minute' : ', 1 minute'
-	} else if (minutes > 1) {
-		msg += hours >= 1 ? minutes + ' minute' : minutes + ', 1 minute'
-	}
-	return msg
 }
 
 exports.playtime = function(username, args) {
