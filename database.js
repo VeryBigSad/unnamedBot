@@ -87,7 +87,7 @@ exports.addPlayertime = async(user, value) => {
   }
   
   exports.checkuser = async(user="") => {
-    con.query(`INSERT IGNORE INTO userdata(user, playtime, lastlogin, totallogins, kills, deaths, firstmessage, fristlogin) Values(?, ?, ?, ?, ?, ?, ?, ?)`, [user, 0, 0, 0, 0, 0, '', 0])
+    con.query(`INSERT IGNORE INTO userdata(user, playtime, lastlogin, totallogins, kills, deaths, firstmessage, firstlogin) Values(?, ?, ?, ?, ?, ?, ?, ?)`, [user, 0, 0, 0, 0, 0, '', 0])
   }
   
   exports.setPlaytime = async(user="", value=1) => {
