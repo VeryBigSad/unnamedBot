@@ -55,7 +55,7 @@ function timeToTextAgo(time) {
 	if (minutes == 1) {
 		msg += hours >= 1 ? '1 minute' : ', 1 minute'
 	} else if (minutes > 1) {
-		msg += hours >= 1 ? minute + ' minute' : minute + ', 1 minute'
+		msg += hours >= 1 ? minutes + ' minute' : minutes + ', 1 minute'
 	}
 	return msg
 }
@@ -163,9 +163,9 @@ exports.bindDatabaseShit = function(bot) {
 
  	});
 
-	bot.on('playerJoined', async(player) => {
+	bot.on('playerJoined', (player) => {
 		database.checkuser(player.username);
-		logins = totallogincache.getCacheValue(player.username)
+		logins = totallogincache.getCacheValue(player)
 		if (logins == 0) {
 			bot.chat(player.username + ' is new! Welcome to poggop.org!')
 			playtimecache.setCacheValue(player.username, 1)
