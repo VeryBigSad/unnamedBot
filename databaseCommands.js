@@ -101,7 +101,7 @@ exports.lastSeen = function(username, args) {
 				later('I have never seen ' + username + '!')
 				return
 			}
-			later(username + ' was last online ' + timeToTextAgo(Date.now() - time) + ' ago.')
+			later(username + ' was last online ' + timeToTextAgo(Math.floor((Date.now() - time)/1000)) + ' ago.')
 		})
 	})
 }
