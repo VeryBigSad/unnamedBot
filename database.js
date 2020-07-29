@@ -36,7 +36,7 @@ exports.init = async(host="localhost", user="root", password="", textlog="textlo
 }
 
 exports.checkusertextlog = async(user) => {
-  chatlog.query(`CREATE TABLE IF NOT EXISTS _`+user+`(text longtext, time bigint)`)
+  chatlog.query('CREATE TABLE IF NOT EXISTS _'+user+'(text longtext, time bigint)')
 }
 
 exports.addTextmessage = async(user, text, time) => {
@@ -47,14 +47,14 @@ exports.addTextmessage = async(user, text, time) => {
 exports.getRandomTextmessage = (user, callback) => {
   this.checkusertextlog(user)
   chatlog.query('SELECT * FROM _'+user, function(err, result) {
-    resultlist = []
+    var resultlist = []
     if(err) throw err
     if(!result){
       console.log('Error: User not found')
       callback(null)
       return
     }
-    count = 0
+    var count = 0
     for(value in textLog.cachemap.get(user)){
       resultlist.push(value.key)
       count++;
@@ -63,12 +63,12 @@ exports.getRandomTextmessage = (user, callback) => {
       resultlist.push(result[row].text)
       count++;
     }
-    if(count == 0){
+    if(count === 0){
       console.log('Error: No messages found from user!')
       callback(null)
       return
     }
-    rand = Math.floor(Math.random() * count);
+    var rand = Math.floor(Math.random() * count);
     callback(resultlist[rand]);
    });
 }

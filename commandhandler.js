@@ -75,13 +75,11 @@ exports.messageHandler = function(username, message) {
 	}
 
 	if ((!message.startsWith('!') || !message.startsWith('?') && message.length > 3)) {
-		if (textlog.cachemap.size == 0) {
-			database.getFirstmessage(username, (message2)=>{
-				if (message2 == '' || message2 == null || message2 == undefined) {
-					database.setFirstmessage(username, message)
-				}
-			})
-		}
+		database.getFirstmessage(username, (message2)=>{
+			if (message2 == '' || message2 == null || message2 == undefined) {
+				database.setFirstmessage(username, message)
+			}
+		})
 		textlog.addToCacheValue(username, message, Date.now())
 	}
 
