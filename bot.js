@@ -111,6 +111,7 @@ function bindEvents(bot) {
 
 	bot.on('kicked', function(reason) {
 		Discord.sendMessage(`BOT HAD BEEN KICKED FOR ` + reason + ' :crab:');
+		cacheManager.dumpCache()
 		relog();
 	});
 

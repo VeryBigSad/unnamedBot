@@ -18,5 +18,3 @@ exports.addToCacheValue = (user, value)  => {
         this.cachemap.set(user, value)
     }
 }
-
-

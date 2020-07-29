@@ -1,7 +1,4 @@
 const mysql = require('mysql');
-const ptcache = require('./caches/playtimecache.js')
-const textcache = require('./caches/textlogcache.js')
-const logincache = require('./caches/totallogincache.js')
 const cacheManager = require('./caches/cachemanager.js')
 var chatlog = null
 var con = null
@@ -30,9 +27,6 @@ exports.init = async(host="localhost", user="root", password="", textlog="textlo
   });
 
     con.query('CREATE TABLE IF NOT EXISTS userdata(user varchar(255), playtime integer, lastlogin bigint, totallogins integer, kills integer, deaths integer, firstmessage varchar(255), PRIMARY KEY (user))')
-    ptcache.constructor()
-    textcache.init()
-    logincache.init()
 
     exports.userdata = con
     exports.textlog = chatlog
@@ -52,6 +46,7 @@ exports.addTextmessage = async(user, text, time) => {
 exports.getRandomTextmessage = (user="", callback) => {
   this.checkusertextlog(user)
   chatlog.query('SELECT * FROM _'+user, function(err, result) {
+    resultlist = []
     if(err) throw err
     if(!result){
       console.log('Error: User not found')
@@ -59,16 +54,21 @@ exports.getRandomTextmessage = (user="", callback) => {
       return
     }
     count = 0
+    for(value in textLog.cachemap.get(user)){
+      resultlist.push(value.key)
+      count++;
+    }
     for(row in result){
+      resultlist.push(result[row].text)
       count++;
     }
     rand = Math.floor(Math.random() * count);
-    if(!result[rand]){
+    if(!resultlist[rand]){
       console.log('Error: No messages found from user!')
       callback(null)
       return
     }
-    callback(result[rand].text);
+    callback(resultlist[rand]);
    });
 }
 
@@ -139,3 +139,4 @@ exports.addPlayertime = async(user, value) => {
         callback(result[0].firstmessage)
       })
  }
+

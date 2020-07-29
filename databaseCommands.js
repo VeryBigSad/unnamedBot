@@ -70,26 +70,29 @@ exports.playtime = function(username, args) {
 			return
 		}
 		text = ''
-
-		text += username + "'s playtime is " + time + ' seconds. stfu im tired'
+		text += username + "'s playtime is "
 		days = Math.floor(time / 86400)
 		time %= 86400;
 		hours = Math.floor(time / 3600);
 		time %= 3600;
 		minutes = Math.floor(time / 60);
-		if(days > 0) {
-			text += days + ' day'
-			days > 1 ? text+='s ':text+=' '
+		seconds = time % 60;
+		if(days > 0){ 
+		  text += days + ' day'
+		  days > 1 ? text+='s ':text+=' '
+		  }
+		if(hours > 0){ 
+		text += hours + ' hour'
+		hours > 1 ? text+='s ':text+=' '
 		}
-		if(hours > 0) {
-			text += hours + ' hour'
-			hours > 1 ? text+='s ':text+=' '
+		if(minutes > 0){ 
+		  text += minutes + ' minute'
+		  minutes > 1 ? text+='s ':text+=' '
 		}
-		if(minutes > 0) {
-			text += minutes + ' minute'
-			minutes > 1 ? text+='s':text+=''
+		if(seconds > 0){ 
+			text += seconds + ' second'
+		  seconds > 1 ? text+='s ':text+=' '
 		}
-
 		later(text)
 
 	})
@@ -143,10 +146,9 @@ exports.bindDatabaseShit = function(bot) {
 		// since im not sure if all players and functions do check user, make sure
 		// that everyone is checked
 
-		console.log(bot.players.entries())
 		setInterval(async function() {
-			for(player in bot.players){ 
-				data.incplayertime(player, 1)
+			for(player in bot.players){
+				playtimecache.addToCacheValue(player, 1)
 			}
 		}, 1000);
 
@@ -164,7 +166,6 @@ exports.bindDatabaseShit = function(bot) {
 	bot.on('playerJoined', async(player) => {
 		database.checkuser(player.username);
 		logins = totallogincache.getCacheValue(player.username)
-		console.log(totallogincache.cachemap)
 		if (logins == 0) {
 			bot.chat(player.username + ' is new! Welcome to poggop.org!')
 			playtimecache.setCacheValue(player.username, 1)
