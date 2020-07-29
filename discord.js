@@ -39,6 +39,8 @@ client.on('message', msg => {
 		ingamechat.send('This message contains restricted symbol (§)')
 	} else if (msg.content.includes('\n')) {
 		ingamechat.send('You can\'t send multi-line messages!')
+	} else if (msg.content.length >= 255) { 
+		ingamechat.send('This message is too long!')
 	} else {
 		if (msg.content.startsWith('!raw')) {
 			if (msg.member.roles.cache.has('731327156453507074')) {
