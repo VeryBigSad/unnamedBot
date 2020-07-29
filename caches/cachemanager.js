@@ -4,6 +4,8 @@ const textlog = require('./textlogcache')
 const database = require('../database')
 
 exports.dumpCache = () => {
+    time = Date.now()
+    console.log('Started Save task.')
     playtime.cachemap.forEach(async(value, user)=>{
         database.setPlaytime(user, value)
     })
@@ -11,15 +13,18 @@ exports.dumpCache = () => {
         database.setTotallogins(user, value)
     })
     textlog.cachemap.forEach(async(value, user)=>{
+        time = Date.now()
         value.forEach((result)=>{
             database.addTextmessage(user, result.key, result.value)
         })
     })
     textlog.init()
-    console.log('Dumped all data in the cache to database!')
+    console.log('Save task finished in: ' + Math.floor((Date.now()-time)) + 'ms')
 }
 
 exports.dumpDB = () => {
+    time = Date.now()
+    console.log('Started database sync task.')
     textlog.init()
     playtime.init()
     totallogins.init()
@@ -30,5 +35,5 @@ exports.dumpDB = () => {
             totallogins.setCacheValue(value.user, value.totallogins)
         })
     })
-    console.log('Dumped all data in the database to cache!')
+    console.log('Database sync task finished in:' + Math.floor((Date.now()-time) + 'ms'))
 }
