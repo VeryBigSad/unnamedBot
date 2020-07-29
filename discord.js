@@ -1,6 +1,7 @@
 const Discord = require('discord.js');
 const bot = require('./bot.js');
 const client = new Discord.Client();
+const cache = require('./caches/cachemanager')
 const ingamechat = new Discord.WebhookClient('732684871914487888', 'oQ77KSVLsMCwbHnq-UlH5eYaUkteuYfghWXCxi74qqSAn6sisCnPG3V0bJvIu6fLTAkS');
 
 exports.sendMessage = function(text) {
@@ -33,7 +34,11 @@ client.on('message', msg => {
 		// if sent by bot
 		return;
 	}
-
+	if(msg.channel.name == 'bot-commands') {
+		msg.channel.send('Started manual save')
+		cache.dumpCache()
+		msg.channel.send('Done! (sort of cause async exists)')
+	}
 
 	if (msg.content.includes('§')) {
 		ingamechat.send('This message contains restricted symbol (§)')
