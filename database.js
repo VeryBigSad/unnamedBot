@@ -44,7 +44,7 @@ exports.addTextmessage = async(user, text, time) => {
     chatlog.query('INSERT INTO _'+user+'(text, time) VALUES(?, ?)', [text, time])
 }
 
-exports.getRandomTextmessage = (user="", callback) => {
+exports.getRandomTextmessage = (user, callback) => {
   this.checkusertextlog(user)
   chatlog.query('SELECT * FROM _'+user, function(err, result) {
     resultlist = []
@@ -63,12 +63,12 @@ exports.getRandomTextmessage = (user="", callback) => {
       resultlist.push(result[row].text)
       count++;
     }
-    rand = Math.floor(Math.random() * count);
-    if(!resultlist[rand]){
+    if(count == 0){
       console.log('Error: No messages found from user!')
       callback(null)
       return
     }
+    rand = Math.floor(Math.random() * count);
     callback(resultlist[rand]);
    });
 }

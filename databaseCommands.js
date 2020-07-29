@@ -128,7 +128,7 @@ exports.lastSeen = function(username, args) {
 exports.quote = function(username, args) {
 	return new Promise((later)=>{
 		if (args.length >= 1) username = args[0];
-
+		console.log(username)
 		database.getRandomTextmessage(username, (message)=>{
 			if (message === null) {
 				later(username + ' haven\'t said anything yet!')
