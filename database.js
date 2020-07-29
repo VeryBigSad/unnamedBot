@@ -1,4 +1,5 @@
 const mysql = require('mysql');
+const textLog = require('./caches/textlogcache.js')
 const cacheManager = require('./caches/cachemanager.js')
 var chatlog = null
 var con = null
