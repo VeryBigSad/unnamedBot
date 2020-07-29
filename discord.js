@@ -31,11 +31,6 @@ exports.bindDiscord = function(bot) {
 }
 client.on('message', msg => {
 	if (msg.author.bot || msg.channel.name != 'ingame-chat') {
-		if(msg.channel.name == 'bot-commands') {
-			//msg.channel.send('Started manual save')
-			//cache.dumpCache()
-			//msg.channel.send('Done! (sort of, cause async exists)')
-		}
 		return;
 	}
 
@@ -65,9 +60,13 @@ client.on('message', msg => {
 			}
 			msg = 'There are ' + size + ' players online, list of them: ' + playersStr;
 			ingamechat.send(msg.slice(0, msg.length - 3));
-
+		}else if(msg.content.startsWith('!save')) {
+			if(message.member.roles.find(r => r.name === "bot developer")){
+				msg.channel.send('Attempted manual save')
+				cache.dumpCache()
+				msg.channel.send('Send save request this takes around 10 seconds to save')
+			}
 		} else {
-
 			bot.sendMessage('[' + (msg.member.roles.cache.has('731327156453507074') ? 'MEMBER' : (msg.member.roles.cache.has('732573982909530113') ? 'COOL' : 'NON')) + '] ' + ' [' + msg.author.username + '] ' + msg.content);		
 			lastMessage = msg.content;
 		}
