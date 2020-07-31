@@ -64,7 +64,7 @@ exports.commandHandler = function(username, message) {
 	} else if (command == 'fm' || command == 'firstmessage') {
 		dbCommands.firstmessage(username, args).then((msg)=>{bot.sendMessage(msg)})
 		return null;
-	}else if(command == 'fl' ||command == 'firstlogin') {
+	}else if(command == 'fl' ||command == 'firstlogin' || command == 'joindate' ||command == 'jd') {
 		dbCommands.firstlogin(username, args).then((msg)=>{bot.sendMessage(msg)})
 		return null;
 	} else {
