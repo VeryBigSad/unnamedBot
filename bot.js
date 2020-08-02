@@ -12,6 +12,7 @@ const pathfinder = require('mineflayer-pathfinder').pathfinder
 const gameplay = require('./prismarine-gameplay').gameplay
 const mineflayerViewer = require('prismarine-viewer').mineflayer
 
+
 if (process.argv.length < 3 || process.argv.length > 6) {
     console.log("Usage: node bot.js <host> <port> [<name>] [<password>]");
     process.exit(1);
@@ -27,20 +28,26 @@ options = {
 }
 
 
+var allowedToRelog = true
 function relog(log=true) {
-	if (log) {
-		Discord.sendMessage('> Timing out (30 seconds), trying to reconnect...');
-		console.log("Attempting to reconnect...");		
+	If(allowedToRelog) {
+		allowedToRelog = false
+		if (log) {
+			Discord.sendMessage('> Timing out (30 seconds), trying to reconnect...');
+			console.log("Attempting to reconnect...");		
+		}
+		bot = mineflayer.createBot(options);
+		this.bot = bot;
+		exports.bot = bot;
+		bindEvents(this.bot);
+		bindLogging(this.bot);
+		dbCommands.bindDatabaseShit(this.bot);
+		Discord.bindDiscord(this.bot)
+		// bindGameplay(this.bot);
+		// lumber.bindLumber(this.bot);
+		
+		waitforrelog();
 	}
-	bot = mineflayer.createBot(options);
-	this.bot = bot;
-	exports.bot = bot;
-	bindEvents(this.bot);
-	bindLogging(this.bot);
-	dbCommands.bindDatabaseShit(this.bot);
-	Discord.bindDiscord(this.bot)
-	// bindGameplay(this.bot);
-	// lumber.bindLumber(this.bot);
 }
 
 lastTimeUsed = 0;
@@ -159,6 +166,9 @@ function sleep (time) {
     return new Promise((resolve) => setTimeout(resolve, time));
 }
 
-
+async function waitforrelog() {
+	await sleep(120000)
+	allowedToRelog = true
+}
 database.init('localhost', 'root', '79397939', 'textlog', 'minedata')
 relog(false);
