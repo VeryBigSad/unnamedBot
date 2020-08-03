@@ -30,7 +30,7 @@ options = {
 
 var allowedToRelog = true
 function relog(log=true) {
-	If(allowedToRelog) {
+	if(allowedToRelog) {
 		allowedToRelog = false
 		if (log) {
 			Discord.sendMessage('\`Reconnecting!\`');
@@ -39,7 +39,10 @@ function relog(log=true) {
 		bot = mineflayer.createBot(options);
 		this.bot = bot;
 		exports.bot = bot;
-		
+		Discord.bindDiscord(this.bot)
+		bindLogging(this.bot);
+		bindEvents(this.bot);
+
 		waitforrelog();
 	}
 }
@@ -189,8 +192,7 @@ async function waitforrelog() {
 database.init('localhost', 'root', '79397939', 'textlog', 'minedata')
 
 relog(false);
-bindEvents(this.bot);
-bindLogging(this.bot);
 dbCommands.bindDatabaseShit(this.bot);
-Discord.bindDiscord(this.bot)
+
+
 
