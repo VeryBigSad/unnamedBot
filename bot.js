@@ -33,18 +33,12 @@ function relog(log=true) {
 	If(allowedToRelog) {
 		allowedToRelog = false
 		if (log) {
-			Discord.sendMessage('> Timing out (30 seconds), trying to reconnect...');
+			Discord.sendMessage('\`Reconnecting!\`');
 			console.log("Attempting to reconnect...");		
 		}
 		bot = mineflayer.createBot(options);
 		this.bot = bot;
 		exports.bot = bot;
-		bindEvents(this.bot);
-		bindLogging(this.bot);
-		dbCommands.bindDatabaseShit(this.bot);
-		Discord.bindDiscord(this.bot)
-		// bindGameplay(this.bot);
-		// lumber.bindLumber(this.bot);
 		
 		waitforrelog();
 	}
@@ -97,6 +91,28 @@ function bindLogging(bot) {
 }
 
 function bindEvents(bot) {
+	stillNotDead = true
+	setInterval(async()=>{
+		checkForMessage = (message)=>{
+			stillNotDead = true
+			bot.removeListener('message', checkForMessage)
+		}
+		bot.on('message', checkForMessage)
+		stillNotDead = false
+		bot.chat('/msg ' + bot.username + ' connection test')
+
+		setTimeout(()=>{	
+			if (!stillNotDead) {
+				bot.removeListener('message', checkForMessage)
+				relog()
+			}
+
+		}, 10000) // 10 seconds of not responding = dead
+
+		// checking if bot is still on the server
+
+	}, 30000)
+
 	bot.on('chat', function(username, message) {
 	    if (username === bot.username) return;
 
@@ -144,12 +160,12 @@ function bindEvents(bot) {
 				bot.chat(spamMessages[randomIndex]);
 
 				// checking last time message was sent
-				await sleep(15000).then(()=>{
-					if (Date.now() - lastTimeMessage > 30000) {
-						Discord.sendMessage('\`timed out\`')
-						relog();
-					}
-				});
+				// await sleep(15000).then(()=>{
+				// 	if (Date.now() - lastTimeMessage > 30000) {
+				// 		Discord.sendMessage('\`timed out\`')
+				// 		relog();
+				// 	}
+				// });
 				
 			});
 		}
@@ -171,4 +187,10 @@ async function waitforrelog() {
 	allowedToRelog = true
 }
 database.init('localhost', 'root', '79397939', 'textlog', 'minedata')
+
 relog(false);
+bindEvents(this.bot);
+bindLogging(this.bot);
+dbCommands.bindDatabaseShit(this.bot);
+Discord.bindDiscord(this.bot)
+
