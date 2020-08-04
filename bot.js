@@ -1,7 +1,3 @@
-const cmdhandler = require('./commandhandler.js');
-const commands = require('./commands.js');
-const lumber = require('./lumber.js');
-const dbCommands = require('./databaseCommands.js');
 const database = require('./database.js')
 const cacheManager = require('./caches/cachemanager.js')
 const bindManager = require('./bindManager.js');
@@ -11,7 +7,6 @@ const Discord = require('./discord.js');
 const mineflayer = require('mineflayer');
 const pathfinder = require('mineflayer-pathfinder').pathfinder
 const gameplay = require('./prismarine-gameplay').gameplay
-const mineflayerViewer = require('prismarine-viewer').mineflayer
 
 
 if (process.argv.length < 3 || process.argv.length > 6) {
@@ -38,8 +33,10 @@ exports.relog=(log=true)=>{
 			console.log("Attempting to reconnect...");		
 		}
 		bot = mineflayer.createBot(options);
-		this.bot = bot;
 		exports.bot = bot;
+		exports.sendMessage = (message)=> {
+			this.bot.chat(message);
+		}
 		Discord.bindDiscord(this.bot)
 		bindManager.bind(bot);
 		waitforrelog();

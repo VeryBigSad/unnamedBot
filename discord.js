@@ -23,13 +23,13 @@ exports.bindDiscord = function(bot) {
 
 		time = new Date();
 		if (message.includes('@')) {
-			exports.sendMessage('\`There was a message here, but it wasn\'t sent because it contained "@"\`');
+			this.sendMessage('\`There was a message here, but it wasn\'t sent because it contained "@"\`');
 		} else {
 			message = message.replace(new RegExp('discord.gg/'.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&'), 'gi'), '(discord link)');
 			if (message == 'From ' + bot.username + ': connection test' || message == 'To ' + bot.username + ': connection test') {
 				return
 			}
-			exports.sendMessage(message);
+			this.sendMessage(message);
 		}
 	})
 }
