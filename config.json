@@ -1,0 +1,7 @@
+{
+    "prefix": "?",
+    "relogAttempts": 5,
+    "connectionTestTime": 10,
+    "cacheDumpFrequencey": 30,
+    "commandInterval": 500
+}

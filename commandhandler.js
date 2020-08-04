@@ -3,33 +3,14 @@ const fs = require('fs');
 const database = require('./database.js');
 const textlog = require('./caches/textlogcache.js')
 const bot = require('./bot.js');
-const dbCommands = require('./databaseCommands.js')
+const dbCommands = require('./databaseCommands.js');
+const config = require('./config.json')
 
 nwordcounter = {};
 whispers = {};
 
-
-exports.getCounter = function() {
-	return nwordcounter;
-}
-
-exports.setCounter = function() {
-	// fs.readFile('C:/users/khrom/desktop/nwordcounter.txt', 'utf8', function (err, data) {
-	// 	data = data.split(';');
-	// 	data.forEach(function(item, index){
-	// 		data[index] = data[index].split(':');
-	// 	})
-	// 	for(i=0; i < data.lenth; i++) {
-	// 		data[i] = data[i].split(':');
-	// 	}
-		
-	// 	nwordcounter = data;
-	// });
-
-}
-
 exports.commandHandler = function(username, message) {
-	if (message == '?') {
+	if (message == config.prefix) {
 		return null;
 	}
 	message = message.slice(1).split(' ');
@@ -47,7 +28,7 @@ exports.commandHandler = function(username, message) {
 	} else if (command == 'discord' || command == 'd') {
 		return commands.discordCommand(username, args);
 	} else if (command == 'nwordcount') {
-		return commands.nwordCommand(username, args);
+		return "Command currently disabled"//commands.nwordCommand(username, args);
 	} else if (command == 'fact') {
 		return commands.randomFact();
 	} else if (command == 'crash') {

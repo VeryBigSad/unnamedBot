@@ -4,6 +4,7 @@ const lumber = require('./lumber.js');
 const dbCommands = require('./databaseCommands.js');
 const database = require('./database.js')
 const cacheManager = require('./caches/cachemanager.js')
+const bindManager = require('./bindManager.js');
 
 const Discord = require('./discord.js');
 
@@ -28,8 +29,8 @@ options = {
 }
 
 
-var allowedToRelog = true
-function relog(log=true) {
+exports.allowedToRelog = true
+exports.relog=(log=true)=>{
 	if(allowedToRelog) {
 		allowedToRelog = false
 		if (log) {
@@ -40,9 +41,7 @@ function relog(log=true) {
 		this.bot = bot;
 		exports.bot = bot;
 		Discord.bindDiscord(this.bot)
-		bindLogging(this.bot);
-		bindEvents(this.bot);
-
+		bindManager.bind(bot);
 		waitforrelog();
 	}
 }
@@ -72,127 +71,22 @@ function bindGameplay(bot) {
 	bot.loadPlugin(gameplay);
 }
 
-function bindLogging(bot) {
-	bot.on('message', function(jsonMsg) {
-		message = String(jsonMsg);
-		lastTimeMessage = Date.now();
-		username = message.slice(0, message.indexOf(':'));
-		text = message.slice(message.indexOf(':') + 2);
-
-
-		time = new Date();
-		console.log('[' + time.getHours() + ':' + time.getMinutes() + ':' + time.getSeconds() + '] ' + jsonMsg)
-	})
-
-	exports.sendMessage = function(text) {
-		bot.chat(text);
-	}
-
-	exports.getPlayers = function() {
-		return bot.players;
-	}
-}
-
-function bindEvents(bot) {
-	stillNotDead = true
-	setInterval(async()=>{
-		checkForMessage = (message)=>{
-			stillNotDead = true
-			bot.removeListener('message', checkForMessage)
-		}
-		bot.on('message', checkForMessage)
-		stillNotDead = false
-		bot.chat('/msg ' + bot.username + ' connection test')
-
-		setTimeout(()=>{	
-			if (!stillNotDead) {
-				bot.removeListener('message', checkForMessage)
-				relog()
-			}
-
-		}, 10000) // 10 seconds of not responding = dead
-
-		// checking if bot is still on the server
-
-	}, 30000)
-
-	bot.on('chat', function(username, message) {
-	    if (username === bot.username) return;
-
-	    if (message[0] == '?') {
-		  	if (Date.now() - lastTimeUsed <= 500) return;
-		  	lastTimeUsed = Date.now();
-
-		  	//try {
-		  		toSend = cmdhandler.commandHandler(username, message);
-		  		if (toSend !== null) {
-		  			bot.chat(toSend);  		  			
-		  		}
-		  	//} catch(Exception) {
-		  	//	console.log('bruh I almost crashed');
-		  	//}
-
-	    } else {
-	  	    cmdhandler.messageHandler(username, message);
-	  	}
-	});
-
-	bot.on('kicked', function(reason) {
-		Discord.sendMessage(`BOT HAD BEEN KICKED FOR ` + reason + ' :crab:');
-		cacheManager.dumpCache()
-		relog();
-	});
-
-	bot.on('login', function() {
-		bot.chat(commands.welcomeMessage);
-		bot.chat('Hello, Alyxix!')
-	});
-
-	var spamMessages = ['[Bot] Did you know you could do ?fact for a random fact? It\'s epic, I know. Do ?help for more!',
-	                    '[Bot] Join Unnamed group\'s discord server to participate in upcoming giveaways (3 winners & 3 kits!) https://discord.gg/ZXvVQtg', 
-	                    '[Bot] Have troubles with progression on the server? Buy shulkers with THE cheapest prices from THE best group! https://discord.gg/ZXvVQtg',
-	                    '[Bot] Have troubles with progression on the server? Buy shulkers with THE cheapest prices from THE best group! https://discord.gg/ZXvVQtg',
-	                    '[Bot] Buy kits from Unnamed group and your dick will grow 3 inches (We have proof and reviews!) https://discord.gg/ZXvVQtg',
-	                    '[Bot] Buy kits from Unnamed group and your dick will grow 3 inches (We have proof and reviews!) https://discord.gg/ZXvVQtg'];
-
-
-	executeAsync(async function() {
-		while (true) {
-			await sleep((Math.random() * 100000) + 30000).then(async function() {
-				randomIndex = Math.floor(Math.random() * spamMessages.length);
-				bot.chat(spamMessages[randomIndex]);
-
-				// checking last time message was sent
-				// await sleep(15000).then(()=>{
-				// 	if (Date.now() - lastTimeMessage > 30000) {
-				// 		Discord.sendMessage('\`timed out\`')
-				// 		relog();
-				// 	}
-				// });
-				
-			});
-		}
-	}, 10);
-
-}
-
-async function executeAsync(func) {
+exports.executeAsync=(func)=> {
     setTimeout(func, 0);
 }
 
 // sleep time expects milliseconds
-function sleep (time) {
+exports.sleep =(time) => {
     return new Promise((resolve) => setTimeout(resolve, time));
 }
 
-async function waitforrelog() {
+exports.waitforrelog = async() => {
 	await sleep(120000)
 	allowedToRelog = true
 }
 database.init('localhost', 'root', '79397939', 'textlog', 'minedata')
 
-relog(false);
-dbCommands.bindDatabaseShit(this.bot);
+this.relog(false);
 
 
 

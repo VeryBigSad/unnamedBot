@@ -6,6 +6,8 @@ const textlogcache = require('./caches/textlogcache.js')
 const playtimecache = require('./caches/playtimecache.js')
 const cacheManager = require('./caches/cachemanager.js')
 const totallogincache = require('./caches/totallogincache.js')
+var cacheInterval;
+var playtimeInterval;
 
 cachedPlayers = []
 
@@ -138,49 +140,6 @@ exports.quote = function(username, args) {
 		})
 
 	})
-}
-
-exports.bindDatabaseShit = function(bot) {
-	bot.on('login', async() => {
-
-		// since im not sure if all players and functions do check user, make sure
-		// that everyone is checked
-
-		setInterval(async function() {
-			for(player in bot.players){
-				playtimecache.addToCacheValue(player, 1)
-			}
-		}, 1000);
-
-		setTimeout(()=>{
-			// not sure if it will load everything in the cache the moment it will get loaded, so 
-			// to not rewrite whole db with semi loaded cache add 25 second delay
-
-			setInterval(async function() {
-				cacheManager.dumpCache()
-			}, 600000); // once an hour
-		}, 25000)
-
- 	});
-
-	bot.on('playerJoined', (player) => {
-		database.checkuser(player.username);
-		logins = totallogincache.getCacheValue(player)
-		if (logins == 0) {
-			bot.chat(player.username + ' is new! Welcome to poggop.org!')
-			playtimecache.setCacheValue(player.username, 60)
-			// setting 1 minute of playtime when someone joins because 
-			// minumum displayable playtime is 1 minute
-		}
-		database.getFirstlogin(player.username, (result)=> {
-			if(result === null)
-				database.setFirstlogin(player.username, Date.now())
-		})
-		totallogincache.addToCacheValue(player.username, 1)
-		database.setLastlogin(player.username, Date.now())
-	
-	})
-
 }
 
 //database.init('localhost', 'root', '79397939', 'textlog', 'minedata')
