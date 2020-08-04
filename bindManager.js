@@ -125,11 +125,11 @@ function internalBind(bot=mineflayer.Bot) {
 } 
 
 //check if player is acctualy connected to the server
-function doConnectionTest(bot){
+function doConnectionTest(bot=mineflayer){
 	if(player === undefined){
 		botManager.relog()
 		setTimeout(()=>{
-			if(player !== undefined){
+			if(bot.player !== undefined){
 				isConnected = true;
 				internalBind()
 			}
