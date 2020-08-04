@@ -29,10 +29,11 @@ exports.bindDiscord = function(bot) {
 			if (message == 'From ' + bot.username + ': connection test' || message == 'To ' + bot.username + ': connection test') {
 				return
 			}
-			this.sendMessage(message);
+			ingamechat.send(String(message));
 		}
 	})
 }
+
 client.on('message', msg => {
 	if (msg.author.bot || msg.channel.name != 'ingame-chat') {
 		return;
@@ -86,7 +87,7 @@ client.on('message', msg => {
 					msg.channel.send('You don\'t have enough perms to do that!');
 				}	
 		} else {
-			bot.sendMessage('[' + (msg.member.roles.cache.has('731327156453507074') ? 'MEMBER' : (msg.member.roles.cache.has('732573982909530113') ? 'COOL' : 'NON')) + '] ' + ' [' + msg.author.username + '] ' + msg.content);		
+			bot.sendMessage('[' + (msg.member.roles.cache.has('731327156453507074') ? 'MEMBER' : (msg.member.roles.cache.has('732573982909530113') ? 'COOL' : (msg.member.roles.cache.has('739459055638282253') ? 'RETIRED' : 'NON'))) + '] ' + ' [' + msg.author.username + '] ' + msg.content);		
 			lastMessage = msg.content;
 		}
 	}

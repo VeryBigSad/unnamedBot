@@ -26,8 +26,8 @@ options = {
 
 exports.allowedToRelog = true
 exports.relog=(log=true)=>{
-	if(allowedToRelog) {
-		allowedToRelog = false
+	if(this.allowedToRelog) {
+		this.allowedToRelog = false
 		if (log) {
 			Discord.sendMessage('\`Reconnecting!\`');
 			console.log("Attempting to reconnect...");		
@@ -39,7 +39,7 @@ exports.relog=(log=true)=>{
 		}
 		Discord.bindDiscord(this.bot)
 		bindManager.bind(bot);
-		waitforrelog();
+		this.waitforrelog();
 	}
 }
 
@@ -48,7 +48,7 @@ lastTimeMessage = 0;
 
 process.on('uncaughtException', function(err) {
 	console.log(err);
-	Discord.sendMessage(`Bot has encountered some error!`);
+	Discord.sendMessage(`Bot has encountered an error: ` + String(err));
 });
 
 process.on('exit', function(code) {
@@ -59,7 +59,7 @@ process.on('exit', function(code) {
 
 process.on('SIGINT', function(code) {
 	cacheManager.dumpCache();
-	Discord.sendMessage(`Exiting because Sanyss from undertale said so`);
+	Discord.sendMessage(`Exiting, because someone connected to the machine and stopped the bot.`);
 	process.exit(1)
 })
 
@@ -67,6 +67,16 @@ function bindGameplay(bot) {
 	bot.loadPlugin(pathfinder);
 	bot.loadPlugin(gameplay);
 }
+
+
+exports.sendMessage = (text)=>{
+	this.bot.chat(text)
+}
+
+exports.getPlayers = ()=>{
+	return this.bot.players
+}
+
 
 exports.executeAsync=(func)=> {
     setTimeout(func, 0);
@@ -78,7 +88,7 @@ exports.sleep =(time) => {
 }
 
 exports.waitforrelog = async() => {
-	await sleep(120000)
+	await this.sleep(120000)
 	allowedToRelog = true
 }
 database.init('localhost', 'root', '79397939', 'textlog', 'minedata')

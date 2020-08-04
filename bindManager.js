@@ -5,6 +5,9 @@ const playtimecache = require('./caches/playtimecache.js')
 const cacheManager = require('./caches/cachemanager.js')
 const totallogincache = require('./caches/totallogincache.js')
 const botManager = require('./bot.js');
+
+const cmdhandler = require('./commandhandler.js')
+
 const config = require('./config.json');
 const mineflayer = require('mineflayer');
 const { EventEmitter } = require('events');
@@ -13,19 +16,22 @@ var isConnected = false
 exports.bind = (bot) => {
 	//connection test loop
     doConnectionTest(bot)
-	if(isConnected === false){
+	if(isConnected === false) {
 		setInterval(()=>{
 			if(isConnected === false)
-				doConnectionTest();
+				doConnectionTest(bot);
 		}, config.connectionTestTime*1000);
 	}
 }
 
-function internalBind(bot=mineflayer.Bot) {
+function internalBind(bot) {
+	console.log('Binding all the events')
+	
 	//Kills all intervals running (hopefully)
-	var killId = setTimeout(";");
+	var killId = setTimeout(()=>{});
 	for (var i = killId; i > 0; i--) clearInterval(i)
 
+	console.log('Killed all the intervals currently alive')
     //Discord chat logging
     bot.on('message', function(jsonMsg) {
 		message = String(jsonMsg);
@@ -74,7 +80,7 @@ function internalBind(bot=mineflayer.Bot) {
     //spammer                    
 	botManager.executeAsync(async function() {
 		while (true) {
-			await sleep((Math.random() * 100000) + 30000).then(async function() {
+			await botManager.sleep((Math.random() * 100000) + 30000).then(async function() {
 				randomIndex = Math.floor(Math.random() * spamMessages.length);
 				bot.chat(spamMessages[randomIndex]);		
 			});
@@ -125,14 +131,19 @@ function internalBind(bot=mineflayer.Bot) {
 } 
 
 //check if player is acctualy connected to the server
-function doConnectionTest(bot=mineflayer){
-	if(player === undefined){
-		botManager.relog()
-		setTimeout(()=>{
-			if(bot.player !== undefined){
-				isConnected = true;
-				internalBind()
-			}
-		}, 1000)
+function doConnectionTest(bot=mineflayer) {
+	if(bot.player !== undefined) {
+		isConnected = true;
+		internalBind(bot)
+	} else {
+		botManager.relog()		
 	}
+
+	// if (bot.player === undefined) {
+	// 	// setTimeout(()=>{
+		
+	// 	// }, 1000)
+	// } else {
+	// 	isConnected = true
+	// }
 }
