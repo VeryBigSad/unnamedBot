@@ -91,14 +91,16 @@ function internalBind(bot) {
     bot.on('login', async() => {
         bot.chat(commands.welcomeMessage);
 		bot.chat('Hello, Alyxix!')
-		setTimeout(async() => {
-			setInterval(async function() {
-				for(player in bot.players){
-					playtimecache.addToCacheValue(player, 1)
-				}
-			}, 1000)
-		}, 1000)
 	 });
+
+	 setTimeout(async() => {
+		setInterval(async function() {
+			for(player in bot.players){
+				playtimecache.addToCacheValue(player, 1)
+			}
+		}, 1000)
+	}, 1000)
+	
 	 setTimeout(()=>{
 		setInterval(async function() {
 			cacheManager.dumpCache()
