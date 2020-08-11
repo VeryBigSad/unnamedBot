@@ -70,11 +70,14 @@ function internalBind(bot) {
 
 	//spam messages
 	var spamMessages = ['[Bot] Did you know you could do ?fact for a random fact? It\'s epic, I know. Do ?help for more!',
-	                    '[Bot] Join Unnamed group\'s discord server to participate in upcoming giveaways (3 winners & 3 kits!) https://discord.gg/ZXvVQtg', 
-	                    '[Bot] Have troubles with progression on the server? Buy shulkers with THE cheapest prices from THE best group! https://discord.gg/ZXvVQtg',
-	                    '[Bot] Have troubles with progression on the server? Buy shulkers with THE cheapest prices from THE best group! https://discord.gg/ZXvVQtg',
+	                    '[Bot] Join Unnamed group\'s discord server to participate in upcoming giveaway (100 members - 3 winners & 3 kits!) https://discord.gg/ZXvVQtg', 
+	                    '[Bot] Have troubles with progression on the server? Buy shulkers with THE cheapest prices from the most trustworthy seller! https://discord.gg/ZXvVQtg',
 	                    '[Bot] Buy kits from Unnamed group and your dick will grow 3 inches (We have proof and reviews!) https://discord.gg/ZXvVQtg',
-	                    '[Bot] Buy kits from Unnamed group and your dick will grow 3 inches (We have proof and reviews!) https://discord.gg/ZXvVQtg'];
+	                    '[Bot] btw, you can do /suicide thanks to our only true god - Wising!',
+	                    '[Bot] You can do ?playtime, ?quote, ?seen and ?firstmessage! That is pretty cool!',
+	                    '[Bot] See any hackers? Do ?report!',
+	                    '[Bot] Just a reminder that Unnamed group is on top!',
+	                    '[Bot] Hey Tubbo (or other admin who may see this), please tell tubbo to make a vid or stream here, server is dying'];
 
 
     //spammer                    
