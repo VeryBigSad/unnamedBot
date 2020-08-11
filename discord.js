@@ -47,7 +47,7 @@ client.on('message', msg => {
 		ingamechat.send('This message is too long!')
 	} else {
 		if (msg.content.startsWith('!raw')) {
-			if (msg.member.roles.cache.has('731327156453507074')) {
+			if (msg.member.roles.cache.some(r => r.name === 'bot developer') || msg.member.roles.cache.some(r => r.name === 'trusted')) {
 				bot.sendMessage(msg.content.slice(4).replace(/^\s+|\s+$/g, ''));
 				lastMessage = msg.content;
 			} else {
