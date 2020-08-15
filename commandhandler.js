@@ -23,12 +23,12 @@ exports.commandHandler = function(username, message) {
 		return commands.helpCommand(username, args);
 	} else if (command == 'report' || command == 'wdr' || command == 'chatreport') {
 		return commands.reportCommand(username, args);
-	}else if(command == 'ping'){
+	} else if(command == 'ping') {
 		return commands.pingCommand(username, args)	
 	} else if (command == 'discord' || command == 'd') {
 		return commands.discordCommand(username, args);
 	} else if (command == 'nwordcount') {
-		return "Command currently disabled"//commands.nwordCommand(username, args);
+		return "Command currently disabled"
 	} else if (command == 'fact') {
 		return commands.randomFact();
 	} else if (command == 'crash') {
@@ -45,11 +45,9 @@ exports.commandHandler = function(username, message) {
 	} else if (command == 'fm' || command == 'firstmessage') {
 		dbCommands.firstmessage(username, args).then((msg)=>{bot.sendMessage(msg)})
 		return null;
-	}else if(command == 'fl' ||command == 'firstlogin' || command == 'joindate' ||command == 'jd') {
+	} else if(command == 'fl' ||command == 'firstlogin' || command == 'joindate' ||command == 'jd') {
 		dbCommands.firstlogin(username, args).then((msg)=>{bot.sendMessage(msg)})
 		return null;
-	} else {
-		return 'there are no such command'
 	}
 
 };
@@ -62,21 +60,11 @@ exports.messageHandler = function(username, message) {
 
 	if ((!message.startsWith('!') || !message.startsWith('?') && message.length > 3)) {
 		database.getFirstmessage(username, (message2)=>{
-			if (message2 == '' || message2 == null || message2 == undefined ||message2 == "0" || message2 == 0) {
+			if (message2 == '' || message2 == null || message2 == undefined || message2 == "0" || message2 == 0) {
 				database.setFirstmessage(username, message.replace(/[^\x00-\x7F]/g, ""))
 			}
 		})
 		textlog.addToCacheValue(username, message.replace(/[^\x00-\x7F]/g, ""), Date.now())
 	}
-
-	// todo: database
-	nwordcounter[username] += (message.match(/nigg/gi) || []).length;
-	keys = Object.keys(nwordcounter);
-	nwordcounterString = '';
-	for (i = 0; i < keys.length; i++) {
-		nwordcounterString += keys[i] + ':' + nwordcounter[keys[i]] + ';';
-	}
-
-	fs.writeFile('nwordcounter.txt', nwordcounterString, function (err) {});
 
 };

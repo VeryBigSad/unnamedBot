@@ -98,19 +98,22 @@ exports.lastSeen = function(username, args) {
 		}
 
 		database.getLastlogin(username, (time)=>{
-			if (time == 0) {
+			if (time == 0 || time == undefined) {
 				later('I have never seen ' + username + '!')
 				return;
 			}
 			//console.log)
-			if (Object.keys(bot.bot.players).includes(username)) {
-				later(username + ' is online right now!')
-				return;
+			players = Object.keys(bot.bot.players);
+			for(int i = 0; i < players.length; i++) {
+				if (players[i].toLowerCase() == username.toLowerCase()) {
+					later(username + ' is online right now!')
+					return;
+				}
 			}
-			if (timeToTextAgo(Math.floor((Date.now() - time) / 1000)).length < 3) {
-				later('I have never seen ' + username + '!')
-				return;
-			}
+			// if (timeToTextAgo(Math.floor((Date.now() - time) / 1000)).length < 3) {
+			// 	later('I have never seen ' + username + '!')
+			// 	return;
+			// }
 			later(username + ' was last online ' + timeToTextAgo(Math.floor((Date.now() - time) / 1000)) + ' ago.')
 		})
 	})

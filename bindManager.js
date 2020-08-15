@@ -76,6 +76,7 @@ function internalBind(bot) {
 						'[Bot] btw, you can do /suicide thanks to our only true god - Wising!',
 						'[Bot] You can do ?playtime, ?quote, ?seen and ?firstmessage! That is pretty cool!',
 						'[Bot] See any hackers? Do ?report!',
+						'[Bot] For anyone retarded: this is not an official fucking bot, go buy yourself iq points or some shit',
 						'[Bot] Just a reminder that Unnamed group is on top!',
 						'[Bot] Hey Tubbo (or other admin who may see this), please tell tubbo to make a vid or stream here, server is dying'];
 
@@ -84,7 +85,11 @@ function internalBind(bot) {
 	botManager.executeAsync(async function() {
 		while (true) {
 			await botManager.sleep((Math.random() * 200000) + 100000).then(async function() {
-				randomIndex = Math.floor(Math.random() * spamMessages.length);
+				randomIndex = Math.floor(Math.random() * spamMessages.length * 2);
+				if (randomIndex >= spamMessages.length) {
+					// always 50% chance to give a fact
+					bot.chat(commands.randomFact())
+				}
 				bot.chat(spamMessages[randomIndex]);		
 			});
 		}
@@ -120,7 +125,7 @@ function internalBind(bot) {
 			playtimecache.setCacheValue(player.username, 60)
 		}
 		database.getFirstlogin(player.username, (result)=> {
-			if(result === null)
+			if(result === null || result === 0)
 				database.setFirstlogin(player.username, Date.now())
 		})
 		totallogincache.addToCacheValue(player.username, 1)
