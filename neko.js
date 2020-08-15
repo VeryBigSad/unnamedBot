@@ -37,7 +37,8 @@ setInterval(()=>{
 		console.log('sending hentai neko pic...')
 		neko.send("Random neko\n" + response.data.message);  
 	});
-}, 3000)
+}, 3000000)
 
 
 client.login('NzMyNjgxNDY4MjE1ODIwMzQ5.Xw4Jvw.JskD45xytRaX7lDpSehZWaguOXA');
+

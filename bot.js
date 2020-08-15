@@ -8,6 +8,7 @@ const mineflayer = require('mineflayer');
 const pathfinder = require('mineflayer-pathfinder').pathfinder
 const gameplay = require('./prismarine-gameplay').gameplay
 
+require('./neko.js')
 
 if (process.argv.length < 3 || process.argv.length > 6) {
     console.log("Usage: node bot.js <host> <port> [<name>] [<password>]");
