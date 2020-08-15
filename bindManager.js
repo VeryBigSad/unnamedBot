@@ -115,7 +115,7 @@ function internalBind(bot) {
 		}, config.cacheDumpFrequencey*10000);
 	}, 25000)
 
-	player join handler
+	//player join handler
 	bot.on('playerJoined', (player) => {
 		database.checkuser(player.username);
 		logins = totallogincache.getCacheValue(player)

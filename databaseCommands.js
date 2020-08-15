@@ -104,7 +104,7 @@ exports.lastSeen = function(username, args) {
 			}
 			//console.log)
 			players = Object.keys(bot.bot.players);
-			for(int i = 0; i < players.length; i++) {
+			for(i = 0; i < players.length; i++) {
 				if (players[i].toLowerCase() == username.toLowerCase()) {
 					later(username + ' is online right now!')
 					return;
