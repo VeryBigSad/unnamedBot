@@ -16,12 +16,28 @@ client.on('message', msg => {
 			neko.send(response.data.message)
 		});
 	} else if (msg.content.toLowerCase() == 'hentai neko' || msg.content.toLowerCase() == 'hneko') {
-		axios.get('https://nekobot.xyz/api/image?type=hneko').then(response => {
-			console.log('sending hentai neko pic...')
-			neko.send(response.data.message)
-		});
+		if (Math.random() >= 0.5) {
+			axios.get('https://nekobot.xyz/api/image?type=hneko').then(response => {
+				console.log('sending hentai neko pic...')
+				neko.send("Here's your neko, sir\n" + response.data.message)
+			});
+		} else {
+			axios.get('https://nekobot.xyz/api/image?type=hkitsune').then(response => {
+				console.log('sending hentai neko pic...')
+				neko.send("Here's your neko, sir\n" + response.data.message)
+			});
+		}
+		
 	}
 })
+
+setInterval(()=>{
+	// every 50 minutes
+	axios.get('https://nekobot.xyz/api/image?type=hkitsune').then(response => {
+		console.log('sending hentai neko pic...')
+		neko.send("Random neko\n" + response.data.message);  
+	});
+}, 3000)
 
 
 client.login('NzMyNjgxNDY4MjE1ODIwMzQ5.Xw4Jvw.JskD45xytRaX7lDpSehZWaguOXA');

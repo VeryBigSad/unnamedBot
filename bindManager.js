@@ -14,8 +14,8 @@ const { EventEmitter } = require('events');
 var isConnected = false
 
 exports.bind = (bot) => {
-	//connection test loop
-    doConnectionTest(bot)
+	// connection test loop
+	doConnectionTest(bot)
 	if(isConnected === false) {
 		setInterval(()=>{
 			if(isConnected === false)
@@ -27,12 +27,12 @@ exports.bind = (bot) => {
 function internalBind(bot) {
 	console.log('Binding all the events')
 	
-	//Kills all intervals running (hopefully)
+	// Kills all intervals running (hopefully)
 	var killId = setTimeout(()=>{});
 	for (var i = killId; i > 0; i--) clearInterval(i)
 
 	console.log('Killed all the intervals currently alive')
-    //Discord chat logging
+    // Discord chat logging
     bot.on('message', function(jsonMsg) {
 		message = String(jsonMsg);
 		lastTimeMessage = Date.now();
@@ -44,23 +44,23 @@ function internalBind(bot) {
 		console.log('[' + time.getHours() + ':' + time.getMinutes() + ':' + time.getSeconds() + '] ' + jsonMsg)
 	})
 
-    //Command management
+    // Command management
 	bot.on('chat', function(username, message) {
 	    if (username === bot.username) return;
 
-	    if (message[0] == config.prefix) {
-		  	if (Date.now() - lastTimeUsed <= config.commandInterval) return;
+		if (message[0] == config.prefix) {
+			if (Date.now() - lastTimeUsed <= config.commandInterval) return;
 		  	lastTimeUsed = Date.now();
 		  		toSend = cmdhandler.commandHandler(username, message);
 		  		if (toSend !== null) {
-		  			bot.chat(toSend);  		  			
+		  			bot.chat(toSend);
 		  		}
 	    } else {
 	  	    cmdhandler.messageHandler(username, message);
 	  	}
 	});
 
-    //kicked event
+    // kicked event
 	bot.on('kicked', function(reason) {
 		Discord.sendMessage(`BOT HAD BEEN KICKED FOR ` + reason + ' :crab:');
 		cacheManager.dumpCache()
@@ -68,31 +68,31 @@ function internalBind(bot) {
 		botManager.relog();
 	});
 
-	//spam messages
+	// spam messages
 	var spamMessages = ['[Bot] Did you know you could do ?fact for a random fact? It\'s epic, I know. Do ?help for more!',
-	                    '[Bot] Join Unnamed group\'s discord server to participate in upcoming giveaway (100 members - 3 winners & 3 kits!) https://discord.gg/ZXvVQtg', 
-	                    '[Bot] Have troubles with progression on the server? Buy shulkers with THE cheapest prices from the most trustworthy seller! https://discord.gg/ZXvVQtg',
-	                    '[Bot] Buy kits from Unnamed group and your dick will grow 3 inches (We have proof and reviews!) https://discord.gg/ZXvVQtg',
-	                    '[Bot] btw, you can do /suicide thanks to our only true god - Wising!',
-	                    '[Bot] You can do ?playtime, ?quote, ?seen and ?firstmessage! That is pretty cool!',
-	                    '[Bot] See any hackers? Do ?report!',
-	                    '[Bot] Just a reminder that Unnamed group is on top!',
-	                    '[Bot] Hey Tubbo (or other admin who may see this), please tell tubbo to make a vid or stream here, server is dying'];
+						'[Bot] Join Unnamed group\'s discord server to participate in upcoming giveaway (100 members - 3 winners & 3 kits!) https://discord.gg/ZXvVQtg', 
+						'[Bot] Have troubles with progression on the server? Buy shulkers with THE cheapest prices from the most trustworthy seller! https://discord.gg/ZXvVQtg',
+						'[Bot] Buy kits from Unnamed group and your dick will grow 3 inches (We have proof and reviews!) https://discord.gg/ZXvVQtg',
+						'[Bot] btw, you can do /suicide thanks to our only true god - Wising!',
+						'[Bot] You can do ?playtime, ?quote, ?seen and ?firstmessage! That is pretty cool!',
+						'[Bot] See any hackers? Do ?report!',
+						'[Bot] Just a reminder that Unnamed group is on top!',
+						'[Bot] Hey Tubbo (or other admin who may see this), please tell tubbo to make a vid or stream here, server is dying'];
 
 
-    //spammer                    
+	// spammer
 	botManager.executeAsync(async function() {
 		while (true) {
-			await botManager.sleep((Math.random() * 100000) + 30000).then(async function() {
+			await botManager.sleep((Math.random() * 200000) + 100000).then(async function() {
 				randomIndex = Math.floor(Math.random() * spamMessages.length);
 				bot.chat(spamMessages[randomIndex]);		
 			});
 		}
 	}, 10);
 
-	//login handler
-    bot.on('login', async() => {
-        bot.chat(commands.welcomeMessage);
+	// login handler
+	bot.on('login', async() => {
+		bot.chat(commands.welcomeMessage);
 		bot.chat('Hello, Alyxix!')
 	 });
 
@@ -110,11 +110,12 @@ function internalBind(bot) {
 		}, config.cacheDumpFrequencey*10000);
 	}, 25000)
 
-	//player join handler
+	player join handler
 	bot.on('playerJoined', (player) => {
 		database.checkuser(player.username);
 		logins = totallogincache.getCacheValue(player)
 		if (logins == 0) {
+			// by some reason just doesn't work.
 			bot.chat(player.username + ' is new! Welcome to poggop.org!')
 			playtimecache.setCacheValue(player.username, 60)
 		}
@@ -144,11 +145,4 @@ function doConnectionTest(bot=mineflayer) {
 		botManager.relog()		
 	}
 
-	// if (bot.player === undefined) {
-	// 	// setTimeout(()=>{
-		
-	// 	// }, 1000)
-	// } else {
-	// 	isConnected = true
-	// }
 }

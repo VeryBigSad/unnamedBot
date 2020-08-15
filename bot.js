@@ -52,13 +52,11 @@ process.on('uncaughtException', function(err) {
 });
 
 process.on('exit', function(code) {
-	cacheManager.dumpCache();
 	console.log(code);
 	Discord.sendMessage(`<@!437208440578768908> Bot is actually down now`);
 });
 
 process.on('SIGINT', function(code) {
-	cacheManager.dumpCache();
 	Discord.sendMessage(`Exiting, because someone connected to the machine and stopped the bot.`);
 	process.exit(1)
 })

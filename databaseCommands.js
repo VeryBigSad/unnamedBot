@@ -100,14 +100,18 @@ exports.lastSeen = function(username, args) {
 		database.getLastlogin(username, (time)=>{
 			if (time == 0) {
 				later('I have never seen ' + username + '!')
-				return
+				return;
 			}
 			//console.log)
 			if (Object.keys(bot.bot.players).includes(username)) {
 				later(username + ' is online right now!')
-				return;	
+				return;
 			}
-			later(username + ' was last online ' + timeToTextAgo(Math.floor((Date.now() - time)/1000)) + ' ago.')
+			if (timeToTextAgo(Math.floor((Date.now() - time) / 1000)).length < 3) {
+				later('I have never seen ' + username + '!')
+				return;
+			}
+			later(username + ' was last online ' + timeToTextAgo(Math.floor((Date.now() - time) / 1000)) + ' ago.')
 		})
 	})
 }
@@ -118,7 +122,7 @@ exports.firstlogin = function(username, args) {
 
 		database.getFirstlogin(username, (time)=>{
 			console.log(time)
-			if (time === 0 ||time === null) {
+			if (time === 0 || time === null) {
 				later('I have never seen ' + username + '!')
 				return
 			}
