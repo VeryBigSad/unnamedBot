@@ -53,7 +53,7 @@ function internalBind(bot) {
 		  	lastTimeUsed = Date.now();
 		  		toSend = cmdhandler.commandHandler(username, message);
 		  		if (toSend !== null) {
-		  			bot.chat(toSend);
+		  			try{bot.chat(toSend)}catch(e){bot.chat('fuk u')}
 		  		}
 	    } else {
 	  	    cmdhandler.messageHandler(username, message);
@@ -84,13 +84,14 @@ function internalBind(bot) {
 	// spammer
 	botManager.executeAsync(async function() {
 		while (true) {
-			await botManager.sleep((Math.random() * 200000) + 100000).then(async function() {
+			await botManager.sleep((Math.random() * 120000) + 60000).then(async function() {
 				randomIndex = Math.floor(Math.random() * spamMessages.length * 2);
 				if (randomIndex >= spamMessages.length) {
 					// always 50% chance to give a fact
 					bot.chat(commands.randomFact())
+					return
 				}
-				bot.chat(spamMessages[randomIndex]);		
+				bot.chat(spamMessages[randomIndex]);	
 			});
 		}
 	}, 10);

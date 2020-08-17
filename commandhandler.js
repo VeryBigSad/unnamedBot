@@ -1,4 +1,5 @@
 const commands = require('./commands.js');
+const discord = require('./discord.js');
 const fs = require('fs');
 const database = require('./database.js');
 const textlog = require('./caches/textlogcache.js')
@@ -32,7 +33,11 @@ exports.commandHandler = function(username, message) {
 	} else if (command == 'fact') {
 		return commands.randomFact();
 	} else if (command == 'crash') {
-		throw Exception;
+		bot.bot.chat('oh noooooo i will die now')
+		//setTimeout(()=>{bot.relog()}, 1000)
+		//discord.sendMessage('relogging...')
+		//relog()
+		//throw Exception;
 	} else if (command == 'pt' || command == 'playtime') {
 		dbCommands.playtime(username, args).then((msg)=>{bot.sendMessage(msg)})
 		return null;
@@ -49,6 +54,7 @@ exports.commandHandler = function(username, message) {
 		dbCommands.firstlogin(username, args).then((msg)=>{bot.sendMessage(msg)})
 		return null;
 	}
+	return null;
 
 };
 
