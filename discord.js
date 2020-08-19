@@ -5,6 +5,7 @@ const cache = require('./caches/cachemanager.js')
 const database = require('./database.js')
 // also import string.prototype.replaceAll()
 const dbCommands = require('./databaseCommands.js')
+const commands = require('./commands.js')
 
 const ingame_channel_webhook = new Discord.WebhookClient('732684871914487888', 'oQ77KSVLsMCwbHnq-UlH5eYaUkteuYfghWXCxi74qqSAn6sisCnPG3V0bJvIu6fLTAkS');
 
