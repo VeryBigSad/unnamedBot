@@ -41,7 +41,6 @@ exports.nwordCommand = function(username, args) {
  			return 'Can\'t find ' + player + '!';
  		}
 	}
-	console.log(cmdhandler.getCounter())
 	if (cmdhandler.getCounter()[player] == null) {
 		return 'You haven\'t said the nword yet!';
 	}

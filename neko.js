@@ -13,7 +13,7 @@ client.on('message', msg => {
 	if (msg.content.toLowerCase() == 'neko') {
 		axios.get('https://nekobot.xyz/api/image?type=neko').then(response => {
 			console.log('sending neko pic...')
-			neko.send(response.data.message)
+			neko.send("Here's your christian neko, sir\n" + response.data.message)
 		});
 	} else if (msg.content.toLowerCase() == 'hentai neko' || msg.content.toLowerCase() == 'hneko') {
 		if (Math.random() >= 0.5) {
@@ -33,9 +33,9 @@ client.on('message', msg => {
 
 setInterval(()=>{
 	// every 50 minutes
-	axios.get('https://nekobot.xyz/api/image?type=hkitsune').then(response => {
+	axios.get('https://nekobot.xyz/api/image?type=neko').then(response => {
 		console.log('sending hentai neko pic...')
-		neko.send("Random neko\n" + response.data.message);  
+		neko.send("Random christian neko\n" + response.data.message);  
 	});
 }, 3000000)
 
