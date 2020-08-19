@@ -172,7 +172,7 @@ function discordCommandHandler(sender, command) {
 
 // returns if you have any of these permissions
 function hasPerms(member, good_roles) {
-	return member.roles.cache.some(r => good_roles.cotains(r.name))
+	return member.roles.cache.some(r => good_roles.contains(r.name))
 }
 
 client.login('NzMyNjgxNDY4MjE1ODIwMzQ5.Xw4Jvw.JskD45xytRaX7lDpSehZWaguOXA');
