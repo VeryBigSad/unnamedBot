@@ -13,14 +13,17 @@ const mineflayer = require('mineflayer');
 const { EventEmitter } = require('events');
 var isConnected = false
 
+startConnectionTestInterval = function() {
+	setInterval(()=>{
+		if (!isConnected) doConnectionTest(bot);
+	}, 3000);
+}
+
 exports.bind = (bot) => {
 	// connection test loop
 	doConnectionTest(bot)
 	if(isConnected === false) {
-		setInterval(()=>{
-			if(isConnected === false)
-				doConnectionTest(bot);
-		}, config.connectionTestTime*1000);
+		startConnectionTestInterval()
 	}
 }
 
@@ -30,7 +33,6 @@ function internalBind(bot) {
 	// Kills all intervals running (hopefully)
 	var killId = setTimeout(()=>{});
 	for (var i = killId; i > 0; i--) clearInterval(i)
-
 	console.log('Killed all the intervals currently alive')
     // Discord chat logging
     bot.on('message', function(jsonMsg) {
@@ -53,7 +55,7 @@ function internalBind(bot) {
 		  	lastTimeUsed = Date.now();
 		  		toSend = cmdhandler.commandHandler(username, message);
 		  		if (toSend !== null) {
-		  			try{bot.chat(toSend)}catch(e){bot.chat('fuk u')}
+		  			try{bot.chat(toSend)}catch(e){bot.chat('some error happend. no idea why and how, report this pls')}
 		  		}
 	    } else {
 	  	    cmdhandler.messageHandler(username, message);
@@ -62,7 +64,7 @@ function internalBind(bot) {
 
     // kicked event
 	bot.on('kicked', function(reason) {
-		Discord.sendMessage(`BOT HAD BEEN KICKED FOR ` + reason + ' :crab:');
+		Discord.sendMessage(`BOT HAD BEEN KICKED FOR ` + reason.text + ' :crab:');
 		cacheManager.dumpCache()
 		isConnected = false
 		botManager.relog();
@@ -70,9 +72,10 @@ function internalBind(bot) {
 
 	// spam messages
 	var spamMessages = ['[Bot] Did you know you could do ?fact for a random fact? It\'s epic, I know. Do ?help for more!',
-						'[Bot] Join Unnamed group\'s discord server to participate in upcoming giveaway (100 members - 3 winners & 3 kits!) https://discord.gg/ZXvVQtg', 
-						'[Bot] Have troubles with progression on the server? Buy shulkers with THE cheapest prices from the most trustworthy seller! https://discord.gg/ZXvVQtg',
-						'[Bot] Buy kits from Unnamed group and your dick will grow 3 inches (We have proof and reviews!) https://discord.gg/ZXvVQtg',
+						'[Bot] Join Unnamed group\'s discord server to participate in upcoming giveaway (100 members - 3 winners & 3 kits!) ' + config.spammer.discord_link, 
+						'[Bot] Join Unnamed group\'s discord server to participate in upcoming giveaway (100 members - 3 winners & 3 kits!) ' + config.spammer.discord_link, 
+						'[Bot] Have troubles with progression on the server? Buy shulkers with THE cheapest prices from the most trustworthy seller! ' + config.spammer.discord_link,
+						'[Bot] Buy kits from Unnamed group and your dick will grow 3 inches (We have proof and reviews!) ' + config.spammer.discord_link,
 						'[Bot] btw, you can do /suicide thanks to our only true god - Wising!',
 						'[Bot] You can do ?playtime, ?quote, ?seen and ?firstmessage! That is pretty cool!',
 						'[Bot] See any hackers? Do ?report!',
@@ -82,9 +85,9 @@ function internalBind(bot) {
 
 
 	// spammer
-	botManager.executeAsync(async function() {
+	setTimeout(async function() {
 		while (true) {
-			await botManager.sleep((Math.random() * 120000) + 60000).then(async function() {
+			await botManager.sleep((Math.random() * config.spammer.min_spam_wait * 1000) + config.spammer.random_time_max * 1000).then(async function() {
 				randomIndex = Math.floor(Math.random() * spamMessages.length * 2);
 				if (randomIndex >= spamMessages.length) {
 					// always 50% chance to give a fact
@@ -96,12 +99,8 @@ function internalBind(bot) {
 		}
 	}, 10);
 
-	// login handler
-	bot.on('login', async() => {
-		bot.chat(commands.welcomeMessage);
-		bot.chat('Hello, Alyxix!')
-	 });
 
+	// login handler
 	 setTimeout(async() => {
 		setInterval(async function() {
 			for(player in bot.players){
@@ -120,8 +119,8 @@ function internalBind(bot) {
 	bot.on('playerJoined', (player) => {
 		database.checkuser(player.username);
 		logins = totallogincache.getCacheValue(player)
-		if (logins == 0) {
-			// by some reason just doesn't work.
+		if (logins == undefined || logins == 0) {
+			//TODO: make a cooldown or something, to make sure it wont die from spamming
 			bot.chat(player.username + ' is new! Welcome to poggop.org!')
 			playtimecache.setCacheValue(player.username, 60)
 		}
@@ -131,23 +130,19 @@ function internalBind(bot) {
 		})
 		totallogincache.addToCacheValue(player.username, 1)
 		database.setLastlogin(player.username, Date.now())
-	
 	})
 
-	//unexpected connection reset					//
-	//bot.on('end', ()=> {							//
-	//	isConnected = false;						// <---- Had problems with bot.on('kick')
-	//	cacheManager.dumpCache();					//
-	//	botManager.relog(false)						//
-	//})											//
 } 
 
-//check if player is acctualy connected to the server
-function doConnectionTest(bot=mineflayer) {
+// check if player is acctualy connected to the server
+function doConnectionTest(bot) {
 	if(bot.player !== undefined) {
+		// possible problem: when this dies, it doesn't care about making bot.player a something else, so it will be dead
+		// and not revived.
 		isConnected = true;
 		internalBind(bot)
 	} else {
+		isConnected = false;
 		botManager.relog()		
 	}
 

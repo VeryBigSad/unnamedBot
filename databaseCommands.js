@@ -102,7 +102,6 @@ exports.lastSeen = function(username, args) {
 				later('I have never seen ' + username + '!')
 				return;
 			}
-			//console.log)
 			players = Object.keys(bot.bot.players);
 			for(i = 0; i < players.length; i++) {
 				if (players[i].toLowerCase() == username.toLowerCase()) {
@@ -110,10 +109,6 @@ exports.lastSeen = function(username, args) {
 					return;
 				}
 			}
-			// if (timeToTextAgo(Math.floor((Date.now() - time) / 1000)).length < 3) {
-			// 	later('I have never seen ' + username + '!')
-			// 	return;
-			// }
 			later(username + ' was last online ' + timeToTextAgo(Math.floor((Date.now() - time) / 1000)) + ' ago.')
 		})
 	})
@@ -124,7 +119,6 @@ exports.firstlogin = function(username, args) {
 		if (args.length >= 1) username = args[0]
 
 		database.getFirstlogin(username, (time)=>{
-			console.log(time)
 			if (time === 0 || time === null) {
 				later('I have never seen ' + username + '!')
 				return
@@ -137,7 +131,6 @@ exports.firstlogin = function(username, args) {
 exports.quote = function(username, args) {
 	return new Promise((later)=>{
 		if (args.length >= 1) username = args[0];
-		console.log(username)
 		database.getRandomTextmessage(username, (message)=>{
 			if (message === null) {
 				later(username + ' hasn\'t said anything yet!')

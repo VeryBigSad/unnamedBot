@@ -24,7 +24,7 @@ exports.commandHandler = function(username, message) {
 		return commands.helpCommand(username, args);
 	} else if (command == 'report' || command == 'wdr' || command == 'chatreport') {
 		return commands.reportCommand(username, args);
-	} else if(command == 'ping') {
+	} else if (command == 'ping') {
 		return commands.pingCommand(username, args)	
 	} else if (command == 'discord' || command == 'd') {
 		return commands.discordCommand(username, args);
@@ -32,12 +32,8 @@ exports.commandHandler = function(username, message) {
 		return "Command currently disabled"
 	} else if (command == 'fact') {
 		return commands.randomFact();
-	} else if (command == 'crash') {
-		bot.bot.chat('oh noooooo i will die now')
-		//setTimeout(()=>{bot.relog()}, 1000)
-		//discord.sendMessage('relogging...')
-		//relog()
-		//throw Exception;
+	} else if (command == 'help') {
+		return commands.helpCommand()
 	} else if (command == 'pt' || command == 'playtime') {
 		dbCommands.playtime(username, args).then((msg)=>{bot.sendMessage(msg)})
 		return null;
@@ -50,12 +46,12 @@ exports.commandHandler = function(username, message) {
 	} else if (command == 'fm' || command == 'firstmessage') {
 		dbCommands.firstmessage(username, args).then((msg)=>{bot.sendMessage(msg)})
 		return null;
-	} else if(command == 'fl' ||command == 'firstlogin' || command == 'joindate' ||command == 'jd') {
+	} else if (command == 'firstlogin' || command == 'joindate' ||command == 'jd') {
 		dbCommands.firstlogin(username, args).then((msg)=>{bot.sendMessage(msg)})
 		return null;
 	}
-	return null;
 
+	return null;
 };
 
 

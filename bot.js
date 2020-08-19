@@ -57,28 +57,12 @@ process.on('exit', function(code) {
 	Discord.sendMessage(`<@!437208440578768908> Bot is actually down now`);
 });
 
-process.on('SIGINT', function(code) {
-	Discord.sendMessage(`Exiting, because someone connected to the machine and stopped the bot.`);
-	process.exit(1)
-})
-
-function bindGameplay(bot) {
-	bot.loadPlugin(pathfinder);
-	bot.loadPlugin(gameplay);
-}
-
-
 exports.sendMessage = (text)=>{
 	this.bot.chat(text)
 }
 
 exports.getPlayers = ()=>{
 	return this.bot.players
-}
-
-
-exports.executeAsync=(func)=> {
-    setTimeout(func, 0);
 }
 
 // sleep time expects milliseconds

@@ -19,7 +19,8 @@ exports.dumpCache = () => {
         })
     })
     textlog.init()
-    console.log('Save task finished in: ' + Math.floor((Date.now()-time)) + 'ms')
+    yes = Math.floor((Date.now()-time))
+    console.log('Save task finished in: ' + (isNaN(yes) ? 'instantly' : (yes + 'ms')))
 }
 
 exports.dumpDB = () => {
@@ -35,5 +36,6 @@ exports.dumpDB = () => {
             totallogins.setCacheValue(value.user, value.totallogins)
         })
     })
-    console.log('Database sync task finished in:' + Math.floor((Date.now()-time) + 'ms'))
+    yes = Math.floor((Date.now()-time))
+    console.log('Database sync task finished in: ' + (isNaN(yes) ? 'instantly' : (yes + 'ms')))
 }

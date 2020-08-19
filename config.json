@@ -1,7 +1,15 @@
 {
     "prefix": "?",
     "relogAttempts": 5,
-    "connectionTestTime": 3,
     "cacheDumpFrequencey": 30,
-    "commandInterval": 500
+    "commandInterval": 500,
+    "connectionTestTime": 30,
+
+
+    "spammer": {
+    	"discord_link": "https://discord.gg/43kXWmp",
+    	"discord_bot_link" : "https://discord.gg/9Yu89s7",
+    	"min_spam_wait": 120,
+    	"random_time_max": 60
+    }
 }

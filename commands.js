@@ -1,14 +1,13 @@
 const cmdhandler = require('./commandhandler.js');
 const sync = require('sync-request');
 const bot = require('./bot')
+const config = require('./config.json')
 
 
 exports.welcomeMessage = 'Hi! I\'m a property of an unnamed group. Use ?help to find out about what I can do!';
 
 exports.helpCommand = function(username, args) {
-	//return '/msg ' + username + ' ?help - this command; ?report - report a player; ?discord - Unnamed group\'s discord; ?quote - random quote of someone; ?playtime - playtime of someone\n' +
-	//	   '/msg ' + username + ' ?fact - random fact; ?firstmessage - first message of someone; ?seen - when person had been seen last time';
-	return "help isn't coming soon..."
+	return "?discord - discord server; ?quote - your random quote, ?playtime - your playtime, ?jd - joindate; ?fm - your first message, ?seen <player> - when a player was last seen. More commands in discord: " + config.spammer.discord_bot_link
 };
 
 exports.reportCommand = function(username, args) {
