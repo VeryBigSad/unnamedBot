@@ -148,22 +148,22 @@ function discordCommandHandler(sender, command) {
 
 	username = args[0]
 	if (command == 'pt' || command == 'playtime') {
-		dbCommands.playtime(username, []).then((msg)=>{sendMessage(msg)})
+		dbCommands.playtime(username, [username]).then((msg)=>{sendMessage(msg)})
 		return null
 	} else if (command == 'qt' || command == 'quote') {
-		dbCommands.quote(username, []).then((msg)=>{sendMessage(msg)})
+		dbCommands.quote(username, [username]).then((msg)=>{sendMessage(msg)})
 		return null
 	} else if (command == 'seen') {
-		dbCommands.lastSeen(username, []).then((msg)=>{sendMessage(msg)})
+		dbCommands.lastSeen(username, [username]).then((msg)=>{sendMessage(msg)})
 		return null
 	} else if (command == 'fm' || command == 'firstmessage') {
-		dbCommands.firstmessage(username, []).then((msg)=>{sendMessage(msg)})
+		dbCommands.firstmessage(username, [username]).then((msg)=>{sendMessage(msg)})
 		return null
 	} else if (command == 'firstlogin' || command == 'joindate' ||command == 'jd') {
-		dbCommands.firstlogin(username, []).then((msg)=>{sendMessage(msg)})
+		dbCommands.firstlogin(username, [username]).then((msg)=>{sendMessage(msg)})
 		return null
 	} else if (command == 'ping') {
-		sendMessage(commands.pingCommand(username, []))
+		sendMessage(commands.pingCommand(username, [username]))
 		return null
 	}
 

@@ -142,9 +142,4 @@ exports.quote = function(username, args) {
 	})
 }
 
-//database.init('localhost', 'root', '79397939', 'textlog', 'minedata')
-//textlogcache.init()
-//textlogcache.addToCacheValue("Nowilltolife", "e", Date.now())
-
-//this.quote("Nowilltolife",  ["Nowilltolife"]).then((result)=>{console.log(result)})
 
