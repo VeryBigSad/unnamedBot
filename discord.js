@@ -113,17 +113,21 @@ function discordCommandHandler(command) {
 	args = command.split(" ")
 	command = args[0]
 	args = args.slice(1)
-	if (args.length <= 0) {
-		sendMessage('Specify the username!')
-		return
-	}
+
 	username = args[0]
 
 	if (command == 'fact') {
 		return commands.randomFact();
 	} else if (command == 'help') {
 		"You can see all the discord commands in #commands!"
-	} else if (command == 'pt' || command == 'playtime') {
+	} 
+
+	if (args.length <= 0) {
+		sendMessage('Specify the username!')
+		return
+	}
+	// here go commands with arguments
+	if (command == 'pt' || command == 'playtime') {
 		dbCommands.playtime(username, []).then((msg)=>{sendMessage(msg)})
 		return null;
 	} else if (command == 'qt' || command == 'quote') {
@@ -136,6 +140,9 @@ function discordCommandHandler(command) {
 		dbCommands.firstmessage(username, []).then((msg)=>{sendMessage(msg)})
 		return null;
 	} else if (command == 'firstlogin' || command == 'joindate' ||command == 'jd') {
+		dbCommands.firstlogin(username, []).then((msg)=>{sendMessage(msg)})
+		return null;
+	} else if (command == 'ping') {
 		dbCommands.firstlogin(username, []).then((msg)=>{sendMessage(msg)})
 		return null;
 	}

@@ -71,17 +71,17 @@ function internalBind(bot) {
 	});
 
 	// spam messages
-	var spamMessages = ['[Bot] Did you know you could do ?fact for a random fact? It\'s epic, I know. Do ?help for more!',
-						'[Bot] Join Unnamed group\'s discord server to participate in upcoming giveaway (100 members - 3 winners & 3 kits!) ' + config.spammer.discord_link, 
-						'[Bot] Join Unnamed group\'s discord server to participate in upcoming giveaway (100 members - 3 winners & 3 kits!) ' + config.spammer.discord_link, 
-						'[Bot] Have troubles with progression on the server? Buy shulkers with THE cheapest prices from the most trustworthy seller! ' + config.spammer.discord_link,
-						'[Bot] Buy kits from Unnamed group and your dick will grow 3 inches (We have proof and reviews!) ' + config.spammer.discord_link,
-						'[Bot] btw, you can do /suicide thanks to our only true god - Wising!',
-						'[Bot] You can do ?playtime, ?quote, ?seen and ?firstmessage! That is pretty cool!',
-						'[Bot] See any hackers? Do ?report!',
-						'[Bot] For anyone retarded: this is not an official fucking bot, go buy yourself iq points or some shit',
-						'[Bot] Just a reminder that Unnamed group is on top!',
-						'[Bot] Hey Tubbo (or other admin who may see this), please tell tubbo to make a vid or stream here, server is dying'];
+	var spamMessages = ['[Unnamed Bot] Did you know you could do ?fact for a random fact? It\'s epic, I know. Do ?help for more!',
+						'[Unnamed Bot] Join Unnamed group\'s discord server to participate in upcoming giveaway (100 members - 3 winners & 3 kits!) ' + config.spammer.discord_link, 
+						'[Unnamed Bot] Join Unnamed group\'s discord server to participate in upcoming giveaway (100 members - 3 winners & 3 kits!) ' + config.spammer.discord_link, 
+						'[Unnamed Bot] Have troubles with progression on the server? Buy shulkers with THE cheapest prices from the most trustworthy seller! ' + config.spammer.discord_link,
+						'[Unnamed Bot] Buy kits from Unnamed group and your dick will grow 3 inches (We have proof and reviews!) ' + config.spammer.discord_link,
+						'[Unnamed Bot] btw, you can do /suicide thanks to our only true god - Wising!',
+						'[Unnamed Bot] You can do ?playtime, ?quote, ?seen and ?firstmessage! That is pretty cool!',
+						'[Unnamed Bot] See any hackers? Do ?report!',
+						'[Unnamed Bot] For anyone retarded: this is not an official fucking bot, go buy yourself iq points or some shit',
+						'[Unnamed Bot] Just a reminder that Unnamed group is on top!',
+						'[Unnamed Bot] Hey Tubbo (or other admin who may see this), please tell tubbo to make a vid or stream here, server is dying'];
 
 
 	// spammer
@@ -122,7 +122,7 @@ function internalBind(bot) {
 		if (logins == undefined || logins == 0) {
 			//TODO: make a cooldown or something, to make sure it wont die from spamming
 			bot.chat(player.username + ' is new! Welcome to poggop.org!')
-			playtimecache.setCacheValue(player.username, 60)
+			totallogincache.setCacheValue(player.username, 1)
 		}
 		database.getFirstlogin(player.username, (result)=> {
 			if(result === null || result === 0)
