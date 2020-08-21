@@ -121,7 +121,7 @@ function internalBind(bot) {
 		logins = totallogincache.getCacheValue(player)
 		if (logins == undefined || logins == 0) {
 			//TODO: make a cooldown or something, to make sure it wont die from spamming
-			bot.chat(player.username + ' is new! Welcome to poggop.org!')
+			//bot.chat(player.username + ' is new! Welcome to poggop.org!')
 			totallogincache.setCacheValue(player.username, 1)
 		}
 		database.getFirstlogin(player.username, (result)=> {

@@ -92,6 +92,7 @@ function parseMentionsInMessage(message) {
 
 
 function discordCommandHandler(sender, command) {
+	full_cmd_text = command
 	args = command.split(" ")
 	command = args[0]
 	args = args.slice(1)
@@ -115,7 +116,7 @@ function discordCommandHandler(sender, command) {
 	} else if (command == 'raw') {
 		// should be exact
 		if (hasPerms(sender, ['bot developer', 'Trusted'])) {
-			return msg.content.slice(4).replace(/^\s+|\s+$/g, '')
+			bot.sendMessage(full_cmd_text.slice(4).replace(/^\s+|\s+$/g, ''))
 		} else {
 			return "You don't have enough perms to execute ?" + command + "!"
 		}
@@ -172,7 +173,7 @@ function discordCommandHandler(sender, command) {
 
 // returns if you have any of these permissions
 function hasPerms(member, good_roles) {
-	return member.roles.cache.some(r => good_roles.contains(r.name))
+	return member.roles.cache.some(r => good_roles.includes(r.name))
 }
 
 client.login('NzMyNjgxNDY4MjE1ODIwMzQ5.Xw4Jvw.JskD45xytRaX7lDpSehZWaguOXA');
