@@ -64,10 +64,11 @@ function internalBind(bot) {
 
     // kicked event
 	bot.on('kicked', function(reason) {
-		Discord.sendMessage(`BOT HAD BEEN KICKED FOR ` + reason.text + ' :crab:');
-		cacheManager.dumpCache()
+		Discord.sendMessage(`BOT HAD BEEN KICKED FOR ` + reason + ' :crab:');
+		console.log('Kicked')
+		//cacheManager.dumpCache()
 		isConnected = false
-		botManager.relog();
+		setTimeout(()=>{botManager.relog()}, 1000)
 	});
 
 	// spam messages
