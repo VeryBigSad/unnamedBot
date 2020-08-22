@@ -9,15 +9,14 @@ exports.get_neko = function (type) {
 	return new Promise(resolve => {
 		axios.get('https://nekobot.xyz/api/image?type=' + type).then(response => {
 			resolve(response.data.message)
-			neko.send("Here's your christian neko, sir\n" + response.data.message)
+			//neko.send("Here's your christian neko, sir\n" + response.data.message)
 		});
 	})
 }
 
 exports.BindNeko = ()=>{
 	setInterval(()=>{
-		// every 50 minutes
-		this.get_neko('hneko').then((link)=>{
+		this.get_neko('neko').then((link)=>{
 			console.log('sending random neko pic...')
 			neko.send("Random christian neko\n" + link);
 		})

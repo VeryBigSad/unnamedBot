@@ -53,10 +53,9 @@ function internalBind(bot) {
 		if (message[0] == config.prefix) {
 			if (Date.now() - lastTimeUsed <= config.commandInterval) return;
 		  	lastTimeUsed = Date.now();
-		  		toSend = cmdhandler.commandHandler(username, message);
-		  		if (toSend !== null) {
-		  			try{bot.chat(toSend)}catch(e){bot.chat('some error happend. no idea why and how, report this pls')}
-		  		}
+		  		cmdhandler.commandHandler(username, message).then((msg)=>{
+					bot.chat(msg)
+				});
 	    } else {
 	  	    cmdhandler.messageHandler(username, message);
 	  	}
