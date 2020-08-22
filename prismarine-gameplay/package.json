@@ -22,18 +22,24 @@
     "ai"
   ],
   "author": "Romain Beaumont",
-  "contributors": ["TheDudeFromCI"],
+  "contributors": [
+    "TheDudeFromCI"
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/PrismarineJS/prismarine-gameplay/issues"
   },
   "homepage": "https://github.com/PrismarineJS/prismarine-gameplay#readme",
   "devDependencies": {
+    "axios": "^0.20.0",
     "jest": "^26.1.0",
     "require-self": "^0.2.3",
     "standard": "^14.3.4"
   },
   "dependencies": {
-    "mineflayer-pathfinder": "^1.0.9"
+    "mineflayer": "^2.28.1",
+    "mineflayer-pathfinder": "^1.0.9",
+    "mysql": "^2.18.1",
+    "sync-request": "^6.1.0"
   }
 }
