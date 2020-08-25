@@ -3,16 +3,9 @@ const bot = require('./bot.js');
 const client = new Discord.Client();
 const cache = require('./caches/cachemanager.js')
 const database = require('./database.js')
-// also import string.prototype.replaceAll()
 const dbCommands = require('./databaseCommands.js')
 const commands = require('./commands.js')
-
-const ingame_channel_webhook = new Discord.WebhookClient('732684871914487888', 'oQ77KSVLsMCwbHnq-UlH5eYaUkteuYfghWXCxi74qqSAn6sisCnPG3V0bJvIu6fLTAkS');
-
-// const ingamechat =;
-
-// this.sendMessage = exports.sendMessage
-// this.sendMessage = exports.sendMessage;
+const config = require('./config.json')
 
 exports.sendMessage = function(text) {
 	if (text === null) {
@@ -75,7 +68,8 @@ client.on('message', msg => {
 		return
 	}
 	msg_content_with_mentions = parseMentionsInMessage(msg.content)
-	bot.sendMessage('[' + (msg.member.roles.cache.has('731327156453507074') ? 'MEMBER' : (msg.member.roles.cache.has('732573982909530113') ? 'COOL' : (msg.member.roles.cache.has('739459055638282253') ? 'RETIRED' : (msg.member.roles.cache.has('737988985158107146') ? 'BOT DEV' : 'NON')))) + '] ' + ' [' + msg.author.username + '] ' + msg_content_with_mentions);
+	bot.sendMessage('[DISCORD] ' + ' [' + msg.author.username + '] ' + msg_content_with_mentions);
+	// bot.sendMessage('[' + (msg.member.roles.cache.has('731327156453507074') ? 'MEMBER' : (msg.member.roles.cache.has('732573982909530113') ? 'COOL' : (msg.member.roles.cache.has('739459055638282253') ? 'RETIRED' : (msg.member.roles.cache.has('737988985158107146') ? 'BOT DEV' : 'NON')))) + '] ' + ' [' + msg.author.username + '] ' + msg_content_with_mentions);
 });
 
 function parseMentionsInMessage(message) {
@@ -176,5 +170,5 @@ function hasPerms(member, good_roles) {
 	return member.roles.cache.some(r => good_roles.includes(r.name))
 }
 
-client.login('NzMyNjgxNDY4MjE1ODIwMzQ5.Xw4Jvw.JskD45xytRaX7lDpSehZWaguOXA');
+client.login(config.discord.bot_private_key);
 

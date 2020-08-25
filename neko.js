@@ -1,8 +1,8 @@
 const axios = require('axios')
 const Discord = require('discord.js')
-const neko = new Discord.WebhookClient('743246927130525757', 'YWITiXeNlx97rbg6gkhgbhOrrQV9Xwvdmlrn6A6bVldB1Dfa8daoTePtbeO6f9fCdR5a');
-const client = new Discord.Client();
 const config = require('./config.json')
+const neko = new Discord.WebhookClient(config.discord_keys.neko_number, config.discord_keys.neko_symbols);
+const client = new Discord.Client();
 
 
 exports.get_neko = function (type) {
@@ -49,5 +49,5 @@ exports.BindNeko = ()=>{
 
 
 
-client.login('NzMyNjgxNDY4MjE1ODIwMzQ5.Xw4Jvw.JskD45xytRaX7lDpSehZWaguOXA');
+client.login(config.discord_keys.bot_private_key) // you might just use the bot to send the messages but nah
 

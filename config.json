@@ -7,6 +7,12 @@
 
     "wait_for_random_neko_minutes": 100,
 
+    "discord": {
+    	"bot_private_key": "YOUR DISCORD PRIVATE KEY",
+    	"neko_number": "YOUR NEKO NUMBER THINGY",
+    	"neko_symbols": "YOUR NEKO SYMBOLS THINGY",
+    },
+
     "spammer": {
     	"min_spam_wait": 80,
     	"random_time_max": 60,
