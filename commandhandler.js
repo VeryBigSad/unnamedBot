@@ -1,11 +1,7 @@
-const commands = require('./commands.js');
-const discord = require('./discord.js');
-const fs = require('fs');
-const database = require('./database.js');
+const commands = require('./commands.js')
+const database = require('./database.js')
 const textlog = require('./caches/textlogcache.js')
-const bot = require('./bot.js');
-const dbCommands = require('./databaseCommands.js');
-const config = require('./config.json')
+const dbCommands = require('./databaseCommands.js')
 
 nwordcounter = {};
 whispers = {};
@@ -14,8 +10,8 @@ exports.commandHandler = function(username, message) {
 	return new Promise((resolve => {
 		message = message.slice(1).split(' ');
 		let command = message[0].toLowerCase();
-		let args = message.shift();
-		args = message;
+		message.shift()
+		let args = message;
 
 
 		if (command === 'h' || command === 'help') {
@@ -29,7 +25,8 @@ exports.commandHandler = function(username, message) {
 		} else if (command === 'nwordcount') {
 			resolve("Command currently disabled")
 		} else if (command === 'fact') {
-			resolve(commands.randomFact())
+			commands.randomFact().then(msg=>{resolve(msg)})
+			return null;
 		} else if (command === 'help') {
 			resolve(commands.helpCommand())
 		} else if (command === 'pt' || command === 'playtime') {
@@ -58,10 +55,6 @@ exports.commandHandler = function(username, message) {
 
 
 exports.messageHandler = function(username, message) {
-	if (nwordcounter[username] === null) {
-		nwordcounter[username] = 0;
-	}
-
 	if ((!message.startsWith('!') || !message.startsWith('?') && message.length > 3)) {
 		database.getFirstmessage(username, (message2)=>{
 			if (message2 === '' || message2 === null || message2 === undefined || message2 === "0" || message2 === 0) {

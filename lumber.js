@@ -1,3 +1,7 @@
+// isn't used anywhere, you can just delete this file and nothing will change
+
+
+
 const mineflayer = require('mineflayer');
 const pathfinder = require('mineflayer-pathfinder').pathfinder
 const gameplay = require('./prismarine-gameplay').gameplay

@@ -7,44 +7,49 @@ const dbCommands = require('./databaseCommands.js')
 const commands = require('./commands.js')
 const config = require('./config.json')
 
+let queuedMessages = []
 exports.sendMessage = function(text) {
 	if (text === null) {
 		return
 	}
-
-	if (client.channels.cache.get('732683858885214272') === undefined) {
-		client.channels.fetch('732683858885214272')
-	} else {
-		client.channels.cache.get('732683858885214272').send(text)
-	}
-	
+	client.channels.fetch(config.discord.bot_channel_id).then(async(channel)=>{
+		if (queuedMessages.length !== 0) {
+			for (let msg = 0; msg < queuedMessages.length; msg++) {
+				// await bot.sleep(100)
+				channel.send(queuedMessages[msg])
+			}
+			queuedMessages = []
+		}
+		channel.send(text)
+	}).catch(()=>{
+		queuedMessages.push(text)
+		console.log("Couldn't get the ingame channel by it's ID (queued it though). If in a minute you received 0 messages on discord, you probably got it wrong in the config.")
+	})
 }
 
 sendMessage = exports.sendMessage
 
 exports.bindDiscord = function(bot) {
+	client.login(config.discord.bot_private_key);
+
 	bot.on('message', function(jsonMsg) {
-		message = String(jsonMsg);
-		lastTimeMessage = Date.now();
-		username = message.slice(0, message.indexOf(':'));
-		text = message.slice(message.indexOf(':') + 2);
+		let message = String(jsonMsg);
 
 
-		time = new Date();
 		message = message.replace(new RegExp('@', 'gi'), '("at" symbol)')
 		message = message.replace(new RegExp('discord.gg/'.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&'), 'gi'), '(discord link)');
 		// if (message == 'From ' + bot.username + ': connection test' || message == 'To ' + bot.username + ': connection test') {
 		// 	return
 		// }
 		if (message !== undefined) {
-			new_msg = ''
+			let new_msg = ''
 			for (i = 0; i < message.length; i++) {
 				if (message[i] == '_' || message[i] == '*' || message[i] == '`' || message[i] == '~' || message[i] == '>') {
 					new_msg += '\\'
 				}
 				new_msg += message[i]
 			}
-			sendMessage(new_msg);			
+			sendMessage(new_msg)
 		}
 	})
 }
@@ -80,34 +85,35 @@ function parseMentionsInMessage(message) {
 	// 	replace
 	// })
 
-	//TODO: from "hello <@2348579283450237>" it should return "hello @Username"
+	// TODO: from DiscordMessageObject(text="hello <@00000000000000001>") it should return String("hello @Username")
 	return message
 }
 
 
 function discordCommandHandler(sender, command) {
-	full_cmd_text = command
-	args = command.split(" ")
+	let full_cmd_text = command
+	let args = command.split(" ")
 	command = args[0]
 	args = args.slice(1)
 
 
-	if (command == 'fact') {
-		return commands.randomFact();
-	} else if (command == 'help') {
+	if (command === 'fact') {
+		commands.randomFact().then((msg)=>{
+			sendMessage(msg)
+		})
+		return null
+	} else if (command === 'help') {
 		return "You can see all the discord commands in " + client.channels.cache.get('745387988204388412').toString() + "!"
-	} else if (command == 'players' || command == 'pl') {
-		players = bot.getPlayers();
-		playersStr = '';
-		size = 0;
-		keys = Object.keys(players);
-		for (i = 0; i < keys.length; i++) {
-			size += 1;
+	} else if (command === 'players' || command === 'pl') {
+		let players = bot.getPlayers();
+		let playersStr = '';
+		let keys = Object.keys(players);
+		for (let i = 0; i < keys.length; i++) {
 			playersStr += players[keys[i]].username + ', ';
 		}
-		msg = 'There are ' + size + ' players online: ' + playersStr;
+		let msg = 'There are ' + players.length + ' players online: ' + playersStr;
 		return msg.slice(0, msg.length - 2);
-	} else if (command == 'raw') {
+	} else if (command === 'raw') {
 		// should be exact
 		if (hasPerms(sender, ['bot developer', 'Trusted'])) {
 			bot.sendMessage(full_cmd_text.slice(4).replace(/^\s+|\s+$/g, ''))
@@ -169,6 +175,4 @@ function discordCommandHandler(sender, command) {
 function hasPerms(member, good_roles) {
 	return member.roles.cache.some(r => good_roles.includes(r.name))
 }
-
-client.login(config.discord.bot_private_key);
 

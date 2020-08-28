@@ -1,32 +1,34 @@
 {
     "prefix": "?",
-    "relogAttempts": 5,
-    "cacheDumpFrequencey": 30,
-    "commandInterval": 500,
-    "connectionTestTime": 30,
+    "welcoming_message": "Your welcoming message, which is displayed when the bot joins the server",
+    "cacheDumpFrequency": 60,
+    "commandInterval": 0.5,
 
     "wait_for_random_neko_minutes": 100,
 
     "discord": {
-    	"bot_private_key": "YOUR DISCORD PRIVATE KEY",
-    	"neko_number": "YOUR NEKO NUMBER THINGY",
-    	"neko_symbols": "YOUR NEKO SYMBOLS THINGY",
+        "bot_private_key": "PRIVATE KEY OF YOUR DISCORD BOT",
+    	"neko_number": "YOUR NEKO NUMBER THINGY (ignore this, not really functional much rn)",
+    	"neko_symbols": "YOUR NEKO SYMBOLS THINGY (ignore this, not really functional much rn)",
+        "bot_channel_id": "CHANNEL WHERE PEOPLE WILL RECIEVE MESSAGES FROM THE BOT",
+        "discord_link": "LINK TO YOUR DISCORD SERVER"
     },
 
     "spammer": {
     	"min_spam_wait": 80,
     	"random_time_max": 60,
         "fact_chance": 0.2,
-        "messages": ["[Unnamed Bot] Did you know you could do ?fact for a random fact? It's epic, I know. Do ?help for more!",
-          "[Unnamed Bot] Join Unnamed group's discord server to participate in upcoming giveaway (100 members - 3 winners & 3 kits!) https://discord.gg/43kXWmp",
-          "[Unnamed Bot] Join Unnamed group's discord server to participate in upcoming giveaway (100 members - 3 winners & 3 kits!) https://discord.gg/43kXWmp",
-          "[Unnamed Bot] Have troubles with progression on the server? Buy shulkers with THE cheapest prices from the most trustworthy seller! https://discord.gg/43kXWmp",
-          "[Unnamed Bot] Buy kits from Unnamed group and your dick will grow 3 inches (We have proof and reviews!) https://discord.gg/43kXWmp",
-          "[Unnamed Bot] btw, you can do /suicide thanks to our only true god - Wising!",
-          "[Unnamed Bot] You can do ?playtime, ?quote, ?seen and ?firstmessage! That is pretty cool! More commands at https://discord.gg/43kXWmp",
-          "[Unnamed Bot] See any hackers? Do ?report!",
-          "[Unnamed Bot] this is not an official poggop server bot btw",
-          "[Unnamed Bot] Just a reminder that Unnamed group is on top! https://discord.gg/43kXWmp",
-          "[Unnamed Bot] Hey Tubbo (or other admin who may see this), please tell tubbo to make a vid or stream here, server is dying"]
+        "messages": ["message that can be spammed 1",
+            "message that can be spammed 2",
+            "message that can be spammed 3",
+            "message that can be spammed 4",
+            "message that can be spammed 5"],
+        "discord_command_message": "Join our discord! Link: <LINK>"
+    },
+    "database": {
+        "ip": "DATABASE IP (like localhost)",
+        "port": "DATABASE PORT (standard for mysql - 3306)",
+        "user": "DATABASE USER (like root)",
+        "password": "DATABASE PASSWORD (like 12345 idk)"
     }
 }

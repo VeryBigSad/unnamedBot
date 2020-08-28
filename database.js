@@ -5,12 +5,13 @@ const discord = require('./discord.js')
 let chatlog = null
 let con = null
 
-exports.init = async (host, user, password, textlog, userdatabase) => {
+exports.init = async (host, port, user, password, textlog, userdatabase) => {
   chatlog = mysql.createConnection({
     host: host,
     user: user,
     password: password,
-    database: textlog
+    database: textlog,
+    port: port
   })
   chatlog.end // Because of some reason database needs to be eneded before connectiing
   chatlog.connect(function (err) {
@@ -24,7 +25,8 @@ exports.init = async (host, user, password, textlog, userdatabase) => {
     host: host,
     user: user,
     password: password,
-    database: userdatabase
+    database: userdatabase,
+    port: port
   })
   con.end // Because of some reason database needs to be eneded before connectiing
   con.connect(function (err) {
@@ -37,6 +39,7 @@ exports.init = async (host, user, password, textlog, userdatabase) => {
   await con.query('CREATE TABLE IF NOT EXISTS userdata(user varchar(255), playtime integer, lastlogin bigint, totallogins integer, kills integer, deaths integer, firstmessage varchar(255), firstlogin bigint, PRIMARY KEY (user))')
   exports.userdata = con
   cacheManager.dumpDB()
+  console.log("Database initialization finished!")
 }
 
 exports.checkusertextlog = async (user) => {

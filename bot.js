@@ -1,45 +1,46 @@
-const database = require('./database.js')
-const cacheManager = require('./caches/cachemanager.js')
-const bindManager = require('./bindManager.js')
-const neko = require('./neko.js')
-const Discord = require('./discord.js')
-
-const mineflayer = require('mineflayer')
-const pathfinder = require('mineflayer-pathfinder').pathfinder
-const gameplay = require('./prismarine-gameplay').gameplay
-
-
 if (process.argv.length < 3 || process.argv.length > 6) {
   console.log('Usage: node bot.js <host> <port> [<name>] [<password>]')
   process.exit(1)
 }
+const database = require('./database')
+const bindManager = require('./bindManager')
+const neko = require('./neko')
+const config = require('./config.json')
+const Discord = require('./discord')
+const mineflayer = require('mineflayer')
+
+console.log("Starting up!")
+
 options = {
-  username: process.argv[4] ? process.argv[4] : 'treeFucker',
+  username: process.argv[4] ? process.argv[4] : 'testbot',
   verbose: true,
   port: parseInt(process.argv[3]),
   host: process.argv[2],
-  password: process.argv[5],
-  version: '1.12.2',
-  checkTimeoutInterval: 99999
+  password: process.argv[5] ? process.argv[5] : undefined,
+  // version: '1.12.2',
+  // checkTimeoutInterval: 99999
 }
-
 exports.allowedToRelog = true
-exports.relog = (log = true) => {
+exports.login = () => {
   if (this.allowedToRelog) {
+    console.log("Trying to log in...")
     this.allowedToRelog = false
-    if (log) {
-      Discord.sendMessage('\`Reconnecting!\`')
-      console.log('Attempting to reconnect...')
-    }
-    bot = mineflayer.createBot(options)
-    exports.bot = bot
-    exports.sendMessage = (message) => {
-      this.bot.chat(message)
-    }
-    Discord.bindDiscord(this.bot)
-    bindManager.bind(bot)
-    neko.BindNeko()
-    this.waitforrelog()
+    exports.bot = mineflayer.createBot(options)
+    this.bot = exports.bot
+    // console.log(bot)
+
+    setTimeout(()=>{
+      Discord.bindDiscord(this.bot)
+      exports.sendMessage = (message) => {
+        this.bot.chat(message)
+      }
+      bindManager.bind(this.bot)
+      this.bot.chat(config.welcoming_message)
+      neko.BindNeko()
+      this.waitforrelog()
+    }, 2000)
+  } else {
+    console.log("Tried to re-log, but didn't since too fast")
   }
 }
 
@@ -53,7 +54,6 @@ process.on('uncaughtException', function (err) {
 
 process.on('exit', function (code) {
   console.log(code)
-  Discord.sendMessage(`<@!437208440578768908> Bot is actually down now`)
 })
 
 exports.sendMessage = (text) => {
@@ -64,18 +64,16 @@ exports.getPlayers = () => {
   return this.bot.players
 }
 
-// sleep time expects milliseconds
 exports.sleep = (time) => {
   return new Promise((resolve) => setTimeout(resolve, time))
 }
 
 exports.waitforrelog = async () => {
-  await this.sleep(120000)
-  allowedToRelog = true
+  await this.sleep(1000)
+  this.allowedToRelog = true
 }
-database.init('localhost', 'root', '79397939', 'textlog', 'minedata')
-
-this.relog(false)
 
 
+database.init(config.database.ip, config.database.port, config.database.user, config.database.password, 'textlog', 'minedata')
+this.login()
 
