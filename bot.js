@@ -67,7 +67,6 @@ exports.getPlayers = () => {
 exports.sleep = (time) => {
   return new Promise((resolve) => setTimeout(resolve, time))
 }
-
 exports.waitforrelog = async () => {
   await this.sleep(1000)
   this.allowedToRelog = true

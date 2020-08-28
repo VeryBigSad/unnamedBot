@@ -76,7 +76,7 @@ function internalBind (bot) {
   // spammer
   setTimeout(async function () {
     while (true) {
-        await botManager.sleep((Math.random() * config.spammer.min_spam_wait * 1000) + config.spammer.random_time_max * 1000).then(async function () {
+        await botManager.sleep(config.spammer.min_spam_wait * 1000 + Math.random() * (config.spammer.max_spam_wait - config.spammer.min_spam_wait) * 1000).then(async function () {
           let randomIndex
           if (botManager.getPlayers().length >= 3) {
             randomIndex = Math.floor(Math.random() * (spamMessages.length - 1))

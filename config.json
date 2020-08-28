@@ -16,7 +16,7 @@
 
     "spammer": {
     	"min_spam_wait": 80,
-    	"random_time_max": 60,
+    	"max_spam_wait": 140,
         "fact_chance": 0.2,
         "messages": ["message that can be spammed 1",
             "message that can be spammed 2",
