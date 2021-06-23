@@ -24,7 +24,7 @@ registered in the database, e.g. those who logged on at least once).
 And, of course, you can send messages for them to get sent out to the ingame chat.
 
 ### Installing
-Okay, so (assuming you have nodeJS and npm installed). First, you do `git clone https://github.com/mikhailkhromov/unnamedbot`, then `cd unnamedbot`.\
+Okay, so (assuming you have nodeJS and npm installed). First, you do `git clone https://github.com/verybigsad/unnamedbot`, then `cd unnamedbot`.\
 Now you have to set up all the dependencies - run `npm install`, and it will install all the required packages.\
 You can run it now with `node bot.js <ip> <port> <mc.net username> <mc.net password>`, but it will either have almost only 50% of features it need to have, either won't work at all. To fix this you need to set up mysql database, and configure the bot.
 
@@ -55,17 +55,17 @@ No. You can check the source code if you think that it does.
 ## Built With
 
 * [Mineflayer](https://github.com/PrismarineJS/mineflayer/) - Used for handling actual minecraft connection
-* [Discord.js](https://discord.js.org/) - Used for communicating with the discord
+* [Discord.js](https://discord.js.org/) - Used for communicating with discord
 
 ## Contributing
 
-Make a push request (or an issue even), I'll simp for you if you will actually do
+Making pull requests is cool and you should do it as long as your code is good enough!
 
 ## Authors
 
-* **Sanyss** (yes, mikhailkhromov) - *Initial work*
+* **Sanyss/VeryBigSad** * - *Initial work*
 * **NoWillToLife** - *making everything about databases and cache work*
 
 ## License
 
-You can do whatever you want but if you are making a modification of this bot, make sure to add us as creators/authors
+You can do whatever you want but adding us as contributors would be nice of you
