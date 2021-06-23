@@ -4,7 +4,7 @@
   "description": "Minecraft chatbot for anarchy servers",
   "repository": {
     "type": "git",
-    "url": "git://github.com/mikhailkhromov/unnamedbot.git"
+    "url": "git://github.com/verybigsad/unnamedbot.git"
   },
   "dependencies": {
     "axios": ">=0.21.1",
