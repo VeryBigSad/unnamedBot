@@ -3,8 +3,6 @@ const database = require('./database.js')
 const textlog = require('./caches/textlogcache.js')
 const dbCommands = require('./databaseCommands.js')
 
-nwordcounter = {};
-whispers = {};
 
 exports.commandHandler = function(username, message) {
 	return new Promise((resolve => {

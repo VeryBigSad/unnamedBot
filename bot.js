@@ -1,10 +1,9 @@
-if (process.argv.length < 3 || process.argv.length > 6) {
+if (process.argv.length < 3 || process.argv.length > 5) {
   console.log('Usage: node bot.js <host> <port> [<name>] [<password>]')
   process.exit(1)
 }
 const database = require('./database')
 const bindManager = require('./bindManager')
-const neko = require('./neko')
 const config = require('./config.json')
 const Discord = require('./discord')
 const mineflayer = require('mineflayer')
@@ -17,8 +16,6 @@ options = {
   port: parseInt(process.argv[3]),
   host: process.argv[2],
   password: process.argv[5] ? process.argv[5] : undefined,
-  // version: '1.12.2',
-  // checkTimeoutInterval: 99999
 }
 exports.allowedToRelog = true
 exports.login = () => {
@@ -27,7 +24,6 @@ exports.login = () => {
     this.allowedToRelog = false
     exports.bot = mineflayer.createBot(options)
     this.bot = exports.bot
-    // console.log(bot)
 
     setTimeout(()=>{
       Discord.bindDiscord(this.bot)
@@ -36,7 +32,6 @@ exports.login = () => {
       }
       bindManager.bind(this.bot)
       this.bot.chat(config.welcoming_message)
-      neko.BindNeko()
       this.waitforrelog()
     }, 2000)
   } else {
@@ -53,6 +48,7 @@ process.on('uncaughtException', function (err) {
 })
 
 process.on('exit', function (code) {
+  // pretty sure this makes the thing inescapable but whatever
   console.log(code)
 })
 

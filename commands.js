@@ -1,7 +1,6 @@
 const axios = require('axios')
 const bot = require('./bot')
 const config = require('./config.json')
-const neko_bot = require('./neko')
 
 exports.welcomeMessage = config.welcoming_message
 
@@ -15,9 +14,11 @@ function checkIfCommandBanned(name) {
 }
 exports.checkIfCommandBanned = checkIfCommandBanned
 
+
 exports.helpCommand = function (username, args) {
   return checkIfCommandBanned(exports.helpCommand) ? '' : config.static_text.help_command;
 }
+
 
 exports.reportCommand = function (username, args) {
   if (args.length < 2) {
@@ -26,9 +27,11 @@ exports.reportCommand = function (username, args) {
   return checkIfCommandBanned(exports.reportCommand) ? '' : config.static_text.report_command.replace("{player}", args[0]).replace("{reason}", args.slice(1).join(' '))
 }
 
+
 exports.discordCommand = function (username, args) {
   return checkIfCommandBanned(exports.discordCommand) ? '' : config.static_text.discord_command.replace("{link}", config.discord.discord_link)
 }
+
 
 exports.pingCommand = function (username, args) {
   if (args.length >= 1) username = args[0]
@@ -51,18 +54,28 @@ exports.randomFact = function () {
   })
 }
 
+
+function get_neko(type) {
+  return new Promise(resolve => {
+    axios.get('https://nekobot.xyz/api/image?type=' + type).then(response => {
+      resolve(response.data.message)
+    });
+  })
+}
+
 //TODO: insert this text into config so it'd be changeable
 exports.nekoCommand = function (username, args) {
   return new Promise(resolve => {
     if (checkIfCommandBanned(exports.nekoCommand)) {
       resolve('')
     }
+    let pre_message;
     let type = args[0]
     if (type !== "hentai") {
       type = 'neko'
-      let pre_message = "Here's your neko, sir (you can also do ?neko hentai)! "
+      pre_message = "Here's your neko, sir (you can also do ?neko hentai)! "
     }
-    neko_bot.get_neko(type).then((link)=>{
+    get_neko(type).then((link)=>{
       if (!pre_message) {
         resolve("Here's your hentai neko, sir: " + link)
       } else {

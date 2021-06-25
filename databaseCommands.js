@@ -1,19 +1,12 @@
-const mineflayer = require('mineflayer');
-const Discord = require('discord.js');
 const bot = require('./bot.js');
 const database = require('./database.js');
-const textlogcache = require('./caches/textlogcache.js')
 const playtimecache = require('./caches/playtimecache.js')
-const cacheManager = require('./caches/cachemanager.js')
-const totallogincache = require('./caches/totallogincache.js')
 const commands = require('./commands.js')
 
-cachedPlayers = []
 
 String.prototype.replaceAll = function(str1, str2, ignore) {
 	return this.replace(new RegExp(str1.replace(/([\/\,\!\\\^\$\{\}\[\]\(\)\.\*\+\?\|\<\>\-\&])/g,"\\$&"),(ignore?"gi":"g")),(typeof(str2)=="string")?str2.replace(/\$/g,"$$$$"):str2);
 }
-
 
 
 function timeToTextAgo(time) {
@@ -47,7 +40,7 @@ exports.playtime = function(username, args) {
 		if (args.length >= 1) username = args[0];
 
 		time = playtimecache.getCacheValue(username)
-		if (time == 0) {
+		if (time === 0) {
 			later('I have never seen ' + username + ' before!')
 			return
 		}
@@ -84,7 +77,7 @@ exports.firstmessage = function(username, args) {
 		}
 		if (args.length >= 1) username = args[0];
 		database.getFirstmessage(username, (message)=>{
-			if (message == '') {
+			if (message === '') {
 				later(username + ' haven\'t said anything yet!')
 				return
 			}

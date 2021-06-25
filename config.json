@@ -4,22 +4,16 @@
     "cacheDumpFrequency": 60,
     "commandInterval": 0.5,
 
-    "wait_for_random_neko_minutes": 100,
-
     "discord": {
         "bot_private_key": "PRIVATE KEY OF YOUR DISCORD BOT",
-
-    	"neko_number": "Create a webhook in the channel you want neko's posted in your discord and place the first part of it here",
-    	"neko_symbols": "And the second part of it here (or ignore it, if you don't want it).",
-
-        "bot_channel_id": "CHANNEL WHERE PEOPLE WILL RECIEVE MESSAGES FROM THE BOT",
-        "discord_link": "link to your discord server"
+        "bot_channel_id": "CHANNEL ID WHERE PEOPLE WILL RECIEVE MESSAGES FROM THE BOT",
+        "discord_link": "INVITE TO YOUR DISCORD SERVER"
     },
 
     "static_text": {
         "help_command": "?discord - discord server; ?quote - your random quote, ?playtime - your playtime, ?jd - joindate; ?fm - your first message, ?seen <player> - when a player was last seen. More commands in discord: ?discord",
         "report_command": "Reported {player} for {reason}! Staff will review this ASAP.",
-        "discord_command": "woooo join this epic server here -> {link}",
+        "discord_command": "woooo join this epic server right here -> {link}",
         "ping_command_online": "Ping of {username} is {ping}",
         "ping_command_offline": "{username} is not online!",
         "random_fact": "Random fact: {fact}"

@@ -5,6 +5,7 @@ const discord = require('./discord.js')
 let chatlog = null
 let con = null
 
+
 exports.init = async (host, port, user, password, textlog, userdatabase) => {
   chatlog = mysql.createConnection({
     host: host,
@@ -13,11 +14,11 @@ exports.init = async (host, port, user, password, textlog, userdatabase) => {
     database: textlog,
     port: port
   })
-  chatlog.end // Because of some reason database needs to be eneded before connectiing
+  chatlog.end // Because of some reason database needs to be ended before connecting
   chatlog.connect(function (err) {
     if (err) {
       console.log('Could not connect to the TEXTLOG database.')
-      discord.sendMessage('Could not connect to the textlog database, no messages sent are logged.')
+      discord.sendMessage('Could not connect to the textlog database, no messages are logged.')
       throw err
     }
   })
@@ -42,14 +43,17 @@ exports.init = async (host, port, user, password, textlog, userdatabase) => {
   console.log("Database initialization finished!")
 }
 
+
 exports.checkusertextlog = async (user) => {
   chatlog.query('CREATE TABLE IF NOT EXISTS _' + user + '(text longtext, time bigint)')
 }
+
 
 exports.addTextmessage = async (user, text, time) => {
   this.checkusertextlog(user)
   chatlog.query('INSERT INTO _' + user + '(text, time) VALUES(?, ?)', [text, time])
 }
+
 
 exports.getRandomTextmessage = (user, callback) => {
   this.checkusertextlog(user)
@@ -62,11 +66,11 @@ exports.getRandomTextmessage = (user, callback) => {
     }
     let resultlist = []
     let count = 0
-    for (value in textLog.getCacheValue(user)) {
+    for (let value in textLog.getCacheValue(user)) {
       resultlist.push(textLog.getCacheValue(user)[value].key)
       count++
     }
-    for (row in result) {
+    for (let row in result) {
       resultlist.push(result[row].text)
       count++
     }
@@ -75,10 +79,11 @@ exports.getRandomTextmessage = (user, callback) => {
       callback(null)
       return
     }
-    var rand = Math.floor(Math.random() * count)
+    let rand = Math.floor(Math.random() * count)
     callback(resultlist[rand])
   })
 }
+
 
 exports.addPlayertime = async (user, value) => {
   this.checkuser(user)
@@ -88,6 +93,7 @@ exports.addPlayertime = async (user, value) => {
   })
 }
 
+
 exports.addTotalLogins = async (user, value) => {
   this.checkuser(user)
   con.query('SELECT totallogins FROM userdata WHERE user = ?', user, (err, result) => {
@@ -96,29 +102,36 @@ exports.addTotalLogins = async (user, value) => {
   })
 }
 
+
 exports.checkuser = async (user = '') => {
   con.query(`INSERT IGNORE INTO userdata(user, playtime, lastlogin, totallogins, kills, deaths, firstmessage, firstlogin) Values(?, ?, ?, ?, ?, ?, ?, ?)`, [user, 0, 0, 0, 0, 0, '', 0])
 }
+
 
 exports.setPlaytime = async (user = '', value = 1) => {
   con.query('UPDATE userdata SET playtime = ? WHERE user LIKE ?', [value, user])
 }
 
+
 exports.setLastlogin = async (user = '', value = 1) => {
   con.query('UPDATE userdata SET lastlogin = ? WHERE user LIKE ?', [value, user], (err) => {if (err) throw err})
 }
+
 
 exports.setTotallogins = async (user = '', value = 1) => {
   con.query('UPDATE userdata SET totallogins = ? WHERE user LIKE ?', [value, user])
 }
 
+
 exports.setFirstmessage = async (user = '', value = '') => {
   con.query('UPDATE userdata SET firstmessage = ? WHERE user LIKE ?', [value, user])
 }
 
+
 exports.setFirstlogin = async (user = '', value = '') => {
   con.query('UPDATE userdata SET firstlogin = ? WHERE user LIKE ?', [value, user])
 }
+
 
 exports.getPlaytime = async (user = '', callback) => {
   this.checkuser(user)
@@ -128,13 +141,16 @@ exports.getPlaytime = async (user = '', callback) => {
   })
 }
 
+
 exports.getLastlogin = async (user = '', callback) => {
   this.checkuser(user)
   con.query('SELECT lastlogin FROM userdata WHERE user = ?', user, (err, result) => {
     if (err) throw err
     callback(result[0].lastlogin)
+    // hope this works and doesn't crash, is .lastlogin even a property? nvm its js it probably is
   })
 }
+
 
 exports.getTotalLogins = async (user = '', callback) => {
   this.checkuser(user)
@@ -144,6 +160,7 @@ exports.getTotalLogins = async (user = '', callback) => {
   })
 }
 
+
 exports.getFirstmessage = async (user = '', callback) => {
   await this.checkuser(user)
   con.query('SELECT firstmessage FROM userdata WHERE user = ?', user, (err, result) => {
@@ -152,6 +169,7 @@ exports.getFirstmessage = async (user = '', callback) => {
   })
 }
 
+
 exports.getFirstlogin = async (user = '', callback) => {
   this.checkuser(user)
   con.query('SELECT firstlogin FROM userdata WHERE user = ?', user, (err, result) => {
@@ -159,6 +177,3 @@ exports.getFirstlogin = async (user = '', callback) => {
     callback(result[0].firstlogin)
   })
 }
-
-
-
