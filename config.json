@@ -8,11 +8,27 @@
 
     "discord": {
         "bot_private_key": "PRIVATE KEY OF YOUR DISCORD BOT",
-    	"neko_number": "YOUR NEKO NUMBER THINGY (ignore this, not really functional much rn)",
-    	"neko_symbols": "YOUR NEKO SYMBOLS THINGY (ignore this, not really functional much rn)",
+
+    	"neko_number": "Create a webhook in the channel you want neko's posted in your discord and place the first part of it here",
+    	"neko_symbols": "And the second part of it here (or ignore it, if you don't want it).",
+
         "bot_channel_id": "CHANNEL WHERE PEOPLE WILL RECIEVE MESSAGES FROM THE BOT",
-        "discord_link": "LINK TO YOUR DISCORD SERVER"
+        "discord_link": "link to your discord server"
     },
+
+    "static_text": {
+        "help_command": "?discord - discord server; ?quote - your random quote, ?playtime - your playtime, ?jd - joindate; ?fm - your first message, ?seen <player> - when a player was last seen. More commands in discord: ?discord",
+        "report_command": "Reported {player} for {reason}! Staff will review this ASAP.",
+        "discord_command": "woooo join this epic server here -> {link}",
+        "ping_command_online": "Ping of {username} is {ping}",
+        "ping_command_offline": "{username} is not online!",
+        "random_fact": "Random fact: {fact}"
+    },
+
+    "disabled_commands": [
+        "command_1",
+        "command_2"
+    ],
 
     "spammer": {
     	"min_spam_wait": 80,
@@ -22,13 +38,12 @@
             "message that can be spammed 2",
             "message that can be spammed 3",
             "message that can be spammed 4",
-            "message that can be spammed 5"],
-        "discord_command_message": "Join our discord! Link: <LINK>"
+            "message that can be spammed 5"]
     },
     "database": {
-        "ip": "DATABASE IP (like localhost)",
+        "ip": "DATABASE IP (like localhost or 123.234.54.532)",
         "port": "DATABASE PORT (standard for mysql - 3306)",
-        "user": "DATABASE USER (like root)",
+        "user": "DATABASE USER (like root or sanyss)",
         "password": "DATABASE PASSWORD (like 12345 idk)"
     }
 }

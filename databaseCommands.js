@@ -6,8 +6,7 @@ const textlogcache = require('./caches/textlogcache.js')
 const playtimecache = require('./caches/playtimecache.js')
 const cacheManager = require('./caches/cachemanager.js')
 const totallogincache = require('./caches/totallogincache.js')
-var cacheInterval;
-var playtimeInterval;
+const commands = require('./commands.js')
 
 cachedPlayers = []
 
@@ -42,6 +41,9 @@ function timeToTextAgo(time) {
 
 exports.playtime = function(username, args) {
 	return new Promise((later) => {
+		if (commands.checkIfCommandBanned(exports.playtime)) {
+			later('')
+		}
 		if (args.length >= 1) username = args[0];
 
 		time = playtimecache.getCacheValue(username)
@@ -77,6 +79,9 @@ exports.playtime = function(username, args) {
 
 exports.firstmessage = function(username, args) {
 	return new Promise((later)=>{
+		if (commands.checkIfCommandBanned(exports.firstmessage)) {
+			later('')
+		}
 		if (args.length >= 1) username = args[0];
 		database.getFirstmessage(username, (message)=>{
 			if (message == '') {
@@ -90,6 +95,9 @@ exports.firstmessage = function(username, args) {
 
 exports.lastSeen = function(username, args) {
 	return new Promise((later)=>{
+		if (commands.checkIfCommandBanned(exports.lastSeen)) {
+			later('')
+		}
 		if (args.length >= 1) {
 			username = args[0]
 		} else {
@@ -116,6 +124,9 @@ exports.lastSeen = function(username, args) {
 
 exports.firstlogin = function(username, args) {
 	return new Promise((later)=>{
+		if (commands.checkIfCommandBanned(exports.firstlogin)) {
+			later('')
+		}
 		if (args.length >= 1) username = args[0]
 
 		database.getFirstlogin(username, (time)=>{
@@ -130,6 +141,9 @@ exports.firstlogin = function(username, args) {
 
 exports.quote = function(username, args) {
 	return new Promise((later)=>{
+		if (commands.checkIfCommandBanned(exports.quote)) {
+			later('')
+		}
 		if (args.length >= 1) username = args[0];
 		database.getRandomTextmessage(username, (message)=>{
 			if (message === null) {
