@@ -1,5 +1,5 @@
 if (process.argv.length < 3 || process.argv.length > 6) {
-  console.log('Usage: node bot.js <host> <port> [<name>] [<password>]')
+  console.log('Usage: node bot.js [-flag1, -flag2] <host> <port> [<name>] [<password>]')
   process.exit(1)
 }
 const database = require('./database')
@@ -10,12 +10,22 @@ const mineflayer = require('mineflayer')
 
 console.log("Starting up!")
 
+flags = []
+for (let i in process.argv) {
+  if (i[0] === '-' && i.length >= 1) {
+    flags.push(i)
+  } else {
+    break;
+  }
+}
+
 options = {
   username: process.argv[4] ? process.argv[4] : 'testbot',
   verbose: true,
   port: parseInt(process.argv[3]),
   host: process.argv[2],
   password: process.argv[5] ? process.argv[5] : undefined,
+  auth: flags.includes('-microsoft') ? 'microsoft' : 'mojang'
 }
 exports.allowedToRelog = true
 exports.login = () => {
