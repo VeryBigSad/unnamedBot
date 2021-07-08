@@ -11,10 +11,12 @@ const mineflayer = require('mineflayer')
 console.log("Starting up!")
 
 flags = []
+
 for (let i in process.argv) {
   if (i[0] === '-' && i.length >= 1) {
     flags.push(i)
   } else {
+    process.argv.slice(flags.length)
     break;
   }
 }

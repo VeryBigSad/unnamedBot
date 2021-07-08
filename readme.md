@@ -29,7 +29,7 @@ And, of course, you can send messages for them to get sent out to the in-game ch
 Kind of a hard process, but I believe in you!\
 Okay, so first, install nodeJS and npm. Second, you do `git clone https://github.com/verybigsad/unnamedbot` (you also need git for that one), then `cd unnamedbot`.\
 Now you have to set up all the dependencies - run `npm install`, and it will install all the required packages. \
-You can run it now with `node bot.js <ip> <port> <mc.net username> <mc.net password>`, but it will either have almost only 50% of features it needs to have, either won't work at all. To fix this you need to set up a mysql database, and configure the bot.
+You can run it now with `node bot.js [-microsoft (use when using a microsoft account)] <ip (ip of the server)> <port (port of the server, 25565 by default)> <mc.net username (minecraft username/email if microsoft acc)> <mc.net password (password)>`, but it will either have almost only 50% of features it needs to have, either won't work at all. To fix this you need to set up a mysql database, and configure the bot.
 
 
 ### Setting up the database
