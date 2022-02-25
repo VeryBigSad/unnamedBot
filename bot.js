@@ -2,7 +2,6 @@ if (process.argv.length < 3 || process.argv.length > 6) {
   console.log('Usage: node bot.js [-flag1, -flag2] <host> <port> [<name>] [<password>]')
   process.exit(1)
 }
-let database = require('./database')
 const bindManager = require('./bindManager')
 const config = require('./config.json')
 const Discord = require('./discord')
@@ -35,10 +34,10 @@ let options = {
 exports.login = () => {
   console.log("Trying to log in...")
   exports.bot = mineflayer.createBot(options)
-  this.bot = exports.bot
+  // this.bot = exports.bot
 
   setTimeout(()=>{
-    Discord.bindDiscord(this.bot)
+    // Discord.bindDiscord(this.bot)
     exports.sendMessage = (message) => {
       this.bot.chat(message)
     }
@@ -48,10 +47,10 @@ exports.login = () => {
   }, 2000)
 }
 
-process.on('uncaughtException', function (err) {
-  console.log(err)
-  Discord.sendMessage(`Bot has encountered an error: ` + String(err))
-})
+// process.on('uncaughtException', function (err) {
+//   console.log(err)
+  // Discord.sendMessage(`Bot has encountered an error: ` + String(err))
+// })
 
 process.on('exit', function (code) {
   // pretty sure this makes the thing inescapable but whatever
@@ -76,5 +75,4 @@ exports.waitforrelog = async () => {
 
 exports.dbi = new DBInterface.DBInterface();
 this.login()
-
 

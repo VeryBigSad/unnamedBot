@@ -1,98 +1,56 @@
-exports.checkusertextlog = async (user) => {
-  chatlog.query('CREATE TABLE IF NOT EXISTS _' + user + '(text longtext, time bigint)')
+const bot = require('./bot')
+
+
+exports.addTextMessage = (user, text, time) => {
+  bot.dbi.createOrIgnoreUser(user)
+  bot.dbi.addChatMessage(user, text, time)
 }
 
 
-exports.addTextmessage = async (user, text, time) => {
-  this.checkusertextlog(user)
-  chatlog.query('INSERT INTO _' + user + '(text, time) VALUES(?, ?)', [text, time])
-}
-
-
-exports.getRandomTextmessage = (user, callback) => {
-  this.checkusertextlog(user)
-  chatlog.query('SELECT * FROM _' + user, function (err, result) {
-    if (err) throw err
-    if (!result) {
-      console.log('Error: User not found')
+exports.getRandomTextMessage = (user, callback) => {
+  bot.dbi.getChatMessages(user, (result) => {
+    if (result.length === 0) {
       callback(null)
-      return
+    } else {
+      let random_index = Math.floor(Math.random() * result.length);
+      callback(result[random_index].text);
     }
-    let resultlist = []
-    let count = 0
-    for (let value in textLog.getCacheValue(user)) {
-      // TODO: check whether this works or not
-      resultlist.push(value.key)
-      count++
-    }
-    for (let row in result) {
-      // TODO: check whether this works or not
-      resultlist.push(row.text)
-      count++
-    }
-    if (count === 0) {
-      console.log('Error: No messages found from user!')
-      callback(null)
-      return
-    }
-    let rand = Math.floor(Math.random() * count)
-    callback(resultlist[rand])
   })
 }
 
 
-exports.addPlayertime = async (user, value) => {
-  this.checkuser(user)
-  userdata.query('SELECT playtime FROM userdata WHERE user = ?', user, (err, result) => {
-    if (err) throw err
-    this.setPlaytime(user, result[0].playtime + value)
+exports.addPlaytime = (user, value) => {
+  bot.dbi.getOrCreateUser(user, (user_obj)=>{
+    bot.dbi.updateUser(user, 'playtime', user_obj.playtime + value)
   })
 }
 
 
-exports.addTotalLogins = async (user, value) => {
-  this.checkuser(user)
-  userdata.query('SELECT totallogins FROM userdata WHERE user = ?', user, (err, result) => {
-    if (err) throw err
-    this.setTotallogins(user, result[0].totallogins + value)
+exports.addTotalLogins = (user, value) => {
+  bot.dbi.getOrCreateUser(user, (user)=> {
+    if (user.total_logins === 0) {
+      bot.dbi.updateUser(user, 'first_login', Date.now() / 1000)
+    }
+    bot.dbi.updateUser(user, 'total_logins', user.total_logins + value)
   })
+
 }
 
 
-exports.checkuser = async (user = '') => {
-  userdata.query(`INSERT IGNORE INTO userdata(user, playtime, lastlogin, totallogins, kills, deaths, firstmessage, firstlogin) Values(?, ?, ?, ?, ?, ?, ?, ?)`, [user, 0, 0, 0, 0, 0, '', 0])
-}
-
-//
-exports.setPlaytime = async (user = '', value = 1) => {
-  userdata.query('UPDATE userdata SET playtime = ? WHERE user LIKE ?', [value, user])
+exports.setLastLogin = (user, value) => {
+  bot.dbi.createOrIgnoreUser(user)
+  bot.dbi.updateUser(user, 'last_login', value)
 }
 
 //
-exports.setLastlogin = async (user = '', value = 1) => {
-  userdata.query('UPDATE userdata SET lastlogin = ? WHERE user LIKE ?', [value, user], (err) => {if (err) throw err})
-}
-
-//
-exports.setTotallogins = async (user = '', value = 1) => {
-  userdata.query('UPDATE userdata SET totallogins = ? WHERE user LIKE ?', [value, user])
+exports.setFirstLogin = (user, value) => {
+  bot.dbi.createOrIgnoreUser(user)
+  bot.dbi.updateUser(user, 'first_login', value)
 }
 
 
 //
-exports.setFirstmessage = async (user = '', value = '') => {
-  userdata.query('UPDATE userdata SET firstmessage = ? WHERE user LIKE ?', [value, user])
-}
-
-
-//
-exports.setFirstlogin = async (user = '', value = '') => {
-  userdata.query('UPDATE userdata SET firstlogin = ? WHERE user LIKE ?', [value, user])
-}
-
-
-//
-exports.getPlaytime = async (user = '', callback) => {
+exports.getPlaytime = (user = '', callback) => {
   this.checkuser(user)
   userdata.query('SELECT playtime FROM userdata WHERE user = ?', user, (err, result) => {
     if (err) throw err
@@ -102,7 +60,7 @@ exports.getPlaytime = async (user = '', callback) => {
 
 
 //
-exports.getLastlogin = async (user = '', callback) => {
+exports.getLastLogin = (user = '', callback) => {
   this.checkuser(user)
   userdata.query('SELECT lastlogin FROM userdata WHERE user = ?', user, (err, result) => {
     if (err) throw err
@@ -113,7 +71,7 @@ exports.getLastlogin = async (user = '', callback) => {
 
 
 //
-exports.getTotalLogins = async (user = '', callback) => {
+exports.getTotalLogins = (user = '', callback) => {
   this.checkuser(user)
   userdata.query('SELECT totallogins FROM userdata WHERE user = ?', user, (err, result) => {
     if (err) throw err
@@ -123,8 +81,8 @@ exports.getTotalLogins = async (user = '', callback) => {
 
 
 //
-exports.getFirstmessage = async (user = '', callback) => {
-  await this.checkuser(user)
+exports.getFirstMessage = (user = '', callback) => {
+  this.checkuser(user)
   userdata.query('SELECT firstmessage FROM userdata WHERE user = ?', user, (err, result) => {
     if (err) throw err
     callback(result[0].firstmessage)
@@ -133,7 +91,7 @@ exports.getFirstmessage = async (user = '', callback) => {
 
 
 //
-exports.getFirstlogin = async (user = '', callback) => {
+exports.getFirstLogin = (user = '', callback) => {
   this.checkuser(user)
   userdata.query('SELECT firstlogin FROM userdata WHERE user = ?', user, (err, result) => {
     if (err) throw err

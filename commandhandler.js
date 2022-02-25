@@ -43,11 +43,5 @@ exports.commandHandler = function(username, message) {
 
 
 exports.messageHandler = function(username, message) {
-	database.getFirstmessage(username, (message2)=>{
-		if (message2 === '' || message2 === null || message2 === undefined || message2 === "0" || message2 === 0) {
-			database.setFirstmessage(username, message.replace(/[^\x00-\x7F]/g, ""))
-		}
-	})
-	textlog.addToCacheValue(username, message.replace(/[^\x00-\x7F]/g, ""), Date.now())
-
+	database.addTextMessage(username, message, Date.now() / 1000)
 };

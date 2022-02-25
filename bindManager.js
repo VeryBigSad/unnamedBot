@@ -82,18 +82,9 @@ function internalBind (bot) {
 
   //player join handler
   bot.on('playerJoined', (player) => {
-    database.checkuser(player.username)
-    let logins = totallogincache.getCacheValue(player)
-    if (logins === undefined || logins === 0) {
-      // TODO: pretty sure its bugged, fix it
-      totallogincache.setCacheValue(player.username, 1)
-    }
-    database.getFirstlogin(player.username, (result) => {
-      if (result === null || result === 0)
-        database.setFirstlogin(player.username, Date.now())
-    })
-    totallogincache.addToCacheValue(player.username, 1)
-    database.setLastlogin(player.username, Date.now())
+    botManager.dbi.createOrIgnoreUser(player.username)
+    database.addTotalLogins(player.username, 1)
+    database.setLastLogin(player.username, Date.now())
   })
 
   console.log('Event binding done!')

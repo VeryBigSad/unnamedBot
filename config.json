@@ -1,7 +1,6 @@
 {
     "prefix": "!",
     "welcoming_message": "Your welcoming message, which is displayed when the bot joins the server",
-    "cacheDumpFrequency": 60,
     "commandInterval": 0.5,
 
     "discord": {

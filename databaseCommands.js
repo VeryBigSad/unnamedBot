@@ -8,23 +8,22 @@ String.prototype.replaceAll = function(str1, str2, ignore) {
 }
 
 
-function timeToTextAgo(time) {
-	text = ""
-	days = Math.floor(time / 86400)
+function timeToText(time) {
+	let text = ""
+	let days = Math.floor(time / 86400)
 	time %= 86400;
-	hours = Math.floor(time / 3600);
+	let hours = Math.floor(time / 3600);
 	time %= 3600;
-	minutes = Math.floor(time / 60);
-	seconds = time % 60;
-	if(days > 0){ 
+	let minutes = Math.floor(time / 60);
+	if (days > 0) {
 	  text += days + ' day'
 	  days > 1 ? text+='s ':text+=' '
 	  }
-	if(hours > 0){ 
-	text += hours + ' hour'
-	hours > 1 ? text+='s ':text+=' '
+	if (hours > 0){
+		text += hours + ' hour'
+		hours > 1 ? text+='s ':text+=' '
 	}
-	if(minutes > 0){ 
+	if (minutes > 0){
 	  text += minutes + ' minute'
 	  minutes > 1 ? text+='s ':text+=' '
 	}
@@ -38,38 +37,19 @@ exports.playtime = function(username, args) {
 		}
 		if (args.length >= 1) username = args[0];
 
-		time = playtimecache.getCacheValue(username)
+		let time = playtimecache.getCacheValue(username)
 		if (time === 0) {
 			later('I have never seen ' + username + ' before!')
 			return
 		}
-		text = ''
-		text += username + "'s playtime is "
-		days = Math.floor(time / 86400)
-		time %= 86400;
-		hours = Math.floor(time / 3600);
-		time %= 3600;
-		minutes = Math.floor(time / 60);
-		seconds = time % 60;
-		if(days > 0){ 
-		  text += days + ' day'
-		  days > 1 ? text+='s ':text+=' '
-		  }
-		if(hours > 0){ 
-		text += hours + ' hour'
-		hours > 1 ? text+='s ':text+=' '
-		}
-		if(minutes > 0){ 
-		  text += minutes + ' minute'
-		  minutes > 1 ? text+='s ':text+=' '
-		}
+		let text = timeToText(time)
 		later(text)
 
 	})
 
 }
 
-exports.firstmessage = function(username, args) {
+exports.firstMessage = function(username, args) {
 	return new Promise((later)=>{
 		if (commands.checkIfCommandBanned(exports.firstmessage)) {
 			later('')
@@ -109,7 +89,7 @@ exports.lastSeen = function(username, args) {
 					return;
 				}
 			}
-			later(username + ' was last online ' + timeToTextAgo(Math.floor((Date.now() - time) / 1000)) + ' ago.')
+			later(username + ' was last online ' + timeToText(Math.floor((Date.now() - time) / 1000)) + ' ago.')
 		})
 	})
 }
@@ -126,7 +106,7 @@ exports.firstlogin = function(username, args) {
 				later('I have never seen ' + username + '!')
 				return
 			}
-			later(username + ' joined the server first ' + timeToTextAgo(Math.floor((Date.now() - time)/1000)) + ' ago.')
+			later(username + ' joined the server first ' + timeToText(Math.floor((Date.now() - time)/1000)) + ' ago.')
 		})
 	})
 }
