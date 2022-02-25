@@ -1,7 +1,8 @@
 # Unnamed bot
-
 Copy of mooomooo with some original features and (very) bad stability. If you actually want to use this bot - hit me up, I might do something so that it'll be more usable.
 
+***
+I'd not recommend using this right now. It's _very_ hard to set up, and soon there will be a second version (currently in development in branch v2) which would provide more stability and would allow for more tinkering with the config.
 ## What can it do?
 
 Commands in-game (you can modify the prefix and disable some of these commands):
