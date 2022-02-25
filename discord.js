@@ -1,7 +1,6 @@
 const Discord = require('discord.js');
 const bot = require('./bot.js');
 const client = new Discord.Client();
-const cache = require('./caches/cachemanager.js')
 const database = require('./database.js')
 const dbCommands = require('./databaseCommands.js')
 const commands = require('./commands.js')
@@ -23,7 +22,7 @@ exports.sendMessage = function(text) {
 		channel.send(text)
 	}).catch(()=>{
 		queuedMessages.push(text)
-		console.log("Couldn't get the ingame channel by it's ID (queued it though). If in a minute you received 0 messages on discord, you probably got it wrong in the config.")
+		// console.log("Couldn't get the ingame channel by it's ID (queued it though). If in a minute you received 0 messages on discord, you probably got it wrong in the config.")
 	})
 }
 

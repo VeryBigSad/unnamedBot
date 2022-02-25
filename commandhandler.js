@@ -1,6 +1,5 @@
 const commands = require('./commands.js')
 const database = require('./database.js')
-const textlog = require('./caches/textlogcache.js')
 const dbCommands = require('./databaseCommands.js')
 
 

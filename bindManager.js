@@ -1,32 +1,13 @@
 const commands = require('./commands.js')
 const database = require('./database.js')
 const Discord = require('./discord.js')
-const playtimecache = require('./caches/playtimecache.js')
-const cacheManager = require('./caches/cachemanager.js')
-const totallogincache = require('./caches/totallogincache.js')
 const botManager = require('./bot.js')
 const cmdhandler = require('./commandhandler.js')
 const config = require('./config.json')
 
 let isConnected = false
-let curr_conn_test_interval = null
-
-function startConnectionTestInterval(bot) {
-  if (curr_conn_test_interval != null) {
-    clearInterval(curr_conn_test_interval)
-  }
-  curr_conn_test_interval = setInterval(() => {
-    if (!isConnected) {
-      botManager.login()
-    }
-    connectionTest(bot)
-  }, 3000)
-
-}
 
 exports.bind = (bot) => {
-  connectionTest(bot)
-  startConnectionTestInterval(bot)
   internalBind(bot)
 }
 
@@ -50,7 +31,7 @@ function internalBind (bot) {
       if (Date.now() - lastTimeUsed <= config.commandInterval * 1000) return
       lastTimeUsed = Date.now()
       cmdhandler.commandHandler(username, message).then(toSend => {
-        if (toSend !== null ) {
+        if (toSend !== null) {
           bot.chat(toSend)
         }
       })
@@ -94,22 +75,16 @@ function internalBind (bot) {
   setTimeout(async () => {
     setInterval(async function () {
       for (let player in bot.players) {
-        playtimecache.addToCacheValue(player, 1)
+        // playtimecache.addToCacheValue(player, 1)
       }
     }, 1000)
   }, 1000)
-
-  setTimeout(() => {
-    setInterval(async function () {
-      cacheManager.dumpCache()
-    }, config.cacheDumpFrequency * 60 * 1000)
-  }, 25000)
 
   //player join handler
   bot.on('playerJoined', (player) => {
     database.checkuser(player.username)
     let logins = totallogincache.getCacheValue(player)
-    if (logins == undefined || logins == 0) {
+    if (logins === undefined || logins === 0) {
       // TODO: pretty sure its bugged, fix it
       totallogincache.setCacheValue(player.username, 1)
     }
@@ -123,9 +98,4 @@ function internalBind (bot) {
 
   console.log('Event binding done!')
 
-}
-
-// check if player is acctualy connected to the server
-function connectionTest (bot) {
-  isConnected = bot.player !== undefined;
 }
