@@ -1,9 +1,10 @@
-const commands = require('./commands.js')
-const database = require('./database.js')
-const Discord = require('./discord.js')
-const botManager = require('./bot.js')
-const cmdhandler = require('./commandhandler.js')
-const config = require('./config.json')
+const commands = require('./commands.js');
+const database = require('./database.js');
+const Discord = require('./discord.js');
+const botManager = require('./bot.js');
+const cmdhandler = require('./commandhandler.js');
+const config = require('./config.json');
+const utils = require("./utils");
 
 let isConnected = false
 
@@ -12,29 +13,18 @@ exports.bind = (bot) => {
 }
 
 function internalBind (bot) {
-  // Kills all intervals running (hopefully)
-  // let killId = setInterval(() => {}, 10000)
-  // for (let i = killId; i > 0; i--) clearInterval(i)
-  // console.log('Killed all the intervals currently alive')
-  // console logging
-  bot.on('message', function (jsonMsg) {
-    let time = new Date()
-    console.log('[' + time.getHours() + ':' + time.getMinutes() + ':' + time.getSeconds() + '] ' + jsonMsg)
-  })
-
-  let lastTimeUsed = 0;
   // Command management
+  let lastTimeUsed = 0;
   bot.on('chat', function (username, message) {
+    let time = new Date()
+    console.log('[' + time.getHours() + ':' + time.getMinutes() + ':' + time.getSeconds() + '] <' + username + '> ' + message)
     if (username === bot.username) return
 
     if (message[0] === config.prefix) {
+      // TODO: make it so that not only 1-letter prefixes are allowed.
       if (Date.now() - lastTimeUsed <= config.commandInterval * 1000) return
       lastTimeUsed = Date.now()
-      cmdhandler.commandHandler(username, message).then(toSend => {
-        if (toSend !== null) {
-          bot.chat(toSend)
-        }
-      })
+      cmdhandler.commandHandler(username, message, bot.chat)
 
     } else {
       cmdhandler.messageHandler(username, message)
@@ -57,9 +47,9 @@ function internalBind (bot) {
   // spammer
   setTimeout(async function () {
     while (true) {
-        await botManager.sleep(config.spammer.min_spam_wait * 1000 + Math.random() * (config.spammer.max_spam_wait - config.spammer.min_spam_wait) * 1000).then(async function () {
+        await utils.sleep(config.spammer.min_spam_wait * 1000 + Math.random() * (config.spammer.max_spam_wait - config.spammer.min_spam_wait) * 1000).then(async function () {
           let randomIndex
-          if (botManager.getPlayers().length >= 3) {
+          if (bot.players.length >= 3) {
             randomIndex = Math.floor(Math.random() * (spamMessages.length - 1))
             if (Math.random() <= config.spammer.fact_chance) {
               bot.chat(commands.randomFact())
@@ -75,9 +65,11 @@ function internalBind (bot) {
   setTimeout(async () => {
     setInterval(async function () {
       for (let player in bot.players) {
-        // playtimecache.addToCacheValue(player, 1)
+        if (player !== bot.username) {
+          database.addPlaytime(player, 30)
+        }
       }
-    }, 1000)
+    }, 30000)
   }, 1000)
 
   //player join handler

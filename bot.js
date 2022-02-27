@@ -4,7 +4,7 @@ if (process.argv.length < 3 || process.argv.length > 6) {
 }
 const bindManager = require('./bindManager')
 const config = require('./config.json')
-const Discord = require('./discord')
+const discord = require('./discord')
 const mineflayer = require('mineflayer')
 const DBInterface = require('./DBInterface')
 
@@ -31,46 +31,29 @@ let options = {
   auth: flags.includes('-microsoft') ? 'microsoft' : 'mojang'
 }
 
+let bot = null;
+
 exports.login = () => {
   console.log("Trying to log in...")
-  exports.bot = mineflayer.createBot(options)
-  // this.bot = exports.bot
+  bot = mineflayer.createBot(options);
 
+  // wait for 2 seconds to allow for a successful login before we do anything else
   setTimeout(()=>{
     // Discord.bindDiscord(this.bot)
-    exports.sendMessage = (message) => {
-      this.bot.chat(message)
-    }
-    bindManager.bind(this.bot)
-    this.bot.chat(config.welcoming_message)
-    this.waitforrelog()
+    bindManager.bind(bot)
+    bot.chat(config.welcoming_message)
   }, 2000)
 }
+
+exports.getBot = function () {
+  return bot
+}
+
 
 // process.on('uncaughtException', function (err) {
 //   console.log(err)
   // Discord.sendMessage(`Bot has encountered an error: ` + String(err))
 // })
-
-process.on('exit', function (code) {
-  // pretty sure this makes the thing inescapable but whatever
-  console.log(code)
-})
-
-exports.sendMessage = (text) => {
-  this.bot.chat(text)
-}
-
-exports.getPlayers = () => {
-  return this.bot.players
-}
-
-exports.sleep = (time) => {
-  return new Promise((resolve) => setTimeout(resolve, time))
-}
-
-exports.waitforrelog = async () => {
-}
 
 
 exports.dbi = new DBInterface.DBInterface();

@@ -1,9 +1,27 @@
-const commands = require('./commands.js')
+const command_objects = require('./commands/')
 const database = require('./database.js')
 const dbCommands = require('./databaseCommands.js')
 
 
-exports.commandHandler = function(username, message) {
+exports.commandHandler = function(username, message, callback) {
+	message = message.slice(1).split(' ');
+	let command = message[0].toLowerCase();
+	message.shift();
+	let args = message;
+
+	for (const el in command_objects) {
+		let obj = command_objects[el]
+		if (obj.command_name.includes(command)) {
+			obj.call(username, args, callback);
+			break;
+		}
+	}
+
+	return;
+
+	// this is it.
+	// I'll delete everything below once copying commands to /commands/ folder is finished
+
 	return new Promise((resolve => {
 		message = message.slice(1).split(' ');
 		let command = message[0].toLowerCase();

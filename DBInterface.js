@@ -33,7 +33,7 @@ class DBInterface {
 
   updateUser(user, key, value) {
     // updates 1 parameter of a user object.
-    this.db.run("UPDATE user_data SET ?=? WHERE user=?", [key, value, user])
+    this.db.run("UPDATE user_data SET "  + key + "=? WHERE user=?", [value, user])
   }
 
   getOrCreateUser(user, callback) {
