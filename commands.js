@@ -1,4 +1,3 @@
-const axios = require('axios')
 const bot = require('./bot')
 const config = require('./config.json')
 
@@ -63,24 +62,24 @@ function get_neko(type) {
   })
 }
 
-//TODO: insert this text into config so it'd be changeable
-exports.nekoCommand = function (username, args) {
-  return new Promise(resolve => {
-    if (checkIfCommandBanned(exports.nekoCommand)) {
-      resolve('')
-    }
-    let pre_message;
-    let type = args[0]
-    if (type !== "hentai") {
-      type = 'neko'
-      pre_message = "Here's your neko, sir (you can also do ?neko hentai)! "
-    }
-    get_neko(type).then((link)=>{
-      if (!pre_message) {
-        resolve("Here's your hentai neko, sir: " + link)
-      } else {
-        resolve(pre_message + link)
-      }
-    })
-  })
-}
+// //TODO: insert this text into config so it'd be changeable
+// exports.nekoCommand = function (username, args) {
+//   return new Promise(resolve => {
+//     if (checkIfCommandBanned(exports.nekoCommand)) {
+//       resolve('')
+//     }
+//     let pre_message;
+//     let type = args[0]
+//     if (type !== "hentai") {
+//       type = 'neko'
+//       pre_message = "Here's your neko, sir (you can also do ?neko hentai)! "
+//     }
+//     get_neko(type).then((link)=>{
+//       if (!pre_message) {
+//         resolve("Here's your hentai neko, sir: " + link)
+//       } else {
+//         resolve(pre_message + link)
+//       }
+//     })
+//   })
+// }
