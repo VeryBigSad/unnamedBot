@@ -7,9 +7,8 @@
 
 
     "spammer": {
-    	"min_spam_wait": 0,
-    	"max_spam_wait": 1,
-        "fact_chance": 0.2,
+    	"min_spam_wait": 60,
+    	"max_spam_wait": 120,
         "messages": ["message that can be spammed 1",
             "message that can be spammed 2",
             "message that can be spammed 3",
