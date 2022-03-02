@@ -1,3 +1,15 @@
+# UNNAMED BOT VERSION 2 - WORK IN PROGRESS!
+Hello! Since you people showed some interest in my original bot, I'd like to reformat it into the second version. It is a work in progress.
+### Things to add to this version
+1. Transfer text-only commands (aka !help, !discord) into config so that users can add and delete them as they wish.
+2. Use sqlite3 instead of mysql
+3. Remove any and all discord-related code from the bot code
+4. Add a separate config file for account information, so that you don't have to put it in console every time.
+
+***
+
+
+
 # Unnamed bot
 Copy of mooomooo with some original features and (very) bad stability. If you actually want to use this bot - hit me up, I might do something so that it'll be more usable.
 

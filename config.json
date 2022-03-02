@@ -1,43 +1,19 @@
 {
-    "prefix": "?",
+    "prefix": "!",
     "welcoming_message": "Your welcoming message, which is displayed when the bot joins the server",
-    "cacheDumpFrequency": 60,
     "commandInterval": 0.5,
+    "discord_bot_private_key": "PRIVATE KEY OF YOUR DISCORD BOT",
+    "database_filename": "database.db",
 
-    "discord": {
-        "bot_private_key": "PRIVATE KEY OF YOUR DISCORD BOT",
-        "bot_channel_id": "CHANNEL ID WHERE PEOPLE WILL RECIEVE MESSAGES FROM THE BOT",
-        "discord_link": "INVITE TO YOUR DISCORD SERVER"
-    },
-
-    "static_text": {
-        "help_command": "?discord - discord server; ?quote - your random quote, ?playtime - your playtime, ?jd - joindate; ?fm - your first message, ?seen <player> - when a player was last seen. More commands in discord: ?discord",
-        "report_command": "Reported {player} for {reason}! Staff will review this ASAP.",
-        "discord_command": "woooo join this epic server right here -> {link}",
-        "ping_command_online": "Ping of {username} is {ping}",
-        "ping_command_offline": "{username} is not online!",
-        "random_fact": "Random fact: {fact}"
-    },
-
-    "disabled_commands": [
-        "command_1",
-        "command_2"
-    ],
 
     "spammer": {
-    	"min_spam_wait": 80,
-    	"max_spam_wait": 140,
+    	"min_spam_wait": 0,
+    	"max_spam_wait": 1,
         "fact_chance": 0.2,
         "messages": ["message that can be spammed 1",
             "message that can be spammed 2",
             "message that can be spammed 3",
             "message that can be spammed 4",
             "message that can be spammed 5"]
-    },
-    "database": {
-        "ip": "DATABASE IP (like localhost or 123.234.54.532)",
-        "port": "DATABASE PORT (standard for mysql - 3306)",
-        "user": "DATABASE USER (like root or sanyss)",
-        "password": "DATABASE PASSWORD (like 12345 idk)"
     }
 }

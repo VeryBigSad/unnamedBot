@@ -1,33 +1,38 @@
 const Discord = require('discord.js');
 const bot = require('./bot.js');
 const client = new Discord.Client();
-const cache = require('./caches/cachemanager.js')
 const database = require('./database.js')
-const dbCommands = require('./databaseCommands.js')
-const commands = require('./commands.js')
 const config = require('./config.json')
 
+
+// TODO: rewrite
+
 let queuedMessages = []
-exports.sendMessage = function(text) {
+sendMessage = function(text) {
 	if (text === null) {
 		return
 	}
-	client.channels.fetch(config.discord.bot_channel_id).then(async(channel)=>{
-		if (queuedMessages.length !== 0) {
-			for (let msg = 0; msg < queuedMessages.length; msg++) {
-				// await bot.sleep(100)
-				channel.send(queuedMessages[msg])
+	try {
+		client.channels.fetch(config.discord.bot_channel_id).then(async(channel)=>{
+			if (queuedMessages.length !== 0) {
+				for (let msg = 0; msg < queuedMessages.length; msg++) {
+					// await bot.sleep(100)
+					channel.send(queuedMessages[msg])
+				}
+				queuedMessages = []
 			}
-			queuedMessages = []
-		}
-		channel.send(text)
-	}).catch(()=>{
-		queuedMessages.push(text)
-		console.log("Couldn't get the ingame channel by it's ID (queued it though). If in a minute you received 0 messages on discord, you probably got it wrong in the config.")
-	})
+			channel.send(text)
+		}).catch(()=>{
+			queuedMessages.push(text)
+			console.log("Couldn't get the ingame channel by it's ID (queued it though). If in a minute you received 0 messages on discord, you probably got it wrong in the config.")
+		})
+	} catch (e) {
+		console.log('Error when sending message via discord')
+	}
+
 }
 
-sendMessage = exports.sendMessage
+exports.sendMessage = sendMessage
 
 exports.bindDiscord = function(bot) {
 	client.login(config.discord.bot_private_key);

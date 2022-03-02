@@ -1,0 +1,23 @@
+[
+  {
+    "command_name": [
+      "help",
+      "h",
+      "?"
+    ],
+    "call": "This is your help command. (fill in in commands.json)"
+  },
+  {
+    "command_name": [
+      "discord",
+      "d"
+    ],
+    "call": "Your discord link. (fill in in commands.json)"
+  },
+  {
+    "command_name": [
+      "secret"
+    ],
+    "call": "ho-ho! you can view my source code at https://github.com/VeryBigSad/unnamedBot (remove this in in commands.json)"
+  }
+]
