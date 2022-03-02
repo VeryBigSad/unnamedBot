@@ -37,7 +37,7 @@ exports.timeToText = function(time) {
   }
 
   if (text === '') {
-    return '0 seconds'
+    return Math.round(time % 60) + ' seconds'
   }
   return text.slice(0, -1)
 }

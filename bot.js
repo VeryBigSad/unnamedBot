@@ -4,7 +4,6 @@ if (process.argv.length < 3 || process.argv.length > 6) {
 }
 const bindManager = require('./bindManager')
 const config = require('./config.json')
-const discord = require('./discord')
 const mineflayer = require('mineflayer')
 const DBInterface = require('./DBInterface')
 

@@ -6,10 +6,12 @@ this.call = function (username, args, callback) {
   if (args.length !== 0) {
     username = args[0]
   }
-  try {
-    callback(username + '\'s ping is ' + bot.getBot().players[username].ping + 'ms')
-  } catch (e) {
-    callback(username + ' is not online!')
+  for (let p in bot.getBot().players) {
+    if (p.toLowerCase() === username.toLowerCase()) {
+      callback(p + '\'s ping is ' + bot.getBot().players[p].ping + 'ms')
+      return;
+    }
   }
+  callback(username + ' is not online!')
 };
 

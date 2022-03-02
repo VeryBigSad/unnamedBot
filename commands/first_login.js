@@ -9,7 +9,7 @@ this.call = function (username, args, callback) {
   }
   database.getFirstLogin(username, (res) => {
     if (res === null) {
-      callback('I have never seen someone named w' + username + '!');
+      callback('I have never seen someone named ' + username + '!');
     } else {
       let text_ago = timeToText(Math.floor(Date.now() / 1000 - res));
       callback(username + ' first joined ' + text_ago + ' ago!');

@@ -44,11 +44,11 @@ exports.setFirstLogin = (user, value) => {
 
 exports.getRandomTextMessage = (user, callback) => {
   bot.dbi.getChatMessages(user, (result) => {
-    if (result.length === 0) {
+    if (result === undefined || result.length === 0) {
       callback(null)
     } else {
       let random_index = Math.floor(Math.random() * result.length);
-      callback(result[random_index].text);
+      callback(result[random_index]);
     }
   })
 }
@@ -99,14 +99,13 @@ exports.getTotalLogins = (user = '', callback) => {
 
 
 //
-exports.getFirstMessage = (user = '', callback) => {
+exports.getFirstMessage = (user, callback) => {
   // TODO: instead of having first_message in user_info as a field, just search in chat_log table first by date.
   bot.dbi.getUser(user, (result) => {
     if (result === undefined) {
       callback(null)
     } else {
       callback(result.first_message)
-
     }
   })
 }

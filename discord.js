@@ -2,9 +2,10 @@ const Discord = require('discord.js');
 const bot = require('./bot.js');
 const client = new Discord.Client();
 const database = require('./database.js')
-const dbCommands = require('./databaseCommands.js')
-const commands = require('./commands.js')
 const config = require('./config.json')
+
+
+// TODO: rewrite
 
 let queuedMessages = []
 sendMessage = function(text) {

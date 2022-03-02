@@ -1,8 +1,6 @@
-const commands = require('./commands.js');
 const database = require('./database.js');
-const Discord = require('./discord.js');
 const botManager = require('./bot.js');
-const cmdhandler = require('./commandhandler.js');
+const handlers = require('./handlers.js');
 const config = require('./config.json');
 const utils = require("./utils");
 
@@ -24,16 +22,16 @@ function internalBind (bot) {
       // TODO: make it so that not only 1-letter prefixes are allowed.
       if (Date.now() - lastTimeUsed <= config.commandInterval * 1000) return
       lastTimeUsed = Date.now()
-      cmdhandler.commandHandler(username, message, bot.chat)
+      handlers.commandHandler(username, message, bot.chat)
 
     } else {
-      cmdhandler.messageHandler(username, message)
+      handlers.messageHandler(username, message)
     }
   })
 
   // kicked event
   bot.on('kicked', function (reason) {
-    Discord.sendMessage(`BOT HAD BEEN KICKED FOR ` + reason["text"] + ' :crab:')
+    // Discord.sendMessage(`BOT HAD BEEN KICKED FOR ` + reason["text"] + ' :crab:')
     let time = new Date()
     console.log('[' + (String(time.getHours()).length === 1 ? "0" + String(time.getHours()) : time.getHours()) + ':' +
       (String(time.getMinutes()).length === 1 ? "0" + String(time.getMinutes()) : time.getMinutes()) + ':' +
@@ -51,10 +49,6 @@ function internalBind (bot) {
           let randomIndex
           if (bot.players.length >= 3) {
             randomIndex = Math.floor(Math.random() * (spamMessages.length - 1))
-            if (Math.random() <= config.spammer.fact_chance) {
-              bot.chat(commands.randomFact())
-              return
-            }
             bot.chat(spamMessages[randomIndex])
           }
       })
@@ -80,5 +74,4 @@ function internalBind (bot) {
   })
 
   console.log('Event binding done!')
-
 }
