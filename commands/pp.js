@@ -9,7 +9,7 @@ this.call = function (username, args, callback) {
   let number = cyrb53(username.toLowerCase()) % 100;
   let numberSqrt = Math.round(Math.sqrt(number));
   let dickSize = 10 - numberSqrt;
-  let text = username + '\'s dick: D=' + '='.repeat(dickSize) + '8';
+  let text = username + '\'s dick: 8=' + '='.repeat(dickSize) + 'D';
   if (dickSize > 6 && dickSize < 9) {
     // 7, 8
     text += ' Wow! That\'s really something huge this person has!'
