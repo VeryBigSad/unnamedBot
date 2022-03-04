@@ -37,7 +37,7 @@ class DBInterface {
   }
 
   getOrCreateUser(user, callback) {
-    this.db.get('SELECT * FROM user_data WHERE user=?', [user], (err, row)=> {
+    this.db.get('SELECT * FROM user_data WHERE lower(user)=lower(?)', [user], (err, row)=> {
       if (row === undefined) {
         this.addUser(user);
         this.getUser(user, callback);
@@ -75,7 +75,7 @@ class DBInterface {
   addChatMessage (user, text, time) {
     // adds a message to user's chat history
     this.db.run('INSERT INTO chat_logs (user, message_text, time) VALUES(?, ?, ?)', [user, text, time]);
-    this.db.get('SELECT first_message FROM user_data WHERE user=?', [user], (err, row)=> {
+    this.db.get('SELECT first_message FROM user_data WHERE lower(user)=lower(?)', [user], (err, row)=> {
       if (row['first_message'] === null) {
         // if this is user's first message, set it as one.
         this.db.run('UPDATE user_data SET first_message=? WHERE user=?', [text, user])
