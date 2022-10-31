@@ -12,7 +12,7 @@ this.call = function (username, args, callback) {
     if (res === null) {
       callback(username + ' haven\'t said anything yet!');
     } else {
-      callback(username + '\'s first words: ' + res);
+      callback(`${username}\'s first words: ${res}`);
     }
   })
 };
