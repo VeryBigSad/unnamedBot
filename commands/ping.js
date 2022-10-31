@@ -8,10 +8,10 @@ this.call = function (username, args, callback) {
   }
   for (let p in bot.getBot().players) {
     if (p.toLowerCase() === username.toLowerCase()) {
-      callback(p + '\'s ping is ' + bot.getBot().players[p].ping + 'ms')
+      callback(`${p}\'s ping is ${bot.getBot().players[p].ping}ms`)
       return;
     }
   }
-  callback(username + ' is not online!')
+  callback(`${username} is not online!`)
 };
 
