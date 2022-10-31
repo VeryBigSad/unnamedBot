@@ -9,9 +9,9 @@ this.call = function (username, args, callback) {
 
   getRandomTextMessage(username, (res)=>{
     if (res === undefined || res === null) {
-      callback('I don\'t think ' + username + ' ever said anything!')
+      callback(`I don\'t think ${username} ever said anything!`)
     } else {
-      callback(res.user + ' ' + timeToText(Date.now() / 1000 - res.time) + ' ago: "' + res.message_text + '"')
+      callback(`${res.user} ${timeToText(Date.now() / 1000 - res.time)} ago: "${res.message_text} "`)
     }
   })
 };
