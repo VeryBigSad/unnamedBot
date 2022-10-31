@@ -10,7 +10,7 @@ this.call = function (username, args, callback) {
 
   database.getFirstMessage(username, (res) => {
     if (res === null) {
-      callback(username + ' haven\'t said anything yet!');
+      callback(`${username} haven\'t said anything yet!`);
     } else {
       callback(`${username}\'s first words: ${res}`);
     }
