@@ -9,10 +9,10 @@ this.call = function (username, args, send_message_function) {
   }
   database.getPlaytime(username, (res) => {
     if (res === null) {
-      send_message_function('I have never seen ' + username + '!')
+      send_message_function(`I have never seen ${username}!`)
     } else {
       let text_ago = timeToText(Math.floor(res));
-      send_message_function(username + ' had been playing for ' + text_ago + '!')
+      send_message_function(`${username} had been playing for ${text_ago}!`)
     }
   })
 };
