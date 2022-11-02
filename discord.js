@@ -84,14 +84,21 @@ client.on('message', msg => {
 
 function parseMentionsInMessage(message) {
 
-	// const matches = mention.match(/^<@!?(\d+)>$/g)
-	// console.log(matches)
-	// matches.replaceAll(mention=>{
-	// 	replace
-	// })
+  var mentions = [];
+  message.mentions.users.forEach(user => {
+    mentions.push({"userId": user.id, "username": user.username, "discriminator": user.discriminator});
+  });
+  var messageContent = message.content;
+  for (mention of mentions) {
+    if(messageContent.includes(mention.userId)) {
+        messageContent = messageContent.replace(new RegExp("<@"+mention.userId+">", 'g'), "@"+mention.username+"#"+mention.discriminator);
+        messageContent = messageContent.replace(new RegExp("<@!"+mention.userId+">", 'g'), "@"+mention.username+"#"+mention.discriminator);
+        }
 
-	// TODO: from DiscordMessageObject(text="hello <@00000000000000001>") it should return String("hello @Username")
-	return message
+    }
+
+	// Hey, its rodney, think i fixed this!
+	return messageContent
 }
 
 
