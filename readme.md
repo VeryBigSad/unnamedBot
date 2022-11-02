@@ -5,7 +5,7 @@
 </p>
   <p align="center">
     <a href="https://github.com/VeryBigSad/unnamedBot/actions">
-      <img alt="Tests Passing" src="https://github.com/VeryBigSad/unnamedBot/workflows/Test/badge.svg" />
+      <img alt="Tests Passing" src="https://github.com/Rodney-RWR/unnamedBot/actions/workflows/node.js.yml/badge.svg" />
     </a>
     <a href="https://github.com/VeryBigSad/unnamedBot/graphs/contributors">
       <img alt="GitHub Contributors" src="https://img.shields.io/github/contributors/VeryBigSad/unnamedBot" />
