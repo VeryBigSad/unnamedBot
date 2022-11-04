@@ -78,17 +78,17 @@ client.on('message', msg => {
 		return
 	}
 	msg_content_with_mentions = parseMentionsInMessage(msg.content)
-	bot.sendMessage('[DISCORD] ' + ' [' + msg.author.username + '] ' + msg_content_with_mentions);
+	bot.sendMessage(config.discord_to_minecraft_message_prefix + ' ' + msg.author.username + ': ' + msg_content_with_mentions);
 	// bot.sendMessage('[' + (msg.member.roles.cache.has('731327156453507074') ? 'MEMBER' : (msg.member.roles.cache.has('732573982909530113') ? 'COOL' : (msg.member.roles.cache.has('739459055638282253') ? 'RETIRED' : (msg.member.roles.cache.has('737988985158107146') ? 'BOT DEV' : 'NON')))) + '] ' + ' [' + msg.author.username + '] ' + msg_content_with_mentions);
 });
 
 function parseMentionsInMessage(message) {
 
-  var mentions = [];
+  let mentions = [];
   message.mentions.users.forEach(user => {
     mentions.push({"userId": user.id, "username": user.username, "discriminator": user.discriminator});
   });
-  var messageContent = message.content;
+  let messageContent = message.content;
   for (mention of mentions) {
     if(messageContent.includes(mention.userId)) {
         messageContent = messageContent.replace(new RegExp("<@"+mention.userId+">", 'g'), "@"+mention.username+"#"+mention.discriminator);
