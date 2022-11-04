@@ -1,12 +1,11 @@
 [
   {
-    "command_name": [ // the commands name, you can have multiple
-      "help", // will respond to (prefix)help
+    "command_name": [
+      "help",
       "h",
       "?"
     ],
     "call": "This is your help command. (fill in in commands.json)" 
-    // What the bot responds with, can only be a message as of now, direct message/command support soon (maybe)
   },
   {
     "command_name": [
