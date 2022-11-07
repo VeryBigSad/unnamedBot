@@ -4,6 +4,7 @@
     "commandInterval": 0.5,
     "discord_bot_private_key": "PRIVATE KEY OF YOUR DISCORD BOT",
     "database_filename": "database.db",
+    "discord_to_minecraft_message_prefix": "[Discord]",
 
 
     "spammer": {
