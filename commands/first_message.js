@@ -1,5 +1,5 @@
 const database = require('../database.js');
-const {timeToText} = require("../utils");
+const { timeToText } = require("../utils");
 
 
 this.command_name = ['fm', 'firstmessage']

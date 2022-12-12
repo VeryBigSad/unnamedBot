@@ -8,12 +8,12 @@ const config = require('./config.json')
 // TODO: rewrite
 
 let queuedMessages = []
-sendMessage = function(text) {
+sendMessage = function (text) {
 	if (text === null) {
 		return
 	}
 	try {
-		client.channels.fetch(config.discord.bot_channel_id).then(async(channel)=>{
+		client.channels.fetch(config.discord.bot_channel_id).then(async (channel) => {
 			if (queuedMessages.length !== 0) {
 				for (let msg = 0; msg < queuedMessages.length; msg++) {
 					// await bot.sleep(100)
@@ -22,7 +22,7 @@ sendMessage = function(text) {
 				queuedMessages = []
 			}
 			channel.send(text)
-		}).catch(()=>{
+		}).catch(() => {
 			queuedMessages.push(text)
 			console.log("Couldn't get the ingame channel by it's ID (queued it though). If in a minute you received 0 messages on discord, you probably got it wrong in the config.")
 		})
@@ -34,10 +34,10 @@ sendMessage = function(text) {
 
 exports.sendMessage = sendMessage
 
-exports.bindDiscord = function(bot) {
+exports.bindDiscord = function (bot) {
 	client.login(config.discord.bot_private_key);
 
-	bot.on('message', function(jsonMsg) {
+	bot.on('message', function (jsonMsg) {
 		let message = String(jsonMsg);
 
 
@@ -68,7 +68,7 @@ client.on('message', msg => {
 
 	if (msg.content.startsWith('?')) {
 		// command
-		setTimeout(()=>{sendMessage(discordCommandHandler(msg.member, msg.content.slice(1)))}, 0)
+		setTimeout(() => { sendMessage(discordCommandHandler(msg.member, msg.content.slice(1))) }, 0)
 		return
 	}
 
@@ -84,18 +84,18 @@ client.on('message', msg => {
 
 function parseMentionsInMessage(message) {
 
-  let mentions = [];
-  message.mentions.users.forEach(user => {
-    mentions.push({"userId": user.id, "username": user.username, "discriminator": user.discriminator});
-  });
-  let messageContent = message.content;
-  for (mention of mentions) {
-    if(messageContent.includes(mention.userId)) {
-        messageContent = messageContent.replace(new RegExp("<@"+mention.userId+">", 'g'), "@"+mention.username+"#"+mention.discriminator);
-        messageContent = messageContent.replace(new RegExp("<@!"+mention.userId+">", 'g'), "@"+mention.username+"#"+mention.discriminator);
-        }
+	let mentions = [];
+	message.mentions.users.forEach(user => {
+		mentions.push({ "userId": user.id, "username": user.username, "discriminator": user.discriminator });
+	});
+	let messageContent = message.content;
+	for (mention of mentions) {
+		if (messageContent.includes(mention.userId)) {
+			messageContent = messageContent.replace(new RegExp("<@" + mention.userId + ">", 'g'), "@" + mention.username + "#" + mention.discriminator);
+			messageContent = messageContent.replace(new RegExp("<@!" + mention.userId + ">", 'g'), "@" + mention.username + "#" + mention.discriminator);
+		}
 
-    }
+	}
 
 	// Hey, its rodney, think i fixed this!
 	return messageContent
@@ -110,7 +110,7 @@ function discordCommandHandler(sender, command) {
 
 
 	if (command === 'fact') {
-		commands.randomFact().then((msg)=>{
+		commands.randomFact().then((msg) => {
 			sendMessage(msg)
 		})
 		return null
@@ -143,11 +143,11 @@ function discordCommandHandler(sender, command) {
 		}
 	} else if (command == 'usercount') {
 		if (hasPerms(sender, ['bot developer'])) {
-			database.userdata.query('SELECT * FROM userdata', (err, result)=> {
+			database.userdata.query('SELECT * FROM userdata', (err, result) => {
 				count = 0
-				for(row in result)
+				for (row in result)
 					count++
-				sendMessage('The database has currently ' + count + ' registered users')	
+				sendMessage('The database has currently ' + count + ' registered users')
 			})
 			return null
 		} else {
@@ -162,19 +162,19 @@ function discordCommandHandler(sender, command) {
 
 	username = args[0]
 	if (command == 'pt' || command == 'playtime') {
-		dbCommands.playtime(username, [username]).then((msg)=>{sendMessage(msg)})
+		dbCommands.playtime(username, [username]).then((msg) => { sendMessage(msg) })
 		return null
 	} else if (command == 'qt' || command == 'quote') {
-		dbCommands.quote(username, [username]).then((msg)=>{sendMessage(msg)})
+		dbCommands.quote(username, [username]).then((msg) => { sendMessage(msg) })
 		return null
 	} else if (command == 'seen') {
-		dbCommands.lastSeen(username, [username]).then((msg)=>{sendMessage(msg)})
+		dbCommands.lastSeen(username, [username]).then((msg) => { sendMessage(msg) })
 		return null
 	} else if (command == 'fm' || command == 'firstmessage') {
-		dbCommands.firstmessage(username, [username]).then((msg)=>{sendMessage(msg)})
+		dbCommands.firstmessage(username, [username]).then((msg) => { sendMessage(msg) })
 		return null
-	} else if (command == 'firstlogin' || command == 'joindate' ||command == 'jd') {
-		dbCommands.firstlogin(username, [username]).then((msg)=>{sendMessage(msg)})
+	} else if (command == 'firstlogin' || command == 'joindate' || command == 'jd') {
+		dbCommands.firstlogin(username, [username]).then((msg) => { sendMessage(msg) })
 		return null
 	} else if (command == 'ping') {
 		sendMessage(commands.pingCommand(username, [username]))

@@ -1,5 +1,5 @@
-const {cyrb53, timeToText} = require('../utils');
-const {getRandomTextMessage} = require("../database");
+const { cyrb53, timeToText } = require('../utils');
+const { getRandomTextMessage } = require("../database");
 
 this.command_name = ['quote', 'qt']
 this.call = function (username, args, callback) {
@@ -7,7 +7,7 @@ this.call = function (username, args, callback) {
     username = args[0]
   }
 
-  getRandomTextMessage(username, (res)=>{
+  getRandomTextMessage(username, (res) => {
     if (res === undefined || res === null) {
       callback(`I don\'t think ${username} ever said anything!`)
     } else {

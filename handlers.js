@@ -2,7 +2,7 @@ const command_objects = require('./commands/')
 const custom_commands = require('./commands.json')
 const database = require('./database.js')
 
-exports.commandHandler = function(username, message, callback) {
+exports.commandHandler = function (username, message, callback) {
 	message = message.slice(1).split(' ');
 	let command = message[0].toLowerCase();
 	message.shift();
@@ -26,6 +26,6 @@ exports.commandHandler = function(username, message, callback) {
 };
 
 
-exports.messageHandler = function(username, message) {
+exports.messageHandler = function (username, message) {
 	database.addTextMessage(username, message, Date.now() / 1000)
 };

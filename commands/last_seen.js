@@ -1,5 +1,5 @@
 const database = require('../database');
-const {timeToText} = require("../utils");
+const { timeToText } = require("../utils");
 const bot = require('../bot')
 
 

@@ -5,15 +5,15 @@
     "discord_bot_private_key": "PRIVATE KEY OF YOUR DISCORD BOT",
     "database_filename": "database.db",
     "discord_to_minecraft_message_prefix": "[Discord]",
-
-
     "spammer": {
-    	"min_spam_wait": 60,
-    	"max_spam_wait": 120,
-        "messages": ["message that can be spammed 1",
+        "min_spam_wait": 60,
+        "max_spam_wait": 120,
+        "messages": [
+            "message that can be spammed 1",
             "message that can be spammed 2",
             "message that can be spammed 3",
             "message that can be spammed 4",
-            "message that can be spammed 5"]
+            "message that can be spammed 5"
+        ]
     }
 }

@@ -7,7 +7,7 @@ class DBInterface {
   constructor() {
     console.log('Starting up Database stuff...')
     // TODO: export DB filename into config.json
-    this.db = new sqlite3.Database('./database.db', ()=>{
+    this.db = new sqlite3.Database('./database.db', () => {
       // TODO: comment down the information about these tables
       let createUserDataTable = 'CREATE TABLE IF NOT EXISTS user_data(user varchar(255) primary key, playtime integer, last_login bigint, total_logins integer, kills integer, deaths integer, first_message text, first_login bigint)';
       let createChatLogTable = 'CREATE TABLE IF NOT EXISTS chat_logs(id integer primary key autoincrement, user varchar(255), message_text text, time bigint)';
@@ -33,11 +33,11 @@ class DBInterface {
 
   updateUser(user, key, value) {
     // updates 1 parameter of a user object.
-    this.db.run("UPDATE user_data SET "  + key + "=? WHERE user=?", [value, user])
+    this.db.run("UPDATE user_data SET " + key + "=? WHERE user=?", [value, user])
   }
 
   getOrCreateUser(user, callback) {
-    this.db.get('SELECT * FROM user_data WHERE lower(user)=lower(?)', [user], (err, row)=> {
+    this.db.get('SELECT * FROM user_data WHERE lower(user)=lower(?)', [user], (err, row) => {
       if (row === undefined) {
         this.addUser(user);
         this.getUser(user, callback);
@@ -64,7 +64,7 @@ class DBInterface {
 
   getChatMessages(user, callback) {
     // passes all rows where user sent a message
-    this.db.all('SELECT * FROM chat_logs WHERE lower(user)=lower(?)', [user], (err, rows)=>{
+    this.db.all('SELECT * FROM chat_logs WHERE lower(user)=lower(?)', [user], (err, rows) => {
       if (err) {
         console.log(err);
       }
@@ -72,10 +72,10 @@ class DBInterface {
     })
   }
 
-  addChatMessage (user, text, time) {
+  addChatMessage(user, text, time) {
     // adds a message to user's chat history
     this.db.run('INSERT INTO chat_logs (user, message_text, time) VALUES(?, ?, ?)', [user, text, time]);
-    this.db.get('SELECT first_message FROM user_data WHERE lower(user)=lower(?)', [user], (err, row)=> {
+    this.db.get('SELECT first_message FROM user_data WHERE lower(user)=lower(?)', [user], (err, row) => {
       if (row['first_message'] === null) {
         // if this is user's first message, set it as one.
         this.db.run('UPDATE user_data SET first_message=? WHERE user=?', [text, user])

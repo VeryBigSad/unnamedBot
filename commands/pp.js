@@ -1,4 +1,4 @@
-const {cyrb53} = require('../utils');
+const { cyrb53 } = require('../utils');
 
 this.command_name = ['pp', 'dick']
 this.call = function (username, args, callback) {

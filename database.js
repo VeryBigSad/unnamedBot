@@ -11,14 +11,14 @@ exports.addTextMessage = (user, text, time) => {
 
 
 exports.addPlaytime = (user, value) => {
-  bot.dbi.getOrCreateUser(user, (user_obj)=>{
+  bot.dbi.getOrCreateUser(user, (user_obj) => {
     bot.dbi.updateUser(user, 'playtime', user_obj.playtime + value)
   })
 }
 
 
 exports.addTotalLogins = (user, value) => {
-  bot.dbi.getOrCreateUser(user, (user)=> {
+  bot.dbi.getOrCreateUser(user, (user) => {
     if (user.total_logins === 0) {
       bot.dbi.updateUser(user, 'first_login', Date.now() / 1000)
     }
