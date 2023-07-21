@@ -86,7 +86,7 @@ Making pull requests is cool, and you should do it if you think that you have so
 ### Authors
 
 * **Sanyss/VeryBigSad** - *Initial work & maintaining*
-* **NoWillToLife** - *Helped building the initial crappy version which became the inspiration*
+* **NoWillToLife** - *Inspiration*
 
 #### Other Contributors
 
